@@ -283,7 +283,7 @@ h1{
   min-width:0;
 
   /* 「ばらばら〜」の初期状態はアニメーション側で使う */
-  animation:scatterIn .68s cubic-bezier(.2,.8,.2,1) both;
+  animation:scatterIn 1s cubic-bezier(.16,.84,.24,1) both;
   animation-delay:var(--delay,0ms);
 }
 
