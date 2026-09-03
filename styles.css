@@ -183,16 +183,82 @@ h1{
 }
 
 .hero-placeholder{
-  background:
-    radial-gradient(circle at 65% 24%, rgba(214,210,234,.72), transparent 26%),
-    linear-gradient(145deg,#1c2027 0%,#56647a 42%,#98a3b3 60%,#26262c 100%);
+  background-image:url("hero.jpg");
+  background-size:cover;
+  background-position:center;
 }
-.p1{background:linear-gradient(145deg,#17181d,#343a50 40%,#847c98 70%,#1e2027)}
-.p2{background:linear-gradient(180deg,#b9d6e1 0 45%,#909b7d 46% 70%,#3b4537)}
-.p3{background:radial-gradient(circle at 58% 44%,#26282e 0 12%,transparent 13%),linear-gradient(150deg,#c8c8c1,#7d8488)}
-.p4{background:radial-gradient(circle at 60% 22%,#d9d9e8 0 1px,transparent 2px),radial-gradient(circle at 25% 17%,#fff 0 1px,transparent 2px),linear-gradient(#16192c,#332e47 58%,#171816)}
-.p5{background:linear-gradient(180deg,#4e607c,#8791a3 50%,#242730)}
-.p6{background:linear-gradient(155deg,#93c0d4 0 55%,#d6c1a3 56% 63%,#3d4038 64%)}
+
+.p1{
+  background-image:url("photo1.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p2{
+  background-image:url("photo2.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p3{
+  background-image:url("photo3.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p4{
+  background-image:url("photo4.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p5{
+  background-image:url("photo5.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p6{
+  background-image:url("photo6.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p7{
+  background-image:url("photo7.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p8{
+  background-image:url("photo8.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p9{
+  background-image:url("photo9.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p10{
+  background-image:url("photo10.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p11{
+  background-image:url("photo12.jpg");
+  background-size:cover;
+  background-position:center;
+}
+
+.p12{
+  background-image:url("photo12.jpg");
+  background-size:cover;
+  background-position:center;
+}
 
 .about{
   border-top:1px solid var(--line);
