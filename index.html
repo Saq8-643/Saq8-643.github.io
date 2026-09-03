@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SAKU PHOTO</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="logo" href="#">SAKU PHOTO</a>
+    <nav class="nav">
+      <a href="#gallery">GALLERY</a>
+      <a href="#about">ABOUT</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-photo photo-placeholder hero-placeholder" data-label="YOUR FAVORITE PHOTO"></div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">PHOTOGRAPHS / NAGOYA, JAPAN</p>
+        <h1>日々の途中で、<br>立ち止まった景色。</h1>
+        <p class="hero-text">
+          街、夜、空、鳥、キャンプ。<br>
+          「きれい」と思った瞬間を残していく、小さな写真置き場。
+        </p>
+      </div>
+    </section>
+
+    <section id="gallery" class="gallery-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">GALLERY</p>
+          <h2>Photographs</h2>
+        </div>
+
+        <div class="filters" aria-label="写真カテゴリ">
+          <button class="filter active" data-filter="all">ALL</button>
+          <button class="filter" data-filter="night">NIGHT</button>
+          <button class="filter" data-filter="landscape">LANDSCAPE</button>
+          <button class="filter" data-filter="birds">BIRDS</button>
+          <button class="filter" data-filter="camp">CAMP</button>
+        </div>
+      </div>
+
+      <div class="gallery-grid">
+        <button class="gallery-item wide" data-category="night" data-title="City at Night" data-meta="Nikon Z50II / 13mm">
+          <div class="photo-placeholder p1" data-label="NIGHT"></div>
+          <span class="item-info"><b>City at Night</b><small>NIGHT</small></span>
+        </button>
+
+        <button class="gallery-item tall" data-category="landscape" data-title="Morning Air" data-meta="Nikon Z50II / 18-140mm">
+          <div class="photo-placeholder p2" data-label="LANDSCAPE"></div>
+          <span class="item-info"><b>Morning Air</b><small>LANDSCAPE</small></span>
+        </button>
+
+        <button class="gallery-item" data-category="birds" data-title="Crow" data-meta="Nikon Z50II / 50-250mm">
+          <div class="photo-placeholder p3" data-label="BIRDS"></div>
+          <span class="item-info"><b>Crow</b><small>BIRDS</small></span>
+        </button>
+
+        <button class="gallery-item" data-category="camp" data-title="Under the Stars" data-meta="Nikon Z50II / 13mm">
+          <div class="photo-placeholder p4" data-label="CAMP"></div>
+          <span class="item-info"><b>Under the Stars</b><small>CAMP</small></span>
+        </button>
+
+        <button class="gallery-item tall" data-category="night" data-title="Blue Hour" data-meta="Nikon Z50II / 13mm">
+          <div class="photo-placeholder p5" data-label="NIGHT"></div>
+          <span class="item-info"><b>Blue Hour</b><small>NIGHT</small></span>
+        </button>
+
+        <button class="gallery-item wide" data-category="landscape" data-title="Open Sky" data-meta="Nikon Z50II / 18-140mm">
+          <div class="photo-placeholder p6" data-label="LANDSCAPE"></div>
+          <span class="item-info"><b>Open Sky</b><small>LANDSCAPE</small></span>
+        </button>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <p class="eyebrow">ABOUT</p>
+      <div class="about-grid">
+        <h2>好きな景色を、<br>好きなまま。</h2>
+        <p>
+          上手く撮れた日も、ちょっと違った日も。<br>
+          出かけた先で見つけた光や空気を、気ままに残しています。
+          この文章も好きなように書き換えて使えます。
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 SAKU PHOTO</span>
+    <a href="#">BACK TO TOP ↑</a>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox">
+    <button class="close-button" id="closeLightbox" aria-label="閉じる">×</button>
+    <div class="lightbox-image photo-placeholder" id="lightboxImage"></div>
+    <div class="lightbox-caption">
+      <strong id="lightboxTitle"></strong>
+      <span id="lightboxMeta"></span>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
