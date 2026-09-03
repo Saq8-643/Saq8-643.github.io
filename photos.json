@@ -5,7 +5,7 @@
   },
   "photos": [
     {
-      "file": "photo1.jpg",
+      "file": "bird1.jpg",
       "title": "Crow",
       "tags": [
         "BIRDS",
@@ -15,7 +15,7 @@
       "alt": "街中に佇むカラス"
     },
     {
-      "file": "photo2.jpg",
+      "file": "night2.jpg",
       "title": "Full Moon",
       "tags": [
         "SKY",
@@ -25,7 +25,7 @@
       "alt": "雲のある夜空に浮かぶ満月"
     },
     {
-      "file": "photo3.jpg",
+      "file": "bird2.jpg",
       "title": "Takeoff",
       "tags": [
         "BIRDS",
@@ -35,7 +35,7 @@
       "alt": "飛び立つカラス"
     },
     {
-      "file": "photo4.jpg",
+      "file": "bird3.jpg",
       "title": "In the Green",
       "tags": [
         "BIRDS",
@@ -45,7 +45,7 @@
       "alt": "緑の中の小鳥"
     },
     {
-      "file": "photo5.jpg",
+      "file": "bird4.jpg",
       "title": "Watching",
       "tags": [
         "BIRDS",
@@ -55,7 +55,7 @@
       "alt": "柵の上にいるカラス"
     },
     {
-      "file": "photo6.jpg",
+      "file": "flower1.jpg",
       "title": "Hydrangea",
       "tags": [
         "NATURE",
@@ -65,7 +65,7 @@
       "alt": "青と紫の紫陽花"
     },
     {
-      "file": "photo7.jpg",
+      "file": "bird5.jpg",
       "title": "Waterside",
       "tags": [
         "BIRDS",
@@ -75,7 +75,7 @@
       "alt": "水辺の小鳥"
     },
     {
-      "file": "photo8.jpg",
+      "file": "night2.jpg",
       "title": "Stars",
       "tags": [
         "SKY",
@@ -86,7 +86,7 @@
       "alt": "雲の間に見える星空"
     },
     {
-      "file": "photo9.jpg",
+      "file": "landscape1.jpg",
       "title": "Coffee Shop",
       "tags": [
         "CITY",
@@ -96,7 +96,7 @@
       "alt": "夜の喫茶店"
     },
     {
-      "file": "photo10.jpg",
+      "file": "animal1.jpg",
       "title": "Cat",
       "tags": [
         "ANIMALS",
@@ -106,7 +106,7 @@
       "alt": "街角に座る猫"
     },
     {
-      "file": "photo11.jpg",
+      "file": "night3.jpg",
       "title": "Moon",
       "tags": [
         "SKY",
@@ -116,7 +116,7 @@
       "alt": "黒い夜空に浮かぶ月"
     },
     {
-      "file": "photo12.jpg",
+      "file": "landscape2.jpg",
       "title": "Torii at Dusk",
       "tags": [
         "LANDSCAPE",
@@ -124,6 +124,227 @@
       ],
       "layout": "wide",
       "alt": "夕暮れの水辺に立つ鳥居"
+    }
+  ]
+}
+    {
+      "file": "nunu1.jpg",
+      "title": "Kyo and Ryo",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "京ちゃんと凉ちゃんシーソー遊び"
+    }
+  ]
+}
+    {
+      "file": "nunu2.jpg",
+      "title": "Kyo and Ryo",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "京ちゃんと凉ちゃんブランコ遊び"
+    }
+  ]
+}
+    {
+      "file": "nunu3.jpg",
+      "title": "Pero",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "ペロと遊具"
+    }
+  ]
+}
+    {
+      "file": "nunu4.jpg",
+      "title": "Pero",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "ペロちゃんブランコ遊び"
+    }
+  ]
+}
+    {
+      "file": "nunu5.jpg",
+      "title": "Ichigou, Pero and Nunu",
+      "tags": [
+        "NUIKATSU",
+        "CAMP"
+      ],
+      "layout": "wide",
+      "alt": "一号、ペロ、ぬぬ三兄弟でキャンプ"
+    }
+  ]
+}
+    {
+      "file": "nunu6.jpg",
+      "title": "Nalu",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "なるちゃんと公園"
+    }
+  ]
+}
+    {
+      "file": "nunu7.jpg",
+      "title": "Hodaka",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "ほだちゃん"
+    }
+  ]
+}
+    {
+      "file": "bird6.jpg",
+      "title": "Gray Heron",
+      "tags": [
+        "BIRDS"
+        ”NATURE”
+      ],
+      "layout": "",
+      "alt": "アオサギの視線"
+    }
+  ]
+}
+    {
+      "file": "aquarium1.jpg",
+      "title": "Night aqarium",
+      "tags": [
+        "AQUARIUM"
+      ],
+      "layout": "",
+      "alt": "ナイトアクアリウム"
+    }
+  ]
+}
+    {
+      "file": "aquarium2.jpg",
+      "title": "Night aqarium2",
+      "tags": [
+        "AQUARIUM"
+      ],
+      "layout": "",
+      "alt": "ナイトアクアリウム"
+    }
+  ]
+}
+    {
+      "file": "aquarium3.jpg",
+      "title": "Night aqarium3",
+      "tags": [
+        "AQUARIUM"
+      ],
+      "layout": "",
+      "alt": "ナイトアクアリウム"
+    }
+  ]
+}
+    {
+      "file": "nunu8.jpg",
+      "title": "Kyo and Ryo",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "京ちゃんと凉ちゃんと海"
+    }
+  ]
+}
+    {
+      "file": "nunu9.jpg",
+      "title": "Kyo and Ryo",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "wide",
+      "alt": "京ちゃんと凉ちゃんと空港"
+    }
+  ]
+}
+    {
+      "file": "plane1.jpg",
+      "title": "TAKE OFF",
+      "tags": [
+        "LANDSCAPE"
+        "SKY"
+      ],
+      "layout": "",
+      "alt": "離陸"
+    }
+  ]
+}
+    {
+      "file": "plane2.jpg",
+      "title": "Landing",
+      "tags": [
+        "LANDSCAPE"
+        "SKY"
+      ],
+      "layout": "",
+      "alt": "着陸"
+    }
+  ]
+}
+    {
+      "file": "landscape3.jpg",
+      "title": "Between Day and Night",
+      "tags": [
+        "LANDSCAPE"
+        "CITY"
+        "SKY"
+      ],
+      "layout": "",
+      "alt": "昼と夜のあわい。街の灯りが少しずつ目を覚ます時間。"
+    }
+  ]
+}
+    {
+      "file": "landscape4.jpg",
+      "title": "Blue Signal",
+      "tags": [
+        "LANDSCAPE"
+        "NIGHT"
+        "CITY"
+      ],
+      "layout": "青く染まる塔。曇り空まで光を抱き込んでいく。",
+      "alt": ""
+    }
+  ]
+}
+    {
+      "file": "landscape5.jpg",
+      "title": "City in Orbit",
+      "tags": [
+        "LANDSCAPE"
+        "NIGHT"
+        "CITY"
+      ],
+      "layout": "光の輪と、その向こうに立つ塔。夜の街が少し未来みたいに見えた。",
+      "alt": ""
+    }
+  ]
+}
+    {
+      "file": "landscape5-6.jpg",
+      "title": "Neon Pulse",
+      "tags": [
+        "LANDSCAPE"
+        "NIGHT"
+        "CITY"
+      ],
+      "layout": "ネオンと車の流れ。眠らない街の鼓動をそのまま切り取った夜。",
+      "alt": ""
     }
   ]
 }
