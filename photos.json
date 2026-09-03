@@ -431,6 +431,180 @@
       "prefectureCode": 23,
       "prefecture": "愛知県",
       "place": "名古屋市"
+    },
+  　{
+      "file": "bird7.jpg",
+      "title": "Midnight Perch",
+      "tags": [
+        "BIRDS",
+        "CITY"
+      ],
+      "layout": "wide",
+      "alt": "静かに止まっているだけなのに、目が離せない。黒い羽のつやまで、ひとつの景色として立ち上がってくる。",
+      "date": "",
+      "prefectureCode": 23,
+      "prefecture": "愛知県",
+      "place": "名古屋市"
+    },
+  　{
+      "file": "landscape7.jpg",
+      "title": "Where the Road Disappears",
+      "tags": [
+        "NUTURE",
+        "LANDSCAPE"
+      ],
+      "layout": "tall",
+      "alt": "山を覆う霧の奥へ、一本の道が消えていく。行き先が見えない景色ほど、少し先を見たくなる。",
+      "date": "",
+      "prefectureCode": 21,
+      "prefecture": "岐阜県",
+      "place": "郡上市"
+    },
+    {
+      "file": "landscape8.jpg",
+      "title": "Summer Faces",
+      "tags": [
+        "FLOWERS",
+        "NUTURE"
+      ],
+      "layout": "",
+      "alt": "光のほうを向く花たち。夏は、こんなにまっすぐ明るい。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "landscape9.jpg",
+      "title": "Summer Faces",
+      "tags": [
+        "NUTURE",
+        "LANDSCAPE"
+      ],
+      "layout": "",
+      "alt": "風が通るたび、それぞれ違う音がする。夏の空に吊るされた小さな音符たち。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "landscape10.jpg",
+      "title": "Sunlit Welcome",
+      "tags": [
+        "FLOWERS",
+        "LANDSCAPE"
+      ],
+      "layout": "",
+      "alt": "差し込んだ光が、ひまわりだけをそっと照らしていた。入口の片隅が、いちばんあたたかい場所になる。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "landscape11.jpg",
+      "title": "Under the Blue Bell",
+      "tags": [
+        "LANDSCAPE"
+      ],
+      "layout": "",
+      "alt": "澄みきった青空の下に立つ、小さな白い教会。静かな昼の光が、道の先までまっすぐ続いていた。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "nunu10.jpg",
+      "title": "Nunu",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "ひまわりの海に、ちょこんとひとり。黄色のなかで過ごす夏休み。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "nunu11.jpg",
+      "title": "Ichigou",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "画面の隅から、夏をのぞき込む。主役はひまわりか、それともこっちか。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "nunu12.jpg",
+      "title": "Pero",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "顔よりずっと大きなひまわりと、ごあいさつ。近づいてみると夏はでっかい。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "nunu13.jpg",
+      "title": "Ichigou, Pero and Nunu",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "ひまわり畑のとなりに並んだ三つの席。今日の特等席はここ。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "nunu14.jpg",
+      "title": "Nunu",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "たくさんある椅子のなか、選んだのはオレンジ色。どうやらここが指定席らしい。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "nunu14.jpg",
+      "title": "Nunu",
+      "tags": [
+        "NUIKATSU"
+      ],
+      "layout": "",
+      "alt": "たくさんある椅子のなか、選んだのはオレンジ色。どうやらここが指定席らしい。",
+      "date": "",
+      "prefectureCode": 24,
+      "prefecture": "三重県",
+      "place": "志摩市"
+    },
+    {
+      "file": "Object1.jpg",
+      "title": "Ancient Silence",
+      "tags": [
+        "OBJEDTS"
+      ],
+      "layout": "wide",
+      "alt": "遠い時間を越えて残った骨。その大きさだけが、かつてここにいた命を語っている。",
+      "date": "",
+      "prefectureCode": 18,
+      "prefecture": "福井県",
+      "place": "勝山市"
     }
   ]
 }
