@@ -177,10 +177,13 @@ function selectPrefecture(code, name) {
   setActiveTagButton("all");
   updateMapStatus();
   renderJapanMap();
-  applyFilters();
 
-  document.getElementById("gallery")
-    .scrollIntoView({ behavior:"smooth", block:"start" });
+document.getElementById("gallery")
+  .scrollIntoView({ behavior:"smooth", block:"start" });
+
+setTimeout(() => {
+  applyFilters();
+}, 550);
 }
 
 function clearPrefecture() {
