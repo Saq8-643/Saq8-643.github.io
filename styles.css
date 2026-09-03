@@ -296,7 +296,7 @@ h1{
     transform:
       translate(var(--scatter-x,0px),var(--scatter-y,30px))
       rotate(var(--scatter-r,0deg))
-      scale(.93);
+      scale(.82);
   }
   100%{
     opacity:1;
