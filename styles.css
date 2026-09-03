@@ -133,7 +133,6 @@ h1{
   grid-template-columns:repeat(12,1fr);
   gap:18px;
 }
-
 .gallery-item{
   grid-column:span 4;
   border:0;
@@ -180,7 +179,35 @@ h1{
   transform:scale(.995);
   filter:brightness(.96);
 }
-.gallery-item.hidden{display:none}
+
+.more-wrap{
+  display:flex;
+  justify-content:center;
+  padding:52px 0 0;
+}
+.more-button{
+  min-width:180px;
+  border:1px solid var(--text);
+  border-radius:999px;
+  padding:13px 22px;
+  background:transparent;
+  color:var(--text);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.15em;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.more-button:hover{
+  background:var(--text);
+  color:#fff;
+}
+.more-button[hidden]{display:none}
+#moreCount{
+  margin-left:5px;
+  color:var(--muted);
+}
+.more-button:hover #moreCount{color:inherit}
 
 .about{
   border-top:1px solid var(--line);
@@ -233,8 +260,28 @@ footer{
   gap:20px;
   padding:16px 2px 2px;
 }
-.lightbox-caption strong{font-size:12px;font-weight:500}
-.lightbox-caption span{font-size:10px;color:#aaa}
+.lightbox-main{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.lightbox-caption strong{
+  font-size:12px;
+  font-weight:500;
+}
+.lightbox-details{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 12px;
+  color:#aaa;
+  font-size:9px;
+  letter-spacing:.08em;
+}
+#lightboxMeta{
+  font-size:10px;
+  color:#aaa;
+  text-align:right;
+}
 .close-button{
   position:absolute;
   right:16px;
@@ -251,7 +298,6 @@ footer{
   cursor:pointer;
 }
 
-.loading,
 .error-message{
   grid-column:1/-1;
   padding:60px 0;
@@ -286,5 +332,13 @@ footer{
   .gallery-item.wide,
   .gallery-item.tall{
     grid-column:span 12;
+  }
+  .more-wrap{padding-top:34px}
+  .more-button{min-width:160px}
+  .lightbox-caption{
+    flex-direction:column;
+  }
+  #lightboxMeta{
+    text-align:left;
   }
 }

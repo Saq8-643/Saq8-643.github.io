@@ -7,9 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
-
 <body>
   <header class="site-header">
     <a class="logo" href="#">Saq8 PHOTO</a>
@@ -24,7 +23,7 @@
       <div id="heroPhoto" class="hero-photo"></div>
 
       <div class="hero-copy">
-        <p class="eyebrow">PHOTOGRAPHS / NAGOYA, JAPAN</p>
+        <p class="eyebrow">PHOTOGRAPHS / JAPAN</p>
         <h1>日々の途中で、<br>立ち止まった景色。</h1>
         <p class="hero-text">
           街、夜、空、鳥、花、ときどき猫。<br>
@@ -39,13 +38,16 @@
           <p class="eyebrow">GALLERY</p>
           <h2>Photographs</h2>
         </div>
-
-        <!-- script.js が photos.json を読んで、ここにタグボタンを自動生成 -->
         <div id="filters" class="filters" aria-label="写真カテゴリ"></div>
       </div>
 
-      <!-- script.js が photos.json を読んで、ここに写真を自動生成 -->
       <div id="galleryGrid" class="gallery-grid"></div>
+
+      <div class="more-wrap">
+        <button id="moreButton" class="more-button" type="button">
+          MORE <span id="moreCount"></span>
+        </button>
+      </div>
     </section>
 
     <section id="about" class="about">
@@ -68,12 +70,19 @@
   <dialog class="lightbox" id="lightbox">
     <button class="close-button" id="closeLightbox" aria-label="閉じる">×</button>
     <img class="lightbox-image" id="lightboxImage" alt="">
+
     <div class="lightbox-caption">
-      <strong id="lightboxTitle"></strong>
+      <div class="lightbox-main">
+        <strong id="lightboxTitle"></strong>
+        <div class="lightbox-details">
+          <time id="lightboxDate"></time>
+          <span id="lightboxPlace"></span>
+        </div>
+      </div>
       <span id="lightboxMeta"></span>
     </div>
   </dialog>
 
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>

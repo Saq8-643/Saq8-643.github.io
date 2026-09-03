@@ -7,219 +7,399 @@
     {
       "file": "bird1.jpg",
       "title": "Crow",
-      "tags": ["BIRDS", "CITY"],
+      "tags": [
+        "BIRDS",
+        "CITY"
+      ],
       "layout": "",
-      "alt": "街中に佇むカラス"
+      "alt": "街中に佇むカラス",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "night1.jpg",
       "title": "Full Moon",
-      "tags": ["SKY", "NIGHT"],
+      "tags": [
+        "SKY",
+        "NIGHT"
+      ],
       "layout": "wide",
-      "alt": "雲のある夜空に浮かぶ満月"
+      "alt": "雲のある夜空に浮かぶ満月",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "bird2.jpg",
       "title": "Takeoff",
-      "tags": ["BIRDS", "CITY"],
+      "tags": [
+        "BIRDS",
+        "CITY"
+      ],
       "layout": "",
-      "alt": "飛び立つカラス"
+      "alt": "飛び立つカラス",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "bird3.jpg",
       "title": "In the Green",
-      "tags": ["BIRDS", "NATURE"],
+      "tags": [
+        "BIRDS",
+        "NATURE"
+      ],
       "layout": "",
-      "alt": "緑の中の小鳥"
+      "alt": "緑の中の小鳥",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "bird4.jpg",
       "title": "Watching",
-      "tags": ["BIRDS", "CITY"],
+      "tags": [
+        "BIRDS",
+        "CITY"
+      ],
       "layout": "wide",
-      "alt": "柵の上にいるカラス"
+      "alt": "柵の上にいるカラス",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "flower1.jpg",
       "title": "Hydrangea",
-      "tags": ["NATURE", "FLOWERS"],
+      "tags": [
+        "NATURE",
+        "FLOWERS"
+      ],
       "layout": "",
-      "alt": "青と紫の紫陽花"
+      "alt": "青と紫の紫陽花",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "bird5.jpg",
       "title": "Waterside",
-      "tags": ["BIRDS", "NATURE"],
+      "tags": [
+        "BIRDS",
+        "NATURE"
+      ],
       "layout": "",
-      "alt": "水辺の小鳥"
+      "alt": "水辺の小鳥",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "night2.jpg",
       "title": "Stars",
-      "tags": ["SKY", "NIGHT", "LANDSCAPE"],
+      "tags": [
+        "SKY",
+        "NIGHT",
+        "LANDSCAPE"
+      ],
       "layout": "wide",
-      "alt": "雲の間に見える星空"
+      "alt": "雲の間に見える星空",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "landscape1.jpg",
       "title": "Coffee Shop",
-      "tags": ["CITY", "NIGHT"],
+      "tags": [
+        "CITY",
+        "NIGHT"
+      ],
       "layout": "wide",
-      "alt": "夜の喫茶店"
+      "alt": "夜の喫茶店",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "animal1.jpg",
       "title": "Cat",
-      "tags": ["ANIMALS", "CITY"],
+      "tags": [
+        "ANIMALS",
+        "CITY"
+      ],
       "layout": "tall",
-      "alt": "街角に座る猫"
+      "alt": "街角に座る猫",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "night3.jpg",
       "title": "Moon",
-      "tags": ["SKY", "NIGHT"],
+      "tags": [
+        "SKY",
+        "NIGHT"
+      ],
       "layout": "",
-      "alt": "黒い夜空に浮かぶ月"
+      "alt": "黒い夜空に浮かぶ月",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "landscape2.jpg",
       "title": "Torii at Dusk",
-      "tags": ["LANDSCAPE", "SKY"],
+      "tags": [
+        "LANDSCAPE",
+        "SKY"
+      ],
       "layout": "wide",
-      "alt": "夕暮れの水辺に立つ鳥居"
+      "alt": "夕暮れの水辺に立つ鳥居",
+      "date": "2026-08-29",
+      "prefecture": "SHIZUOKA",
+      "place": "浜松市・弁天島"
     },
     {
       "file": "nunu1.jpg",
       "title": "Kyo and Ryo",
-      "tags": ["NUIKATSU"],
+      "tags": [
+        "NUIKATSU"
+      ],
       "layout": "",
-      "alt": "京ちゃんと涼ちゃんシーソー遊び"
+      "alt": "京ちゃんと涼ちゃんシーソー遊び",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "nunu2.jpg",
       "title": "Kyo and Ryo",
-      "tags": ["NUIKATSU"],
+      "tags": [
+        "NUIKATSU"
+      ],
       "layout": "",
-      "alt": "京ちゃんと涼ちゃんブランコ遊び"
+      "alt": "京ちゃんと涼ちゃんブランコ遊び",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "nunu3.jpg",
       "title": "Pero",
-      "tags": ["NUIKATSU"],
+      "tags": [
+        "NUIKATSU"
+      ],
       "layout": "",
-      "alt": "ペロと遊具"
+      "alt": "ペロと遊具",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "nunu4.jpg",
       "title": "Pero",
-      "tags": ["NUIKATSU"],
+      "tags": [
+        "NUIKATSU"
+      ],
       "layout": "",
-      "alt": "ペロちゃんブランコ遊び"
+      "alt": "ペロちゃんブランコ遊び",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "nunu5.jpg",
       "title": "Ichigou, Pero and Nunu",
-      "tags": ["NUIKATSU", "CAMP"],
+      "tags": [
+        "NUIKATSU",
+        "CAMP"
+      ],
       "layout": "wide",
-      "alt": "一号、ペロ、ぬぬ三兄弟でキャンプ"
+      "alt": "一号、ペロ、ぬぬ三兄弟でキャンプ",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "nunu6.jpg",
       "title": "Nalu",
-      "tags": ["NUIKATSU"],
+      "tags": [
+        "NUIKATSU"
+      ],
       "layout": "",
-      "alt": "なるちゃんと公園"
+      "alt": "なるちゃんと公園",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "nunu7.jpg",
       "title": "Hodaka",
-      "tags": ["NUIKATSU"],
+      "tags": [
+        "NUIKATSU"
+      ],
       "layout": "",
-      "alt": "ほだちゃん"
+      "alt": "ほだちゃん",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "bird6.jpg",
       "title": "Gray Heron",
-      "tags": ["BIRDS", "NATURE"],
+      "tags": [
+        "BIRDS",
+        "NATURE"
+      ],
       "layout": "",
-      "alt": "アオサギの視線"
+      "alt": "アオサギの視線",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "aquarium1.jpg",
       "title": "Night Aquarium",
-      "tags": ["AQUARIUM"],
+      "tags": [
+        "AQUARIUM"
+      ],
       "layout": "",
-      "alt": "ナイトアクアリウム"
+      "alt": "ナイトアクアリウム",
+      "date": "2026-08-29",
+      "prefecture": "SHIZUOKA",
+      "place": "浜松市・浜名湖体験学習施設ウォット"
     },
     {
       "file": "aquarium2.jpg",
       "title": "Night Aquarium 2",
-      "tags": ["AQUARIUM"],
+      "tags": [
+        "AQUARIUM"
+      ],
       "layout": "",
-      "alt": "ナイトアクアリウム"
+      "alt": "ナイトアクアリウム",
+      "date": "2026-08-29",
+      "prefecture": "SHIZUOKA",
+      "place": "浜松市・浜名湖体験学習施設ウォット"
     },
     {
       "file": "aquarium3.jpg",
       "title": "Night Aquarium 3",
-      "tags": ["AQUARIUM"],
+      "tags": [
+        "AQUARIUM"
+      ],
       "layout": "",
-      "alt": "ナイトアクアリウム"
+      "alt": "ナイトアクアリウム",
+      "date": "2026-08-29",
+      "prefecture": "SHIZUOKA",
+      "place": "浜松市・浜名湖体験学習施設ウォット"
     },
     {
       "file": "nunu8.jpg",
       "title": "Kyo and Ryo",
-      "tags": ["NUIKATSU"],
+      "tags": [
+        "NUIKATSU"
+      ],
       "layout": "",
-      "alt": "京ちゃんと涼ちゃんと海"
+      "alt": "京ちゃんと涼ちゃんと海",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "nunu9.jpg",
       "title": "Kyo and Ryo",
-      "tags": ["NUIKATSU"],
+      "tags": [
+        "NUIKATSU"
+      ],
       "layout": "wide",
-      "alt": "京ちゃんと涼ちゃんと空港"
+      "alt": "京ちゃんと涼ちゃんと空港",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "plane2.jpg",
       "title": "TAKE OFF",
-      "tags": ["LANDSCAPE", "SKY"],
+      "tags": [
+        "LANDSCAPE",
+        "SKY"
+      ],
       "layout": "",
-      "alt": "離陸"
+      "alt": "離陸",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "plane1.jpg",
       "title": "Landing",
-      "tags": ["LANDSCAPE", "SKY"],
+      "tags": [
+        "LANDSCAPE",
+        "SKY"
+      ],
       "layout": "",
-      "alt": "着陸"
+      "alt": "着陸",
+      "date": "",
+      "prefecture": "",
+      "place": ""
     },
     {
       "file": "landscape3.jpg",
       "title": "Between Day and Night",
-      "tags": ["LANDSCAPE", "CITY", "SKY"],
+      "tags": [
+        "LANDSCAPE",
+        "CITY",
+        "SKY"
+      ],
       "layout": "tall",
-      "alt": "昼と夜のあわい。街の灯りが少しずつ目を覚ます時間。"
+      "alt": "昼と夜のあわい。街の灯りが少しずつ目を覚ます時間。",
+      "date": "2026-09-01",
+      "prefecture": "AICHI",
+      "place": "名古屋市・久屋大通"
     },
     {
       "file": "landscape4.jpg",
       "title": "Blue Signal",
-      "tags": ["LANDSCAPE", "NIGHT", "CITY"],
+      "tags": [
+        "LANDSCAPE",
+        "NIGHT",
+        "CITY"
+      ],
       "layout": "tall",
-      "alt": "青く染まる塔。曇り空まで光を抱き込んでいく。"
+      "alt": "青く染まる塔。曇り空まで光を抱き込んでいく。",
+      "date": "2026-09-01",
+      "prefecture": "AICHI",
+      "place": "名古屋市・中部電力 MIRAI TOWER"
     },
     {
       "file": "landscape5.jpg",
       "title": "City in Orbit",
-      "tags": ["LANDSCAPE", "NIGHT", "CITY"],
+      "tags": [
+        "LANDSCAPE",
+        "NIGHT",
+        "CITY"
+      ],
       "layout": "wide",
-      "alt": "光の輪と、その向こうに立つ塔。夜の街が少し未来みたいに見えた。"
+      "alt": "光の輪と、その向こうに立つ塔。夜の街が少し未来みたいに見えた。",
+      "date": "2026-09-01",
+      "prefecture": "AICHI",
+      "place": "名古屋市・オアシス21"
     },
     {
       "file": "landscape6.jpg",
       "title": "Neon Pulse",
-      "tags": ["LANDSCAPE", "NIGHT", "CITY"],
+      "tags": [
+        "LANDSCAPE",
+        "NIGHT",
+        "CITY"
+      ],
       "layout": "tall",
-      "alt": "ネオンと車の流れ。眠らない街の鼓動をそのまま切り取った夜。"
+      "alt": "ネオンと車の流れ。眠らない街の鼓動をそのまま切り取った夜。",
+      "date": "2026-09-01",
+      "prefecture": "AICHI",
+      "place": "名古屋市・栄"
     }
   ]
 }
