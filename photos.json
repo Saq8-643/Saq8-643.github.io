@@ -432,7 +432,7 @@
       "prefecture": "愛知県",
       "place": "名古屋市"
     },
-  　{
+    {
       "file": "bird7.jpg",
       "title": "Midnight Perch",
       "tags": [
@@ -446,11 +446,11 @@
       "prefecture": "愛知県",
       "place": "名古屋市"
     },
-  　{
+    {
       "file": "landscape7.jpg",
       "title": "Where the Road Disappears",
       "tags": [
-        "NUTURE",
+        "NATURE",
         "LANDSCAPE"
       ],
       "layout": "tall",
@@ -465,7 +465,7 @@
       "title": "Summer Faces",
       "tags": [
         "FLOWERS",
-        "NUTURE"
+        "NATURE"
       ],
       "layout": "",
       "alt": "光のほうを向く花たち。夏は、こんなにまっすぐ明るい。",
@@ -476,9 +476,9 @@
     },
     {
       "file": "landscape9.jpg",
-      "title": "Summer Faces",
+      "title": "Notes in the Wind",
       "tags": [
-        "NUTURE",
+        "NATURE",
         "LANDSCAPE"
       ],
       "layout": "",
@@ -581,23 +581,10 @@
       "place": "志摩市"
     },
     {
-      "file": "nunu14.jpg",
-      "title": "Nunu",
-      "tags": [
-        "NUIKATSU"
-      ],
-      "layout": "",
-      "alt": "たくさんある椅子のなか、選んだのはオレンジ色。どうやらここが指定席らしい。",
-      "date": "",
-      "prefectureCode": 24,
-      "prefecture": "三重県",
-      "place": "志摩市"
-    },
-    {
       "file": "Object1.jpg",
       "title": "Ancient Silence",
       "tags": [
-        "OBJEDTS"
+        "OBJECTS"
       ],
       "layout": "wide",
       "alt": "遠い時間を越えて残った骨。その大きさだけが、かつてここにいた命を語っている。",
