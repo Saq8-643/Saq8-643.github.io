@@ -1,0 +1,129 @@
+{
+  "hero": {
+    "file": "hero.jpg",
+    "alt": "駅構内の光と反射"
+  },
+  "photos": [
+    {
+      "file": "photo1.jpg",
+      "title": "Crow",
+      "tags": [
+        "BIRDS",
+        "CITY"
+      ],
+      "layout": "",
+      "alt": "街中に佇むカラス"
+    },
+    {
+      "file": "photo2.jpg",
+      "title": "Full Moon",
+      "tags": [
+        "SKY",
+        "NIGHT"
+      ],
+      "layout": "wide",
+      "alt": "雲のある夜空に浮かぶ満月"
+    },
+    {
+      "file": "photo3.jpg",
+      "title": "Takeoff",
+      "tags": [
+        "BIRDS",
+        "CITY"
+      ],
+      "layout": "",
+      "alt": "飛び立つカラス"
+    },
+    {
+      "file": "photo4.jpg",
+      "title": "In the Green",
+      "tags": [
+        "BIRDS",
+        "NATURE"
+      ],
+      "layout": "",
+      "alt": "緑の中の小鳥"
+    },
+    {
+      "file": "photo5.jpg",
+      "title": "Watching",
+      "tags": [
+        "BIRDS",
+        "CITY"
+      ],
+      "layout": "wide",
+      "alt": "柵の上にいるカラス"
+    },
+    {
+      "file": "photo6.jpg",
+      "title": "Hydrangea",
+      "tags": [
+        "NATURE",
+        "FLOWERS"
+      ],
+      "layout": "",
+      "alt": "青と紫の紫陽花"
+    },
+    {
+      "file": "photo7.jpg",
+      "title": "Waterside",
+      "tags": [
+        "BIRDS",
+        "NATURE"
+      ],
+      "layout": "",
+      "alt": "水辺の小鳥"
+    },
+    {
+      "file": "photo8.jpg",
+      "title": "Stars",
+      "tags": [
+        "SKY",
+        "NIGHT",
+        "LANDSCAPE"
+      ],
+      "layout": "wide",
+      "alt": "雲の間に見える星空"
+    },
+    {
+      "file": "photo9.jpg",
+      "title": "Coffee Shop",
+      "tags": [
+        "CITY",
+        "NIGHT"
+      ],
+      "layout": "wide",
+      "alt": "夜の喫茶店"
+    },
+    {
+      "file": "photo10.jpg",
+      "title": "Cat",
+      "tags": [
+        "ANIMALS",
+        "CITY"
+      ],
+      "layout": "tall",
+      "alt": "街角に座る猫"
+    },
+    {
+      "file": "photo11.jpg",
+      "title": "Moon",
+      "tags": [
+        "SKY",
+        "NIGHT"
+      ],
+      "layout": "",
+      "alt": "黒い夜空に浮かぶ月"
+    },
+    {
+      "file": "photo12.jpg",
+      "title": "Torii at Dusk",
+      "tags": [
+        "LANDSCAPE",
+        "SKY"
+      ],
+      "layout": "wide",
+      "alt": "夕暮れの水辺に立つ鳥居"
+    }
+  ]
+}

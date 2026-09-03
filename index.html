@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Saq8 PHOTO</title>
+  <title>SAKU PHOTO</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
 
 <body>
   <header class="site-header">
-    <a class="logo" href="#">Saq8 PHOTO</a>
+    <a class="logo" href="#">SAKU PHOTO</a>
     <nav class="nav">
       <a href="#gallery">GALLERY</a>
       <a href="#about">ABOUT</a>
@@ -21,7 +21,7 @@
 
   <main>
     <section class="hero">
-      <div class="hero-photo photo-placeholder hero-placeholder"></div>
+      <div id="heroPhoto" class="hero-photo"></div>
 
       <div class="hero-copy">
         <p class="eyebrow">PHOTOGRAPHS / NAGOYA, JAPAN</p>
@@ -40,81 +40,12 @@
           <h2>Photographs</h2>
         </div>
 
-        <div class="filters" aria-label="写真カテゴリ">
-          <button class="filter active" data-filter="all">ALL</button>
-          <button class="filter" data-filter="birds">BIRDS</button>
-          <button class="filter" data-filter="sky">SKY</button>
-          <button class="filter" data-filter="nature">NATURE</button>
-          <button class="filter" data-filter="city">CITY</button>
-          <button class="filter" data-filter="night">NIGHT</button>
-          <button class="filter" data-filter="animals">ANIMALS</button>
-          <button class="filter" data-filter="landscape">LANDSCAPE</button>
-        </div>
+        <!-- script.js が photos.json を読んで、ここにタグボタンを自動生成 -->
+        <div id="filters" class="filters" aria-label="写真カテゴリ"></div>
       </div>
 
-      <div class="gallery-grid">
-
-        <button class="gallery-item" data-category="birds city" data-title="Crow" data-meta="BIRDS / CITY">
-          <div class="photo-placeholder p1"></div>
-          <span class="item-info"><b>Crow</b><small>BIRDS / CITY</small></span>
-        </button>
-
-        <button class="gallery-item wide" data-category="sky night" data-title="Full Moon" data-meta="SKY / NIGHT">
-          <div class="photo-placeholder p2"></div>
-          <span class="item-info"><b>Full Moon</b><small>SKY / NIGHT</small></span>
-        </button>
-
-        <button class="gallery-item" data-category="birds city" data-title="Takeoff" data-meta="BIRDS / CITY">
-          <div class="photo-placeholder p3"></div>
-          <span class="item-info"><b>Takeoff</b><small>BIRDS / CITY</small></span>
-        </button>
-
-        <button class="gallery-item" data-category="birds nature" data-title="In the Green" data-meta="BIRDS / NATURE">
-          <div class="photo-placeholder p4"></div>
-          <span class="item-info"><b>In the Green</b><small>BIRDS / NATURE</small></span>
-        </button>
-
-        <button class="gallery-item wide" data-category="birds city" data-title="Watching" data-meta="BIRDS / CITY">
-          <div class="photo-placeholder p5"></div>
-          <span class="item-info"><b>Watching</b><small>BIRDS / CITY</small></span>
-        </button>
-
-        <button class="gallery-item" data-category="nature" data-title="Hydrangea" data-meta="NATURE">
-          <div class="photo-placeholder p6"></div>
-          <span class="item-info"><b>Hydrangea</b><small>NATURE</small></span>
-        </button>
-
-        <button class="gallery-item" data-category="birds nature" data-title="Waterside" data-meta="BIRDS / NATURE">
-          <div class="photo-placeholder p7"></div>
-          <span class="item-info"><b>Waterside</b><small>BIRDS / NATURE</small></span>
-        </button>
-
-        <button class="gallery-item wide" data-category="sky night landscape" data-title="Stars" data-meta="SKY / NIGHT / LANDSCAPE">
-          <div class="photo-placeholder p8"></div>
-          <span class="item-info"><b>Stars</b><small>SKY / NIGHT / LANDSCAPE</small></span>
-        </button>
-
-        <button class="gallery-item wide" data-category="city night" data-title="Coffee Shop" data-meta="CITY / NIGHT">
-          <div class="photo-placeholder p9"></div>
-          <span class="item-info"><b>Coffee Shop</b><small>CITY / NIGHT</small></span>
-        </button>
-
-        <button class="gallery-item tall" data-category="animals city" data-title="Cat" data-meta="ANIMALS / CITY">
-          <div class="photo-placeholder p10"></div>
-          <span class="item-info"><b>Cat</b><small>ANIMALS / CITY</small></span>
-        </button>
-
-        <button class="gallery-item" data-category="sky night" data-title="Moon" data-meta="SKY / NIGHT">
-          <div class="photo-placeholder p11"></div>
-          <span class="item-info"><b>Moon</b><small>SKY / NIGHT</small></span>
-        </button>
-
-        <button class="gallery-item wide" data-category="landscape sky" data-title="Torii at Dusk" data-meta="LANDSCAPE / SKY">
-          <div class="photo-placeholder p12"></div>
-          <span class="item-info"><b>Torii at Dusk</b><small>LANDSCAPE / SKY</small></span>
-        </button>
-
-      </div>
+      <!-- script.js が photos.json を読んで、ここに写真を自動生成 -->
+      <div id="galleryGrid" class="gallery-grid"></div>
     </section>
 
     <section id="about" class="about">
@@ -130,19 +61,19 @@
   </main>
 
   <footer>
-    <span>© 2026 Saq8 PHOTO</span>
+    <span>© 2026 SAKU PHOTO</span>
     <a href="#">BACK TO TOP ↑</a>
   </footer>
 
   <dialog class="lightbox" id="lightbox">
     <button class="close-button" id="closeLightbox" aria-label="閉じる">×</button>
-    <div class="lightbox-image photo-placeholder" id="lightboxImage"></div>
+    <img class="lightbox-image" id="lightboxImage" alt="">
     <div class="lightbox-caption">
       <strong id="lightboxTitle"></strong>
       <span id="lightboxMeta"></span>
     </div>
   </dialog>
 
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
