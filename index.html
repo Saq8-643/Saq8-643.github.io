@@ -4,15 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Saq8 PHOTO</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="styles.css?v=5">
 </head>
+
 <body>
   <header class="site-header">
     <a class="logo" href="#">Saq8 PHOTO</a>
     <nav class="nav">
+      <a href="#map">MAP</a>
       <a href="#gallery">GALLERY</a>
       <a href="#about">ABOUT</a>
     </nav>
@@ -32,12 +36,44 @@
       </div>
     </section>
 
+    <section id="map" class="map-section">
+      <div class="map-heading">
+        <div>
+          <p class="eyebrow">PHOTO MAP</p>
+          <h2>Where I’ve Been</h2>
+          <p class="map-description">
+            色のついた都道府県をクリックすると、そこで撮った写真が出てきます。
+          </p>
+        </div>
+
+        <div class="map-legend">
+          <span><i class="legend-dot visited"></i>PHOTOGRAPHED</span>
+          <span><i class="legend-dot selected"></i>SELECTED</span>
+        </div>
+      </div>
+
+      <div class="map-layout">
+        <div id="japanMap" class="japan-map" aria-label="撮影地から写真を探す日本地図"></div>
+
+        <aside class="map-status">
+          <p class="eyebrow">SELECTED AREA</p>
+          <strong id="selectedPrefecture">ALL JAPAN</strong>
+          <span id="selectedCount"></span>
+
+          <button id="clearMapFilter" class="clear-map-button" type="button" hidden>
+            SHOW ALL JAPAN
+          </button>
+        </aside>
+      </div>
+    </section>
+
     <section id="gallery" class="gallery-section">
       <div class="section-heading">
         <div>
           <p class="eyebrow">GALLERY</p>
-          <h2>Photographs</h2>
+          <h2 id="galleryHeading">Photographs</h2>
         </div>
+
         <div id="filters" class="filters" aria-label="写真カテゴリ"></div>
       </div>
 
@@ -74,15 +110,15 @@
     <div class="lightbox-caption">
       <div class="lightbox-main">
         <strong id="lightboxTitle"></strong>
-        <div class="lightbox-details">
-          <time id="lightboxDate"></time>
-          <span id="lightboxPlace"></span>
-        </div>
+        <time id="lightboxDate"></time>
+        <span id="lightboxPlace"></span>
       </div>
       <span id="lightboxMeta"></span>
     </div>
   </dialog>
 
+  <!-- クリックできる日本地図 -->
+  <script src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"></script>
   <script src="script.js?v=5"></script>
 </body>
 </html>

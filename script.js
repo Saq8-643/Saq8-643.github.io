@@ -2,6 +2,12 @@ const galleryGrid = document.getElementById("galleryGrid");
 const filtersContainer = document.getElementById("filters");
 const heroPhoto = document.getElementById("heroPhoto");
 
+const mapContainer = document.getElementById("japanMap");
+const selectedPrefecture = document.getElementById("selectedPrefecture");
+const selectedCount = document.getElementById("selectedCount");
+const clearMapFilter = document.getElementById("clearMapFilter");
+const galleryHeading = document.getElementById("galleryHeading");
+
 const moreButton = document.getElementById("moreButton");
 const moreCount = document.getElementById("moreCount");
 
@@ -15,11 +21,25 @@ const closeLightbox = document.getElementById("closeLightbox");
 
 const PAGE_SIZE = 12;
 
+const MAP_EMPTY = "#e6e6e2";
+const MAP_VISITED = "#938aaa";
+const MAP_SELECTED = "#171717";
+
 let photos = [];
 let currentPhotos = [];
 let visibleCount = PAGE_SIZE;
 
-async function loadGallery() {
+let currentTag = "all";
+let currentPrefectureCode = null;
+let currentPrefectureName = "";
+
+let resizeTimer;
+
+/* ---------------------------------
+   起動
+--------------------------------- */
+
+async function loadSite() {
   try {
     const response = await fetch("photos.json?v=5");
 
@@ -34,24 +54,31 @@ async function loadGallery() {
 
     photos = sortPhotosByDate(data.photos);
 
-    createFilters(photos);
-    applyFilter("all");
+    createFilters();
+    renderJapanMap();
+    applyFilters();
 
   } catch (error) {
     console.error(error);
+
     galleryGrid.innerHTML = `
-      <p class="error-message">
-        写真一覧を読み込めませんでした。
-        photos.json の書き方やアップロード状態を確認してください。
+      <p class="empty-gallery">
+        写真一覧を読み込めませんでした。<br>
+        photos.json の書き方を確認してください。
       </p>
     `;
+
     moreButton.hidden = true;
   }
 }
 
+/* ---------------------------------
+   日付順
+--------------------------------- */
+
 function sortPhotosByDate(photoList) {
   return photoList
-    .map((photo, index) => ({ ...photo, _originalIndex: index }))
+    .map((photo, index) => ({ ...photo, _originalIndex:index }))
     .sort((a, b) => {
       const aHasDate = Boolean(a.date);
       const bHasDate = Boolean(b.date);
@@ -69,58 +96,249 @@ function sortPhotosByDate(photoList) {
     });
 }
 
-function createFilters(photoList) {
+/* ---------------------------------
+   日本地図
+--------------------------------- */
+
+function getPhotographedPrefectureCodes() {
+  return new Set(
+    photos
+      .map(photo => Number(photo.prefectureCode))
+      .filter(code => Number.isInteger(code) && code >= 1 && code <= 47)
+  );
+}
+
+function renderJapanMap() {
+  if (!window.jpmap || !jpmap.japanMap) {
+    mapContainer.innerHTML = `
+      <p class="empty-gallery">
+        日本地図を読み込めませんでした。<br>
+        通信状態を確認してください。
+      </p>
+    `;
+    return;
+  }
+
+  mapContainer.innerHTML = "";
+
+  const photographedCodes = getPhotographedPrefectureCodes();
+
+  /* 47都道府県すべての色を指定する */
+  const areas = [];
+
+  for (let code = 1; code <= 47; code++) {
+    let color = MAP_EMPTY;
+
+    if (photographedCodes.has(code)) {
+      color = MAP_VISITED;
+    }
+
+    if (currentPrefectureCode === code) {
+      color = MAP_SELECTED;
+    }
+
+    areas.push({ code, color });
+  }
+
+  const width = Math.max(
+    300,
+    Math.min(mapContainer.clientWidth || 900, 900)
+  );
+
+  new jpmap.japanMap(mapContainer, {
+    areas,
+    width,
+    movesIslands:true,
+    showsPrefectureName:true,
+    borderLineColor:"#ffffff",
+
+    onSelect(data) {
+      selectPrefecture(Number(data.code), data.name);
+    }
+  });
+}
+
+function selectPrefecture(code, name) {
+  currentPrefectureCode = code;
+
+  /* JSON側の表記があればそちらを優先 */
+  const matchingPhoto = photos.find(
+    photo => Number(photo.prefectureCode) === code
+  );
+
+  currentPrefectureName =
+    matchingPhoto?.prefecture ||
+    name ||
+    `PREFECTURE ${code}`;
+
+  currentTag = "all";
+  visibleCount = PAGE_SIZE;
+
+  setActiveTagButton("all");
+  updateMapStatus();
+  renderJapanMap();
+  applyFilters();
+
+  document.getElementById("gallery")
+    .scrollIntoView({ behavior:"smooth", block:"start" });
+}
+
+function clearPrefecture() {
+  currentPrefectureCode = null;
+  currentPrefectureName = "";
+  currentTag = "all";
+  visibleCount = PAGE_SIZE;
+
+  setActiveTagButton("all");
+  updateMapStatus();
+  renderJapanMap();
+  applyFilters();
+}
+
+function updateMapStatus() {
+  if (currentPrefectureCode === null) {
+    selectedPrefecture.textContent = "ALL JAPAN";
+    selectedCount.textContent =
+      `${photos.filter(photo => photo.prefectureCode).length} PHOTOS WITH LOCATION`;
+
+    clearMapFilter.hidden = true;
+    galleryHeading.textContent = "Photographs";
+    return;
+  }
+
+  const count = photos.filter(
+    photo => Number(photo.prefectureCode) === currentPrefectureCode
+  ).length;
+
+  selectedPrefecture.textContent = currentPrefectureName;
+  selectedCount.textContent = `${count} PHOTO${count === 1 ? "" : "S"}`;
+
+  clearMapFilter.hidden = false;
+  galleryHeading.textContent = currentPrefectureName;
+}
+
+clearMapFilter.addEventListener("click", clearPrefecture);
+
+/* ---------------------------------
+   タグ
+--------------------------------- */
+
+function createFilters() {
   const tags = [...new Set(
-    photoList.flatMap(photo => photo.tags || [])
+    photos.flatMap(photo => photo.tags || [])
   )].sort();
 
   filtersContainer.innerHTML = "";
 
-  const allButton = makeFilterButton("ALL", "all");
-  allButton.classList.add("active");
-  filtersContainer.appendChild(allButton);
+  filtersContainer.appendChild(
+    makeFilterButton("ALL", "all", true)
+  );
 
   tags.forEach(tag => {
-    filtersContainer.appendChild(makeFilterButton(tag, tag));
+    filtersContainer.appendChild(
+      makeFilterButton(tag, tag, false)
+    );
   });
 }
 
-function makeFilterButton(label, filterValue) {
+function makeFilterButton(label, value, active) {
   const button = document.createElement("button");
-  button.className = "filter";
+
+  button.className = `filter${active ? " active" : ""}`;
   button.textContent = label;
-  button.dataset.filter = filterValue;
+  button.dataset.filter = value;
 
   button.addEventListener("click", () => {
-    document.querySelectorAll(".filter")
-      .forEach(btn => btn.classList.remove("active"));
+    currentTag = value;
+    visibleCount = PAGE_SIZE;
 
-    button.classList.add("active");
-    applyFilter(filterValue);
+    setActiveTagButton(value);
+    applyFilters();
   });
 
   return button;
 }
 
-function applyFilter(filterValue) {
-  visibleCount = PAGE_SIZE;
+function setActiveTagButton(value) {
+  document.querySelectorAll(".filter").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.filter === value
+    );
+  });
+}
 
-  currentPhotos =
-    filterValue === "all"
-      ? photos
-      : photos.filter(photo => (photo.tags || []).includes(filterValue));
+/* ---------------------------------
+   地図 + タグを同時に絞り込み
+--------------------------------- */
+
+function applyFilters() {
+  currentPhotos = photos.filter(photo => {
+    const prefectureOK =
+      currentPrefectureCode === null ||
+      Number(photo.prefectureCode) === currentPrefectureCode;
+
+    const tagOK =
+      currentTag === "all" ||
+      (photo.tags || []).includes(currentTag);
+
+    return prefectureOK && tagOK;
+  });
 
   renderVisiblePhotos();
+  updateMapStatus();
 }
+
+/* ---------------------------------
+   ギャラリー
+--------------------------------- */
 
 function renderVisiblePhotos() {
   galleryGrid.innerHTML = "";
 
   const visiblePhotos = currentPhotos.slice(0, visibleCount);
 
-  visiblePhotos.forEach(photo => {
+  if (visiblePhotos.length === 0) {
+    galleryGrid.innerHTML = `
+      <p class="empty-gallery">
+        ここには、まだ写真がありません。
+      </p>
+    `;
+
+    moreButton.hidden = true;
+    return;
+  }
+
+  visiblePhotos.forEach((photo, index) => {
     const item = document.createElement("button");
-    item.className = `gallery-item ${photo.layout || ""}`.trim();
+
+    item.className =
+      `gallery-item ${photo.layout || ""}`.trim();
+
+    /*
+      ばらばら〜演出。
+      indexから擬似的に方向を変えるので、
+      毎回完全ランダムではなく見た目が安定する。
+    */
+    const directions = [
+      [-46, 28, -2.5],
+      [34, -32, 2],
+      [-25, -38, -1.5],
+      [48, 20, 2.5],
+      [0, 45, -1],
+      [-38, 5, 1.8]
+    ];
+
+    const [x, y, r] =
+      directions[index % directions.length];
+
+    item.style.setProperty("--scatter-x", `${x}px`);
+    item.style.setProperty("--scatter-y", `${y}px`);
+    item.style.setProperty("--scatter-r", `${r}deg`);
+    item.style.setProperty(
+      "--delay",
+      `${Math.min(index * 48, 420)}ms`
+    );
 
     const img = document.createElement("img");
     img.className = "gallery-photo";
@@ -140,7 +358,9 @@ function renderVisiblePhotos() {
     info.append(title, meta);
     item.append(img, info);
 
-    item.addEventListener("click", () => openLightbox(photo));
+    item.addEventListener("click", () => {
+      openLightbox(photo);
+    });
 
     galleryGrid.appendChild(item);
   });
@@ -153,7 +373,8 @@ function updateMoreButton() {
 
   if (remaining > 0) {
     moreButton.hidden = false;
-    moreCount.textContent = `+${Math.min(PAGE_SIZE, remaining)}`;
+    moreCount.textContent =
+      `+${Math.min(PAGE_SIZE, remaining)}`;
   } else {
     moreButton.hidden = true;
     moreCount.textContent = "";
@@ -165,22 +386,35 @@ moreButton.addEventListener("click", () => {
   renderVisiblePhotos();
 });
 
+/* ---------------------------------
+   拡大表示
+--------------------------------- */
+
 function openLightbox(photo) {
   lightboxImage.src = photo.file;
   lightboxImage.alt = photo.alt || photo.title || "";
   lightboxTitle.textContent = photo.title || "";
 
-  setOptionalText(
-    lightboxDate,
-    photo.date ? formatDate(photo.date) : ""
-  );
+  if (photo.date) {
+    lightboxDate.textContent = formatDate(photo.date);
+    lightboxDate.hidden = false;
+  } else {
+    lightboxDate.textContent = "";
+    lightboxDate.hidden = true;
+  }
 
-  const location = [
-    prefectureLabel(photo.prefecture),
+  const place = [
+    photo.prefecture || "",
     photo.place || ""
   ].filter(Boolean).join(" / ");
 
-  setOptionalText(lightboxPlace, location);
+  if (place) {
+    lightboxPlace.textContent = place;
+    lightboxPlace.hidden = false;
+  } else {
+    lightboxPlace.textContent = "";
+    lightboxPlace.hidden = true;
+  }
 
   lightboxMeta.textContent = [
     ...(photo.tags || []),
@@ -190,79 +424,19 @@ function openLightbox(photo) {
   lightbox.showModal();
 }
 
-function setOptionalText(element, text) {
-  element.textContent = text;
-  element.hidden = !text;
-}
-
 function formatDate(dateString) {
   const [year, month, day] = dateString.split("-");
   return `${year}.${month}.${day}`;
 }
 
-/*
-  将来の日本地図でもこの prefecture コードを使う。
-  SVG側の県にも AICHI / SHIZUOKA のようなIDを付ければ、
-  photos.json の prefecture とそのまま照合できる。
-*/
-function prefectureLabel(code) {
-  const labels = {
-    HOKKAIDO:"北海道",
-    AOMORI:"青森県",
-    IWATE:"岩手県",
-    MIYAGI:"宮城県",
-    AKITA:"秋田県",
-    YAMAGATA:"山形県",
-    FUKUSHIMA:"福島県",
-    IBARAKI:"茨城県",
-    TOCHIGI:"栃木県",
-    GUNMA:"群馬県",
-    SAITAMA:"埼玉県",
-    CHIBA:"千葉県",
-    TOKYO:"東京都",
-    KANAGAWA:"神奈川県",
-    NIIGATA:"新潟県",
-    TOYAMA:"富山県",
-    ISHIKAWA:"石川県",
-    FUKUI:"福井県",
-    YAMANASHI:"山梨県",
-    NAGANO:"長野県",
-    GIFU:"岐阜県",
-    SHIZUOKA:"静岡県",
-    AICHI:"愛知県",
-    MIE:"三重県",
-    SHIGA:"滋賀県",
-    KYOTO:"京都府",
-    OSAKA:"大阪府",
-    HYOGO:"兵庫県",
-    NARA:"奈良県",
-    WAKAYAMA:"和歌山県",
-    TOTTORI:"鳥取県",
-    SHIMANE:"島根県",
-    OKAYAMA:"岡山県",
-    HIROSHIMA:"広島県",
-    YAMAGUCHI:"山口県",
-    TOKUSHIMA:"徳島県",
-    KAGAWA:"香川県",
-    EHIME:"愛媛県",
-    KOCHI:"高知県",
-    FUKUOKA:"福岡県",
-    SAGA:"佐賀県",
-    NAGASAKI:"長崎県",
-    KUMAMOTO:"熊本県",
-    OITA:"大分県",
-    MIYAZAKI:"宮崎県",
-    KAGOSHIMA:"鹿児島県",
-    OKINAWA:"沖縄県"
-  };
-
-  return labels[code] || "";
-}
-
-closeLightbox.addEventListener("click", () => lightbox.close());
+closeLightbox.addEventListener(
+  "click",
+  () => lightbox.close()
+);
 
 lightbox.addEventListener("click", event => {
   const rect = lightbox.getBoundingClientRect();
+
   const inside =
     event.clientX >= rect.left &&
     event.clientX <= rect.right &&
@@ -278,4 +452,17 @@ document.addEventListener("keydown", event => {
   }
 });
 
-loadGallery();
+/* ---------------------------------
+   地図のレスポンシブ再描画
+--------------------------------- */
+
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+
+  resizeTimer = setTimeout(() => {
+    renderJapanMap();
+  }, 180);
+});
+
+/* GO */
+loadSite();
