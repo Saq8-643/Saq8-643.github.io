@@ -7,8 +7,10 @@ filterButtons.forEach(button => {
     button.classList.add("active");
 
     const filter = button.dataset.filter;
+
     galleryItems.forEach(item => {
-      const show = filter === "all" || item.dataset.category === filter;
+      const categories = item.dataset.category.split(/\s+/);
+      const show = filter === "all" || categories.includes(filter);
       item.classList.toggle("hidden", !show);
     });
   });
@@ -23,8 +25,9 @@ const closeLightbox = document.getElementById("closeLightbox");
 galleryItems.forEach(item => {
   item.addEventListener("click", () => {
     const source = item.querySelector(".photo-placeholder");
-    lightboxImage.style.background = getComputedStyle(source).background;
-    lightboxImage.dataset.label = item.dataset.category.toUpperCase();
+    const bg = getComputedStyle(source).backgroundImage;
+
+    lightboxImage.style.backgroundImage = bg;
     lightboxTitle.textContent = item.dataset.title;
     lightboxMeta.textContent = item.dataset.meta;
     lightbox.showModal();

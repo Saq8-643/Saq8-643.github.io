@@ -4,8 +4,6 @@
   --text:#131313;
   --muted:#6e6e6a;
   --line:#d8d8d3;
-  --accent:#8378a9;
-  --accent2:#9abbd2;
   --max:1240px;
 }
 
@@ -60,9 +58,7 @@ main{
   width:100%;
   aspect-ratio:4/3;
 }
-.hero-copy{
-  padding-bottom:22px;
-}
+.hero-copy{padding-bottom:22px}
 .eyebrow{
   margin:0 0 20px;
   color:var(--muted);
@@ -106,6 +102,7 @@ h1{
   flex-wrap:wrap;
   justify-content:flex-end;
   gap:8px;
+  max-width:680px;
 }
 .filter{
   border:1px solid var(--line);
@@ -145,6 +142,7 @@ h1{
 .item-info{
   display:flex;
   justify-content:space-between;
+  align-items:flex-start;
   gap:16px;
   padding:12px 2px 24px;
   border-bottom:1px solid var(--line);
@@ -156,7 +154,8 @@ h1{
 .item-info small{
   color:var(--muted);
   font-size:9px;
-  letter-spacing:.13em;
+  letter-spacing:.11em;
+  text-align:right;
 }
 .gallery-item:hover .photo-placeholder{
   transform:scale(.995);
@@ -167,98 +166,27 @@ h1{
 .photo-placeholder{
   position:relative;
   overflow:hidden;
-  background:#ddd;
+  background-color:#ddd;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
   transition:.25s ease;
 }
-.photo-placeholder::after{
-  content:attr(data-label);
-  position:absolute;
-  left:18px;
-  bottom:16px;
-  color:rgba(255,255,255,.76);
-  font-size:9px;
-  letter-spacing:.16em;
-  font-weight:600;
-  mix-blend-mode:difference;
-}
 
-.hero-placeholder{
-  background-image:url("hero.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p1{
-  background-image:url("photo1.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p2{
-  background-image:url("photo2.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p3{
-  background-image:url("photo3.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p4{
-  background-image:url("photo4.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p5{
-  background-image:url("photo5.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p6{
-  background-image:url("photo6.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p7{
-  background-image:url("photo7.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p8{
-  background-image:url("photo8.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p9{
-  background-image:url("photo9.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p10{
-  background-image:url("photo10.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p11{
-  background-image:url("photo11.jpg");
-  background-size:cover;
-  background-position:center;
-}
-
-.p12{
-  background-image:url("photo12.jpg");
-  background-size:cover;
-  background-position:center;
-}
+/* GitHubにアップした写真ファイル */
+.hero-placeholder{background-image:url("hero.jpg")}
+.p1{background-image:url("photo1.jpg")}
+.p2{background-image:url("photo2.jpg")}
+.p3{background-image:url("photo3.jpg")}
+.p4{background-image:url("photo4.jpg")}
+.p5{background-image:url("photo5.jpg")}
+.p6{background-image:url("photo6.jpg")}
+.p7{background-image:url("photo7.jpg")}
+.p8{background-image:url("photo8.jpg")}
+.p9{background-image:url("photo9.jpg")}
+.p10{background-image:url("photo10.jpg")}
+.p11{background-image:url("photo11.jpg")}
+.p12{background-image:url("photo12.jpg")}
 
 .about{
   border-top:1px solid var(--line);
@@ -290,16 +218,18 @@ footer{
 }
 
 .lightbox{
-  width:min(920px,calc(100vw - 38px));
+  width:min(1000px,calc(100vw - 38px));
   border:0;
   padding:18px;
   background:#0f0f10;
   color:#fff;
 }
-.lightbox::backdrop{background:rgba(0,0,0,.78)}
+.lightbox::backdrop{background:rgba(0,0,0,.82)}
 .lightbox-image{
   width:100%;
   aspect-ratio:16/10;
+  background-size:contain;
+  background-color:#0f0f10;
 }
 .lightbox-caption{
   display:flex;
@@ -315,9 +245,13 @@ footer{
   top:10px;
   z-index:2;
   border:0;
-  background:transparent;
+  background:rgba(0,0,0,.45);
+  border-radius:999px;
+  width:38px;
+  height:38px;
   color:#fff;
-  font-size:30px;
+  font-size:25px;
+  line-height:1;
   cursor:pointer;
 }
 
@@ -337,6 +271,7 @@ footer{
   .gallery-item,.gallery-item.wide{grid-column:span 6}
   .about-grid{grid-template-columns:1fr;gap:35px}
 }
+
 @media(max-width:500px){
   .nav{gap:14px}
   .gallery-item,.gallery-item.wide{grid-column:span 12}
