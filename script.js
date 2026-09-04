@@ -736,15 +736,10 @@ function flyCrow() {
 
   /* タップしたら着地 */
   crow.addEventListener("click", event => {
-    event.stopPropagation();
+  event.stopPropagation();
 
-    /* 飛行アニメーションを停止 */
-    if (crow._flightAnimation) {
-      crow._flightAnimation.cancel();
-    }
-
-    landCrow(crow);
-  });
+  landCrow(crow);
+});
 
   crow.addEventListener("error", () => {
     console.error("クロ助画像が見つかりません");
@@ -896,7 +891,11 @@ function landCrow(flyingCrow) {
   if (!nearest) {
     return;
   }
-
+   
+/* 止まれる写真が見つかった時だけ飛行停止 */
+if (flyingCrow._flightAnimation) {
+  flyingCrow._flightAnimation.cancel();
+}
   /*
     飛ぶクロ助を止める
   */
