@@ -681,3 +681,45 @@ footer{
     animation:none;
   }
 }
+/* --------------------
+   CLICK STAR EFFECT
+-------------------- */
+
+.click-star{
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:9999;
+  pointer-events:none;
+
+  font-size:14px;
+  line-height:1;
+  color:#938aaa;
+
+  transform:translate(-50%, -50%);
+  animation:star-pop .9s ease-out forwards;
+}
+
+@keyframes star-pop{
+  0%{
+    opacity:0;
+    transform:
+      translate(-50%, -50%)
+      translate(0, 0)
+      scale(.4)
+      rotate(0deg);
+  }
+
+  20%{
+    opacity:1;
+  }
+
+  100%{
+    opacity:0;
+    transform:
+      translate(-50%, -50%)
+      translate(var(--star-x), var(--star-y))
+      scale(1.1)
+      rotate(var(--star-r));
+  }
+}
