@@ -557,6 +557,11 @@ window.addEventListener("resize", () => {
 
 document.addEventListener("click", event => {
   createStarBurst(event.clientX, event.clientY);
+
+  /* 約25クリックに1回だけカラス */
+  if (Math.random() < 0.04) {
+    flyCrow();
+  }
 });
 
 function createStarBurst(x, y) {
@@ -596,6 +601,56 @@ function createStarBurst(x, y) {
       star.remove();
     });
   }
+}
+
+/* ---------------------------------
+   たまにカラスが横切る
+--------------------------------- */
+
+function flyCrow() {
+
+  /* すでに飛んでいたら追加しない */
+  if (document.querySelector(".flying-crow")) return;
+
+  const crow = document.createElement("img");
+
+  crow.src = "images/crow-silhouette.png";
+  crow.alt = "";
+  crow.setAttribute("aria-hidden", "true");
+  crow.className = "flying-crow";
+
+  /* 左右どちらから来るかランダム */
+  const fromLeft = Math.random() < 0.5;
+
+  crow.classList.add(
+    fromLeft ? "fly-ltr" : "fly-rtl"
+  );
+
+  /* 飛ぶ高さも毎回変える */
+  const maxTop = Math.max(
+    100,
+    window.innerHeight * 0.45
+  );
+
+  const top =
+    50 + Math.random() * maxTop;
+
+  crow.style.setProperty(
+    "--crow-top",
+    `${top}px`
+  );
+
+  document.body.appendChild(crow);
+
+  /* 飛び終わったら消す */
+  crow.addEventListener("animationend", () => {
+    crow.remove();
+  });
+
+  /* 画像が見つからなかった場合も消す */
+  crow.addEventListener("error", () => {
+    crow.remove();
+  });
 }
 /* GO */
 loadSite();
