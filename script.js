@@ -990,7 +990,7 @@ function showCrowEvent() {
 
   if (
     isDailyPhotoVisible() &&
-    Math.random() < 0.25
+    Math.random() < 1
   ) {
     showPerchedCrow();
   } else {
