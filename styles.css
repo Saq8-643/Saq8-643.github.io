@@ -737,8 +737,9 @@ footer{
   height:auto;
 
   pointer-events:auto;
-cursor:pointer;
-touch-action:manipulation;
+  cursor:pointer;
+  touch-action:manipulation;
+
   opacity:0;
 
   filter:drop-shadow(0 4px 5px rgba(0,0,0,.08));
@@ -761,11 +762,11 @@ touch-action:manipulation;
   }
 
   10%{
-    opacity:.88;
+    opacity:.9;
   }
 
   90%{
-    opacity:.88;
+    opacity:.9;
   }
 
   100%{
@@ -782,11 +783,11 @@ touch-action:manipulation;
   }
 
   10%{
-    opacity:.88;
+    opacity:.9;
   }
 
   90%{
-    opacity:.88;
+    opacity:.9;
   }
 
   100%{
@@ -796,89 +797,93 @@ touch-action:manipulation;
   }
 }
 
-@media(max-width:780px){
-  .flying-crow{
-    width:62px;
-  }
-}
+
 /* --------------------
    PERCHED CROW
 -------------------- */
 
 .perched-crow{
-  --crow-scale-x: 1;
+  --crow-scale-x:1;
 
   position:fixed;
   left:0;
   top:0;
-  z-index:9998;
+  z-index:9999;
 
   width:72px;
   height:auto;
 
   pointer-events:auto;
-cursor:pointer;
-touch-action:manipulation;
+  cursor:pointer;
+  touch-action:manipulation;
+
   opacity:0;
 
   filter:drop-shadow(0 4px 5px rgba(0,0,0,.08));
 }
 
 .perched-crow.flip{
-  --crow-scale-x: -1;
+  --crow-scale-x:-1;
 }
 
 @keyframes crow-perch-in{
   0%{
     opacity:0;
     transform:
-      translate(-50%, calc(-50% - 12px))
-      scale(var(--crow-scale-x), .88);
+      translate(-50%, calc(-100% - 10px))
+      scaleX(var(--crow-scale-x))
+      scale(.85);
   }
 
   100%{
-    opacity:.92;
+    opacity:.95;
     transform:
-      translate(-50%, -50%)
-      scale(var(--crow-scale-x), 1);
+      translate(-50%, -100%)
+      scaleX(var(--crow-scale-x))
+      scale(1);
   }
 }
 
 @keyframes crow-perch-idle{
   0%,100%{
-    opacity:.92;
+    opacity:.95;
     transform:
-      translate(-50%, -50%)
-      scale(var(--crow-scale-x), 1)
+      translate(-50%, -100%)
+      scaleX(var(--crow-scale-x))
       rotate(-1deg);
   }
 
   50%{
-    opacity:.92;
+    opacity:.95;
     transform:
-      translate(-50%, calc(-50% - 3px))
-      scale(var(--crow-scale-x), 1)
+      translate(-50%, calc(-100% - 3px))
+      scaleX(var(--crow-scale-x))
       rotate(1deg);
   }
 }
 
 @keyframes crow-perch-out{
   0%{
-    opacity:.92;
+    opacity:.95;
     transform:
-      translate(-50%, -50%)
-      scale(var(--crow-scale-x), 1);
+      translate(-50%, -100%)
+      scaleX(var(--crow-scale-x));
   }
 
   100%{
     opacity:0;
     transform:
-      translate(calc(-50% + 12px), calc(-50% - 30px))
-      scale(var(--crow-scale-x), .92);
+      translate(-50%, calc(-100% - 35px))
+      scaleX(var(--crow-scale-x))
+      scale(.9);
   }
 }
 
 @media(max-width:780px){
+  .flying-crow{
+    width:62px;
+  }
+
   .perched-crow{
     width:56px;
   }
