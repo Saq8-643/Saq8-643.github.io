@@ -614,7 +614,7 @@ function flyCrow() {
 
   const crow = document.createElement("img");
 
-  crow.src = "images/crow-silhouette.png";
+  crow.src = "crow-silhouette.png";
   crow.alt = "";
   crow.setAttribute("aria-hidden", "true");
   crow.className = "flying-crow";
