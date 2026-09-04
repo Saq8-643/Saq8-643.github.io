@@ -1,6 +1,12 @@
 const galleryGrid = document.getElementById("galleryGrid");
 const filtersContainer = document.getElementById("filters");
 const heroPhoto = document.getElementById("heroPhoto");
+const dailyPhotoButton = document.getElementById("dailyPhoto");
+const dailyPhotoImage = document.getElementById("dailyPhotoImage");
+const dailyPhotoTitle = document.getElementById("dailyPhotoTitle");
+const dailyPhotoPlace = document.getElementById("dailyPhotoPlace");
+const dailyPhotoDate = document.getElementById("dailyPhotoDate");
+const dailyPhotoTags = document.getElementById("dailyPhotoTags");
 
 const mapContainer = document.getElementById("japanMap");
 const selectedPrefecture = document.getElementById("selectedPrefecture");
@@ -54,9 +60,10 @@ async function loadSite() {
 
     photos = sortPhotosByDate(data.photos);
 
-    createFilters();
-    renderJapanMap();
-    applyFilters();
+renderDailyPhoto();
+createFilters();
+renderJapanMap();
+applyFilters();
 
   } catch (error) {
     console.error(error);
@@ -94,6 +101,81 @@ function sortPhotosByDate(photoList) {
 
       return a._originalIndex - b._originalIndex;
     });
+}
+
+/* ---------------------------------
+   今日の1枚
+--------------------------------- */
+
+function renderDailyPhoto() {
+  if (!photos.length) return;
+
+  const todayKey = getJapanDateKey();
+  const index = getDailyPhotoIndex(todayKey, photos.length);
+  const photo = photos[index];
+
+  dailyPhotoImage.src = photo.file;
+  dailyPhotoImage.alt = photo.alt || photo.title || "";
+
+  dailyPhotoTitle.textContent =
+    photo.title || "Untitled";
+
+  const place = [
+    photo.prefecture || "",
+    photo.place || ""
+  ].filter(Boolean).join(" / ");
+
+  dailyPhotoPlace.textContent = place;
+
+  if (photo.date) {
+    dailyPhotoDate.textContent = formatDate(photo.date);
+    dailyPhotoDate.hidden = false;
+  } else {
+    dailyPhotoDate.textContent = "";
+    dailyPhotoDate.hidden = true;
+  }
+
+  dailyPhotoTags.textContent =
+    (photo.tags || []).join(" / ");
+
+  dailyPhotoButton.onclick = () => {
+    openLightbox(photo);
+  };
+}
+
+
+/* 日本時間の「今日」を取得 */
+function getJapanDateKey() {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+
+  const year =
+    parts.find(part => part.type === "year").value;
+
+  const month =
+    parts.find(part => part.type === "month").value;
+
+  const day =
+    parts.find(part => part.type === "day").value;
+
+  return `${year}-${month}-${day}`;
+}
+
+
+/* 日付から毎日同じ番号を作る */
+function getDailyPhotoIndex(dateKey, photoCount) {
+  let hash = 2166136261;
+
+  for (let i = 0; i < dateKey.length; i++) {
+    hash ^= dateKey.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return (hash >>> 0) % photoCount;
 }
 
 /* ---------------------------------
