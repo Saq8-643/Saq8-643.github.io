@@ -7,6 +7,7 @@ const dailyPhotoTitle = document.getElementById("dailyPhotoTitle");
 const dailyPhotoPlace = document.getElementById("dailyPhotoPlace");
 const dailyPhotoDate = document.getElementById("dailyPhotoDate");
 const dailyPhotoTags = document.getElementById("dailyPhotoTags");
+const dailyPhotoNote = document.getElementById("dailyPhotoNote");
 
 const mapContainer = document.getElementById("japanMap");
 const selectedPrefecture = document.getElementById("selectedPrefecture");
