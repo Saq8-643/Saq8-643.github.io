@@ -105,6 +105,93 @@ h1{
 }
 
 /* --------------------
+   TODAY'S PHOTO
+-------------------- */
+
+.daily-section{
+  padding:92px 0 110px;
+  border-top:1px solid var(--line);
+}
+
+.daily-heading{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:40px;
+  margin-bottom:42px;
+}
+
+.daily-heading h2{
+  margin:0;
+  font-size:clamp(30px,4vw,52px);
+  font-weight:500;
+  letter-spacing:-.04em;
+}
+
+.daily-description{
+  margin:0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:2;
+}
+
+.daily-photo-card{
+  display:block;
+  width:100%;
+  padding:0;
+  border:0;
+  background:none;
+  color:inherit;
+  text-align:left;
+  cursor:pointer;
+}
+
+.daily-photo-image{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  background:#ddd;
+  transition:.3s ease;
+}
+
+.daily-photo-card:hover .daily-photo-image{
+  filter:brightness(.96);
+  transform:scale(.997);
+}
+
+.daily-photo-info{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:30px;
+  padding:16px 2px 0;
+}
+
+.daily-photo-main,
+.daily-photo-side{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.daily-photo-main strong{
+  font-size:15px;
+  font-weight:500;
+}
+
+.daily-photo-main span,
+.daily-photo-side{
+  color:var(--muted);
+  font-size:10px;
+  letter-spacing:.07em;
+}
+
+.daily-photo-side{
+  text-align:right;
+}
+
+/* --------------------
    MAP
 -------------------- */
 
@@ -500,6 +587,20 @@ footer{
   main,
   footer{
     width:min(calc(100% - 30px),var(--max));
+  }
+
+    .daily-heading{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:15px;
+  }
+
+  .daily-photo-image{
+    aspect-ratio:4/3;
+  }
+
+  .daily-photo-info{
+    gap:16px;
   }
 
   .hero{
