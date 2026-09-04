@@ -47,7 +47,7 @@ let resizeTimer;
 
 async function loadSite() {
   try {
-    const response = await fetch("photos.json?v=5");
+    const response = await fetch("photos.json?v=6");
 
     if (!response.ok) {
       throw new Error(`photos.json の読み込みに失敗しました: ${response.status}`);
