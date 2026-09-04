@@ -799,3 +799,83 @@ footer{
     width:62px;
   }
 }
+/* --------------------
+   PERCHED CROW
+-------------------- */
+
+.perched-crow{
+  --crow-scale-x: 1;
+
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:9998;
+
+  width:72px;
+  height:auto;
+
+  pointer-events:none;
+  opacity:0;
+
+  filter:drop-shadow(0 4px 5px rgba(0,0,0,.08));
+}
+
+.perched-crow.flip{
+  --crow-scale-x: -1;
+}
+
+@keyframes crow-perch-in{
+  0%{
+    opacity:0;
+    transform:
+      translate(-50%, calc(-50% - 12px))
+      scale(var(--crow-scale-x), .88);
+  }
+
+  100%{
+    opacity:.92;
+    transform:
+      translate(-50%, -50%)
+      scale(var(--crow-scale-x), 1);
+  }
+}
+
+@keyframes crow-perch-idle{
+  0%,100%{
+    opacity:.92;
+    transform:
+      translate(-50%, -50%)
+      scale(var(--crow-scale-x), 1)
+      rotate(-1deg);
+  }
+
+  50%{
+    opacity:.92;
+    transform:
+      translate(-50%, calc(-50% - 3px))
+      scale(var(--crow-scale-x), 1)
+      rotate(1deg);
+  }
+}
+
+@keyframes crow-perch-out{
+  0%{
+    opacity:.92;
+    transform:
+      translate(-50%, -50%)
+      scale(var(--crow-scale-x), 1);
+  }
+
+  100%{
+    opacity:0;
+    transform:
+      translate(calc(-50% + 12px), calc(-50% - 30px))
+      scale(var(--crow-scale-x), .92);
+  }
+}
+
+@media(max-width:780px){
+  .perched-crow{
+    width:56px;
+  }
+}
