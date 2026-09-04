@@ -50,23 +50,16 @@ let resizeTimer;
 
 async function loadSite() {
   try {
-    const response = await fetch("photos.json?v=11");
+    const response = await fetch("photos.json?v=12");
 
     if (!response.ok) {
-      throw new Error(
-        `photos.json の読み込みに失敗しました: ${response.status}`
-      );
+      throw new Error(`photos.json の読み込みに失敗しました: ${response.status}`);
     }
 
     const data = await response.json();
 
-    heroPhoto.style.backgroundImage =
-      `url("${data.hero.file}")`;
-
-    heroPhoto.setAttribute(
-      "aria-label",
-      data.hero.alt || "メイン写真"
-    );
+    heroPhoto.style.backgroundImage = `url("${data.hero.file}")`;
+    heroPhoto.setAttribute("aria-label", data.hero.alt || "メイン写真");
 
     photos = sortPhotosByDate(data.photos);
 
@@ -96,20 +89,14 @@ async function loadSite() {
 
 function sortPhotosByDate(photoList) {
   return photoList
-    .map((photo, index) => ({
-      ...photo,
-      _originalIndex: index
-    }))
+    .map((photo, index) => ({ ...photo, _originalIndex: index }))
     .sort((a, b) => {
       const aHasDate = Boolean(a.date);
       const bHasDate = Boolean(b.date);
 
       if (aHasDate && bHasDate) {
-        const dateDiff =
-          new Date(b.date) - new Date(a.date);
-
+        const dateDiff = new Date(b.date) - new Date(a.date);
         if (dateDiff !== 0) return dateDiff;
-
         return a._originalIndex - b._originalIndex;
       }
 
@@ -129,18 +116,13 @@ function renderDailyPhoto() {
   if (!photos.length) return;
 
   const todayKey = getJapanDateKey();
-
-  const index =
-    getDailyPhotoIndex(todayKey, photos.length);
-
+  const index = getDailyPhotoIndex(todayKey, photos.length);
   const photo = photos[index];
 
   dailyPhotoImage.src = photo.file;
-  dailyPhotoImage.alt =
-    photo.alt || photo.title || "";
+  dailyPhotoImage.alt = photo.alt || photo.title || "";
 
-  dailyPhotoTitle.textContent =
-    photo.title || "Untitled";
+  dailyPhotoTitle.textContent = photo.title || "Untitled";
 
   const place = [
     photo.prefecture || "",
@@ -150,21 +132,17 @@ function renderDailyPhoto() {
   dailyPhotoPlace.textContent = place;
 
   if (photo.date) {
-    dailyPhotoDate.textContent =
-      formatDate(photo.date);
-
+    dailyPhotoDate.textContent = formatDate(photo.date);
     dailyPhotoDate.hidden = false;
   } else {
     dailyPhotoDate.textContent = "";
     dailyPhotoDate.hidden = true;
   }
 
-  dailyPhotoTags.textContent =
-    (photo.tags || []).join(" / ");
+  dailyPhotoTags.textContent = (photo.tags || []).join(" / ");
 
   /* altをK'S NOTEとして表示 */
-  dailyPhotoNote.textContent =
-    photo.alt || "";
+  dailyPhotoNote.textContent = photo.alt || "";
 
   dailyPhotoButton.onclick = () => {
     openLightbox(photo);
@@ -173,52 +151,29 @@ function renderDailyPhoto() {
 
 
 /* 日本時間の「今日」を取得 */
-
 function getJapanDateKey() {
-  const parts =
-    new Intl.DateTimeFormat("en-US", {
-      timeZone: "Asia/Tokyo",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit"
-    }).formatToParts(new Date());
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
 
-  const year =
-    parts.find(
-      part => part.type === "year"
-    ).value;
-
-  const month =
-    parts.find(
-      part => part.type === "month"
-    ).value;
-
-  const day =
-    parts.find(
-      part => part.type === "day"
-    ).value;
+  const year = parts.find(part => part.type === "year").value;
+  const month = parts.find(part => part.type === "month").value;
+  const day = parts.find(part => part.type === "day").value;
 
   return `${year}-${month}-${day}`;
 }
 
 
 /* 日付から毎日同じ番号を作る */
-
-function getDailyPhotoIndex(
-  dateKey,
-  photoCount
-) {
+function getDailyPhotoIndex(dateKey, photoCount) {
   let hash = 2166136261;
 
-  for (
-    let i = 0;
-    i < dateKey.length;
-    i++
-  ) {
+  for (let i = 0; i < dateKey.length; i++) {
     hash ^= dateKey.charCodeAt(i);
-
-    hash =
-      Math.imul(hash, 16777619);
+    hash = Math.imul(hash, 16777619);
   }
 
   return (hash >>> 0) % photoCount;
@@ -232,107 +187,65 @@ function getDailyPhotoIndex(
 function getPhotographedPrefectureCodes() {
   return new Set(
     photos
-      .map(
-        photo =>
-          Number(photo.prefectureCode)
-      )
-      .filter(
-        code =>
-          Number.isInteger(code) &&
-          code >= 1 &&
-          code <= 47
-      )
+      .map(photo => Number(photo.prefectureCode))
+      .filter(code => Number.isInteger(code) && code >= 1 && code <= 47)
   );
 }
 
-
 function renderJapanMap() {
-  if (
-    !window.jpmap ||
-    !jpmap.japanMap
-  ) {
+  if (!window.jpmap || !jpmap.japanMap) {
     mapContainer.innerHTML = `
       <p class="empty-gallery">
         日本地図を読み込めませんでした。<br>
         通信状態を確認してください。
       </p>
     `;
-
     return;
   }
 
   mapContainer.innerHTML = "";
 
-  const photographedCodes =
-    getPhotographedPrefectureCodes();
-
+  const photographedCodes = getPhotographedPrefectureCodes();
   const areas = [];
 
-  for (
-    let code = 1;
-    code <= 47;
-    code++
-  ) {
+  for (let code = 1; code <= 47; code++) {
     let color = MAP_EMPTY;
 
-    if (
-      photographedCodes.has(code)
-    ) {
+    if (photographedCodes.has(code)) {
       color = MAP_VISITED;
     }
 
-    if (
-      currentPrefectureCode === code
-    ) {
+    if (currentPrefectureCode === code) {
       color = MAP_SELECTED;
     }
 
-    areas.push({
-      code,
-      color
-    });
+    areas.push({ code, color });
   }
 
   const width = Math.max(
     300,
-    Math.min(
-      mapContainer.clientWidth || 900,
-      900
-    )
+    Math.min(mapContainer.clientWidth || 900, 900)
   );
 
-  new jpmap.japanMap(
-    mapContainer,
-    {
-      areas,
-      width,
-      movesIslands: true,
-      showsPrefectureName: true,
-      borderLineColor: "#ffffff",
+  new jpmap.japanMap(mapContainer, {
+    areas,
+    width,
+    movesIslands: true,
+    showsPrefectureName: true,
+    borderLineColor: "#ffffff",
 
-      onSelect(data) {
-        selectPrefecture(
-          Number(data.code),
-          data.name
-        );
-      }
+    onSelect(data) {
+      selectPrefecture(Number(data.code), data.name);
     }
-  );
+  });
 }
 
-
-function selectPrefecture(
-  code,
-  name
-) {
+function selectPrefecture(code, name) {
   currentPrefectureCode = code;
 
-  const matchingPhoto =
-    photos.find(
-      photo =>
-        Number(photo.prefectureCode)
-        === code
-    );
+  const matchingPhoto = photos.find(
+    photo => Number(photo.prefectureCode) === code
+  );
 
   currentPrefectureName =
     matchingPhoto?.prefecture ||
@@ -343,22 +256,16 @@ function selectPrefecture(
   visibleCount = PAGE_SIZE;
 
   setActiveTagButton("all");
-
   updateMapStatus();
   renderJapanMap();
 
-  document
-    .getElementById("gallery")
-    .scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+  document.getElementById("gallery")
+    .scrollIntoView({ behavior: "smooth", block: "start" });
 
   setTimeout(() => {
     applyFilters();
   }, 550);
 }
-
 
 function clearPrefecture() {
   currentPrefectureCode = null;
@@ -367,64 +274,35 @@ function clearPrefecture() {
   visibleCount = PAGE_SIZE;
 
   setActiveTagButton("all");
-
   updateMapStatus();
   renderJapanMap();
   applyFilters();
 }
 
-
 function updateMapStatus() {
-  if (
-    currentPrefectureCode === null
-  ) {
-    selectedPrefecture.textContent =
-      "ALL JAPAN";
+  if (currentPrefectureCode === null) {
+    selectedPrefecture.textContent = "ALL JAPAN";
 
     selectedCount.textContent =
-      `${
-        photos.filter(
-          photo =>
-            photo.prefectureCode
-        ).length
-      } PHOTOS WITH LOCATION`;
+      `${photos.filter(photo => photo.prefectureCode).length} PHOTOS WITH LOCATION`;
 
     clearMapFilter.hidden = true;
-
-    galleryHeading.textContent =
-      "Photographs";
-
+    galleryHeading.textContent = "Photographs";
     return;
   }
 
-  const count =
-    photos.filter(
-      photo =>
-        Number(
-          photo.prefectureCode
-        ) ===
-        currentPrefectureCode
-    ).length;
+  const count = photos.filter(
+    photo => Number(photo.prefectureCode) === currentPrefectureCode
+  ).length;
 
-  selectedPrefecture.textContent =
-    currentPrefectureName;
-
-  selectedCount.textContent =
-    `${count} PHOTO${
-      count === 1 ? "" : "S"
-    }`;
+  selectedPrefecture.textContent = currentPrefectureName;
+  selectedCount.textContent = `${count} PHOTO${count === 1 ? "" : "S"}`;
 
   clearMapFilter.hidden = false;
-
-  galleryHeading.textContent =
-    currentPrefectureName;
+  galleryHeading.textContent = currentPrefectureName;
 }
 
-
-clearMapFilter.addEventListener(
-  "click",
-  clearPrefecture
-);
+clearMapFilter.addEventListener("click", clearPrefecture);
 
 
 /* ---------------------------------
@@ -432,78 +310,48 @@ clearMapFilter.addEventListener(
 --------------------------------- */
 
 function createFilters() {
-  const tags = [
-    ...new Set(
-      photos.flatMap(
-        photo =>
-          photo.tags || []
-      )
-    )
-  ].sort();
+  const tags = [...new Set(
+    photos.flatMap(photo => photo.tags || [])
+  )].sort();
 
   filtersContainer.innerHTML = "";
 
   filtersContainer.appendChild(
-    makeFilterButton(
-      "ALL",
-      "all",
-      true
-    )
+    makeFilterButton("ALL", "all", true)
   );
 
   tags.forEach(tag => {
     filtersContainer.appendChild(
-      makeFilterButton(
-        tag,
-        tag,
-        false
-      )
+      makeFilterButton(tag, tag, false)
     );
   });
 }
 
+function makeFilterButton(label, value, active) {
+  const button = document.createElement("button");
 
-function makeFilterButton(
-  label,
-  value,
-  active
-) {
-  const button =
-    document.createElement("button");
-
-  button.className =
-    `filter${
-      active ? " active" : ""
-    }`;
-
+  button.className = `filter${active ? " active" : ""}`;
   button.textContent = label;
   button.dataset.filter = value;
 
-  button.addEventListener(
-    "click",
-    () => {
-      currentTag = value;
-      visibleCount = PAGE_SIZE;
+  button.addEventListener("click", () => {
+    currentTag = value;
+    visibleCount = PAGE_SIZE;
 
-      setActiveTagButton(value);
-      applyFilters();
-    }
-  );
+    setActiveTagButton(value);
+    applyFilters();
+  });
 
   return button;
 }
 
-
 function setActiveTagButton(value) {
-  document
-    .querySelectorAll(".filter")
-    .forEach(button => {
-      button.classList.toggle(
-        "active",
-        button.dataset.filter
-          === value
-      );
-    });
+  document.querySelectorAll(".filter").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.filter === value
+    );
+  });
 }
 
 
@@ -512,26 +360,17 @@ function setActiveTagButton(value) {
 --------------------------------- */
 
 function applyFilters() {
-  currentPhotos =
-    photos.filter(photo => {
-      const prefectureOK =
-        currentPrefectureCode
-          === null ||
-        Number(
-          photo.prefectureCode
-        ) ===
-          currentPrefectureCode;
+  currentPhotos = photos.filter(photo => {
+    const prefectureOK =
+      currentPrefectureCode === null ||
+      Number(photo.prefectureCode) === currentPrefectureCode;
 
-      const tagOK =
-        currentTag === "all" ||
-        (photo.tags || [])
-          .includes(currentTag);
+    const tagOK =
+      currentTag === "all" ||
+      (photo.tags || []).includes(currentTag);
 
-      return (
-        prefectureOK &&
-        tagOK
-      );
-    });
+    return prefectureOK && tagOK;
+  });
 
   renderVisiblePhotos();
   updateMapStatus();
@@ -545,15 +384,9 @@ function applyFilters() {
 function renderVisiblePhotos() {
   galleryGrid.innerHTML = "";
 
-  const visiblePhotos =
-    currentPhotos.slice(
-      0,
-      visibleCount
-    );
+  const visiblePhotos = currentPhotos.slice(0, visibleCount);
 
-  if (
-    visiblePhotos.length === 0
-  ) {
+  if (visiblePhotos.length === 0) {
     galleryGrid.innerHTML = `
       <p class="empty-gallery">
         ここには、まだ写真がありません。
@@ -561,150 +394,74 @@ function renderVisiblePhotos() {
     `;
 
     moreButton.hidden = true;
-
     return;
   }
 
-  visiblePhotos.forEach(
-    (photo, index) => {
-      const item =
-        document.createElement(
-          "button"
-        );
+  visiblePhotos.forEach((photo, index) => {
+    const item = document.createElement("button");
 
-      item.className =
-        `gallery-item ${
-          photo.layout || ""
-        }`.trim();
+    item.className =
+      `gallery-item ${photo.layout || ""}`.trim();
 
-      /*
-        ばらばら〜演出
-      */
+    const directions = [
+      [-180, 90, -7],
+      [160, -100, 6],
+      [-120, -140, -5],
+      [190, 80, 8],
+      [20, 150, -6],
+      [-170, 30, 7]
+    ];
 
-      const directions = [
-        [-180, 90, -7],
-        [160, -100, 6],
-        [-120, -140, -5],
-        [190, 80, 8],
-        [20, 150, -6],
-        [-170, 30, 7]
-      ];
+    const [x, y, r] =
+      directions[index % directions.length];
 
-      const [x, y, r] =
-        directions[
-          index %
-          directions.length
-        ];
+    item.style.setProperty("--scatter-x", `${x}px`);
+    item.style.setProperty("--scatter-y", `${y}px`);
+    item.style.setProperty("--scatter-r", `${r}deg`);
 
-      item.style.setProperty(
-        "--scatter-x",
-        `${x}px`
-      );
+    item.style.setProperty(
+      "--delay",
+      `${Math.min(index * 48, 420)}ms`
+    );
 
-      item.style.setProperty(
-        "--scatter-y",
-        `${y}px`
-      );
+    const img = document.createElement("img");
 
-      item.style.setProperty(
-        "--scatter-r",
-        `${r}deg`
-      );
+    img.className = "gallery-photo";
+    img.src = photo.file;
+    img.alt = photo.alt || photo.title || "";
+    img.loading = "lazy";
 
-      item.style.setProperty(
-        "--delay",
-        `${
-          Math.min(
-            index * 48,
-            420
-          )
-        }ms`
-      );
+    const info = document.createElement("span");
+    info.className = "item-info";
 
-      const img =
-        document.createElement(
-          "img"
-        );
+    const title = document.createElement("b");
+    title.textContent = photo.title || "";
 
-      img.className =
-        "gallery-photo";
+    const meta = document.createElement("small");
+    meta.textContent = (photo.tags || []).join(" / ");
 
-      img.src = photo.file;
+    info.append(title, meta);
+    item.append(img, info);
 
-      img.alt =
-        photo.alt ||
-        photo.title ||
-        "";
+    item.addEventListener("click", () => {
+      openLightbox(photo);
+    });
 
-      img.loading = "lazy";
-
-      const info =
-        document.createElement(
-          "span"
-        );
-
-      info.className =
-        "item-info";
-
-      const title =
-        document.createElement(
-          "b"
-        );
-
-      title.textContent =
-        photo.title || "";
-
-      const meta =
-        document.createElement(
-          "small"
-        );
-
-      meta.textContent =
-        (photo.tags || [])
-          .join(" / ");
-
-      info.append(
-        title,
-        meta
-      );
-
-      item.append(
-        img,
-        info
-      );
-
-      item.addEventListener(
-        "click",
-        () => {
-          openLightbox(photo);
-        }
-      );
-
-      galleryGrid.appendChild(
-        item
-      );
-    }
-  );
+    galleryGrid.appendChild(item);
+  });
 
   updateMoreButton();
 }
 
-
 function updateMoreButton() {
   const remaining =
-    currentPhotos.length -
-    visibleCount;
+    currentPhotos.length - visibleCount;
 
   if (remaining > 0) {
     moreButton.hidden = false;
 
     moreCount.textContent =
-      `+${
-        Math.min(
-          PAGE_SIZE,
-          remaining
-        )
-      }`;
+      `+${Math.min(PAGE_SIZE, remaining)}`;
 
   } else {
     moreButton.hidden = true;
@@ -712,14 +469,10 @@ function updateMoreButton() {
   }
 }
 
-
-moreButton.addEventListener(
-  "click",
-  () => {
-    visibleCount += PAGE_SIZE;
-    renderVisiblePhotos();
-  }
-);
+moreButton.addEventListener("click", () => {
+  visibleCount += PAGE_SIZE;
+  renderVisiblePhotos();
+});
 
 
 /* ---------------------------------
@@ -727,13 +480,9 @@ moreButton.addEventListener(
 --------------------------------- */
 
 function openLightbox(photo) {
-  lightboxImage.src =
-    photo.file;
-
+  lightboxImage.src = photo.file;
   lightboxImage.alt =
-    photo.alt ||
-    photo.title ||
-    "";
+    photo.alt || photo.title || "";
 
   lightboxTitle.textContent =
     photo.title || "";
@@ -755,9 +504,7 @@ function openLightbox(photo) {
   ].filter(Boolean).join(" / ");
 
   if (place) {
-    lightboxPlace.textContent =
-      place;
-
+    lightboxPlace.textContent = place;
     lightboxPlace.hidden = false;
 
   } else {
@@ -775,104 +522,72 @@ function openLightbox(photo) {
   lightbox.showModal();
 }
 
-
 function formatDate(dateString) {
-  const [
-    year,
-    month,
-    day
-  ] = dateString.split("-");
+  const [year, month, day] =
+    dateString.split("-");
 
   return `${year}.${month}.${day}`;
 }
-
 
 closeLightbox.addEventListener(
   "click",
   () => lightbox.close()
 );
 
+lightbox.addEventListener("click", event => {
+  const rect =
+    lightbox.getBoundingClientRect();
 
-lightbox.addEventListener(
-  "click",
-  event => {
-    const rect =
-      lightbox
-        .getBoundingClientRect();
+  const inside =
+    event.clientX >= rect.left &&
+    event.clientX <= rect.right &&
+    event.clientY >= rect.top &&
+    event.clientY <= rect.bottom;
 
-    const inside =
-      event.clientX >=
-        rect.left &&
-      event.clientX <=
-        rect.right &&
-      event.clientY >=
-        rect.top &&
-      event.clientY <=
-        rect.bottom;
-
-    if (!inside) {
-      lightbox.close();
-    }
+  if (!inside) {
+    lightbox.close();
   }
-);
+});
 
-
-document.addEventListener(
-  "keydown",
-  event => {
-    if (
-      event.key === "Escape" &&
-      lightbox.open
-    ) {
-      lightbox.close();
-    }
+document.addEventListener("keydown", event => {
+  if (
+    event.key === "Escape" &&
+    lightbox.open
+  ) {
+    lightbox.close();
   }
-);
+});
 
 
 /* ---------------------------------
    地図のレスポンシブ再描画
 --------------------------------- */
 
-window.addEventListener(
-  "resize",
-  () => {
-    clearTimeout(
-      resizeTimer
-    );
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
 
-    resizeTimer =
-      setTimeout(() => {
-        renderJapanMap();
-      }, 180);
-  }
-);
+  resizeTimer =
+    setTimeout(() => {
+      renderJapanMap();
+    }, 180);
+});
 
 
 /* ---------------------------------
    クリックした場所に星
 --------------------------------- */
 
-document.addEventListener(
-  "click",
-  event => {
-    createStarBurst(
-      event.clientX,
-      event.clientY
-    );
+document.addEventListener("click", event => {
+  createStarBurst(
+    event.clientX,
+    event.clientY
+  );
 
-    /*
-      約25クリックに1回、
-      クロ助イベント発生
-    */
-    if (
-      Math.random() < 0.04
-    ) {
-      showCrowEvent();
-    }
+  /* 約25クリックに1回クロ助 */
+  if (Math.random() < 0.04) {
+    showCrowEvent();
   }
-);
-
+});
 
 function createStarBurst(x, y) {
   const symbols = [
@@ -893,9 +608,7 @@ function createStarBurst(x, y) {
     i++
   ) {
     const star =
-      document.createElement(
-        "span"
-      );
+      document.createElement("span");
 
     star.className =
       "click-star";
@@ -943,19 +656,11 @@ function createStarBurst(x, y) {
 
     star.style.setProperty(
       "--star-r",
-      `${
-        Math.random() *
-        100 -
-        50
-      }deg`
+      `${Math.random() * 100 - 50}deg`
     );
 
     star.style.fontSize =
-      `${
-        8 +
-        Math.random() *
-        8
-      }px`;
+      `${8 + Math.random() * 8}px`;
 
     document.body.appendChild(
       star
@@ -976,28 +681,10 @@ function createStarBurst(x, y) {
 --------------------------------- */
 
 function showCrowEvent() {
-  if (hasActiveCrow()) {
-    return;
-  }
+  if (hasActiveCrow()) return;
 
-  /*
-    クロ助が出たとき、
-    約4回に1回は止まる。
-
-    ただし「今日の1枚」が
-    画面内に見えている時だけ。
-  */
-
-  if (
-    isDailyPhotoVisible() &&
-    Math.random() < 1
-  ) {
-    showPerchedCrow();
-  } else {
-    flyCrow();
-  }
+  flyCrow();
 }
-
 
 function hasActiveCrow() {
   return Boolean(
@@ -1010,20 +697,17 @@ function hasActiveCrow() {
 
 /* ---------------------------------
    飛ぶクロ助
+   タップすると近くの写真へ着地
 --------------------------------- */
 
 function flyCrow() {
-  if (hasActiveCrow()) {
-    return;
-  }
+  if (hasActiveCrow()) return;
 
   const crow =
-    document.createElement(
-      "img"
-    );
+    document.createElement("img");
 
   crow.src =
-    "crow-silhouette.png";
+    "images/crow-silhouette.png";
 
   crow.alt = "";
 
@@ -1048,32 +732,33 @@ function flyCrow() {
     Math.max(
       100,
       window.innerHeight *
-        0.45
+      0.45
     );
 
   const top =
     50 +
     Math.random() *
-      maxTop;
+    maxTop;
 
   crow.style.setProperty(
     "--crow-top",
     `${top}px`
   );
 
-  /*
-    サイズにも少し個体差
-  */
-
   crow.style.width =
-    `${
-      65 +
-      Math.random() *
-        25
-    }px`;
+    `${65 + Math.random() * 25}px`;
 
   document.body.appendChild(
     crow
+  );
+
+  /* 飛んでるクロ助をタップしたら着地 */
+  crow.addEventListener(
+    "click",
+    event => {
+      event.stopPropagation();
+      landCrow(crow);
+    }
   );
 
   crow.addEventListener(
@@ -1093,65 +778,122 @@ function flyCrow() {
 
 
 /* ---------------------------------
-   今日の1枚が画面内か確認
+   クロ助を近くの写真へ着地させる
 --------------------------------- */
 
-function isDailyPhotoVisible() {
-  if (!dailyPhotoButton) {
-    return false;
-  }
-
-  const rect =
-    dailyPhotoButton
-      .getBoundingClientRect();
-
-  return (
-    rect.bottom > 0 &&
-    rect.top <
-      window.innerHeight
-  );
-}
-
-
-/* ---------------------------------
-   止まるクロ助
---------------------------------- */
-
-function showPerchedCrow() {
-  if (hasActiveCrow()) {
+function landCrow(flyingCrow) {
+  if (!flyingCrow?.isConnected) {
     return;
   }
 
-  if (!dailyPhotoButton) {
-    flyCrow();
-    return;
-  }
-
-  const rect =
-    dailyPhotoButton
+  const crowRect =
+    flyingCrow
       .getBoundingClientRect();
+
+  const crowX =
+    crowRect.left +
+    crowRect.width / 2;
+
+  const crowY =
+    crowRect.top +
+    crowRect.height / 2;
 
   /*
-    今日の1枚が画面外なら
-    普通に飛ぶ
+    今画面に見えている
+    HERO・今日の1枚・ギャラリー写真を候補にする
   */
 
-  if (
-    rect.bottom <= 0 ||
-    rect.top >=
-      window.innerHeight
-  ) {
-    flyCrow();
+  const candidates = [
+    heroPhoto,
+    dailyPhotoButton,
+    ...document.querySelectorAll(
+      ".gallery-item"
+    )
+  ].filter(element => {
+
+    if (!element) return false;
+
+    const rect =
+      element
+        .getBoundingClientRect();
+
+    return (
+      rect.bottom > 0 &&
+      rect.top <
+        window.innerHeight &&
+      rect.right > 0 &&
+      rect.left <
+        window.innerWidth
+    );
+  });
+
+  let nearest = null;
+  let nearestDistance =
+    Infinity;
+
+  candidates.forEach(element => {
+    const rect =
+      element
+        .getBoundingClientRect();
+
+    /*
+      写真上辺のうち
+      クロ助に一番近い地点
+    */
+
+    const nearestX =
+      Math.max(
+        rect.left,
+        Math.min(
+          crowX,
+          rect.right
+        )
+      );
+
+    const distance =
+      Math.hypot(
+        crowX - nearestX,
+        crowY - rect.top
+      );
+
+    if (
+      distance <
+      nearestDistance
+    ) {
+      nearestDistance =
+        distance;
+
+      nearest = element;
+    }
+  });
+
+  /*
+    近くに写真がなければ
+    そのまま飛び続ける
+  */
+
+  if (!nearest) {
     return;
   }
 
+  /*
+    飛ぶクロ助を止める
+  */
+
+  flyingCrow.style.animation =
+    "none";
+
+  flyingCrow.remove();
+
+  const rect =
+    nearest
+      .getBoundingClientRect();
+
   const crow =
-    document.createElement(
-      "img"
-    );
+    document.createElement("img");
 
   crow.src =
-    "crow-perched.png";
+    "images/crow-perched.png";
 
   crow.alt = "";
 
@@ -1164,42 +906,27 @@ function showPerchedCrow() {
     "perched-crow";
 
   /*
-    左右どっち向きで
-    止まるかランダム
+    飛んでいた場所に近い
+    写真のふちへ着地
   */
 
-  const faceRight =
-    Math.random() < 0.5;
-
-  if (!faceRight) {
-    crow.classList.add(
-      "flip"
-    );
-  }
-
-  /*
-    今日の1枚の
-    上端付近に止まる
-  */
-
-  const margin = 52;
+  const sideMargin = 38;
 
   const perchX =
-    faceRight
-      ? Math.min(
-          rect.right - margin,
-          window.innerWidth - 45
-        )
-      : Math.max(
-          rect.left + margin,
-          45
-        );
+    Math.max(
+      rect.left + sideMargin,
+      Math.min(
+        crowX,
+        rect.right - sideMargin
+      )
+    );
+
+  /*
+    足が写真上辺に乗る感じ
+  */
 
   const perchY =
-    Math.max(
-      35,
-      rect.top + 8
-    );
+    rect.top - 10;
 
   crow.style.left =
     `${perchX}px`;
@@ -1207,19 +934,36 @@ function showPerchedCrow() {
   crow.style.top =
     `${perchY}px`;
 
+  /*
+    写真中央を向く
+  */
+
+  const photoCenter =
+    rect.left +
+    rect.width / 2;
+
+  if (
+    perchX >
+    photoCenter
+  ) {
+    crow.classList.add(
+      "flip"
+    );
+  }
+
   document.body.appendChild(
     crow
   );
 
   /*
-    まず着地
+    着地
   */
 
   crow.style.animation =
-    "crow-perch-in .45s ease-out forwards";
+    "crow-perch-in .35s ease-out forwards";
 
   /*
-    ちょこんと滞在
+    ちょこんと休憩
   */
 
   setTimeout(() => {
@@ -1230,25 +974,23 @@ function showPerchedCrow() {
     crow.style.animation =
       "crow-perch-idle 1.6s ease-in-out infinite";
 
-  }, 450);
+  }, 350);
 
   /*
-    約3秒で帰る
+    止まってるクロ助を
+    もう一回タップしたら飛び立つ
   */
 
-  setTimeout(() => {
-    if (!crow.isConnected) {
-      return;
+  crow.addEventListener(
+    "click",
+    event => {
+      event.stopPropagation();
+
+      sendPerchedCrowFlying(
+        crow
+      );
     }
-
-    crow.style.animation =
-      "crow-perch-out .55s ease-in forwards";
-
-  }, 3050);
-
-  setTimeout(() => {
-    crow.remove();
-  }, 3650);
+  );
 
   crow.addEventListener(
     "error",
@@ -1256,6 +998,67 @@ function showPerchedCrow() {
       crow.remove();
     }
   );
+
+  /*
+    放っておいても
+    約8秒で帰る
+  */
+
+  const leaveTimer =
+    setTimeout(() => {
+
+      sendPerchedCrowFlying(
+        crow
+      );
+
+    }, 8000);
+
+  crow.dataset.leaveTimer =
+    String(leaveTimer);
+}
+
+
+/* ---------------------------------
+   止まったクロ助がまた飛び立つ
+--------------------------------- */
+
+function sendPerchedCrowFlying(
+  perchedCrow
+) {
+  if (
+    !perchedCrow?.isConnected
+  ) {
+    return;
+  }
+
+  const timerId =
+    Number(
+      perchedCrow.dataset
+        .leaveTimer
+    );
+
+  if (timerId) {
+    clearTimeout(timerId);
+  }
+
+  perchedCrow.style.animation =
+    "crow-perch-out .45s ease-in forwards";
+
+  setTimeout(() => {
+
+    if (
+      perchedCrow.isConnected
+    ) {
+      perchedCrow.remove();
+    }
+
+    /*
+      また写真の中を旅へ
+    */
+
+    flyCrow();
+
+  }, 450);
 }
 
 
