@@ -551,6 +551,51 @@ window.addEventListener("resize", () => {
     renderJapanMap();
   }, 180);
 });
+/* ---------------------------------
+   クリックした場所に星
+--------------------------------- */
 
+document.addEventListener("click", event => {
+  createStarBurst(event.clientX, event.clientY);
+});
+
+function createStarBurst(x, y) {
+  const symbols = ["✦", "✧", "·"];
+
+  const starCount = 3 + Math.floor(Math.random() * 3);
+
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement("span");
+
+    star.className = "click-star";
+    star.textContent =
+      symbols[Math.floor(Math.random() * symbols.length)];
+
+    star.style.left = `${x}px`;
+    star.style.top = `${y}px`;
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 18 + Math.random() * 34;
+
+    const moveX = Math.cos(angle) * distance;
+    const moveY = Math.sin(angle) * distance;
+
+    star.style.setProperty("--star-x", `${moveX}px`);
+    star.style.setProperty("--star-y", `${moveY}px`);
+    star.style.setProperty(
+      "--star-r",
+      `${Math.random() * 100 - 50}deg`
+    );
+
+    star.style.fontSize =
+      `${8 + Math.random() * 8}px`;
+
+    document.body.appendChild(star);
+
+    star.addEventListener("animationend", () => {
+      star.remove();
+    });
+  }
+}
 /* GO */
 loadSite();
