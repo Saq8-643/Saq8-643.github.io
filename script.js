@@ -703,79 +703,100 @@ function hasActiveCrow() {
 function flyCrow() {
   if (hasActiveCrow()) return;
 
-  const crow =
-    document.createElement("img");
+  const crow = document.createElement("img");
 
-  crow.src =
-    "crow-silhouette.png";
-
+  crow.src = "crow-silhouette.png";
   crow.alt = "";
+  crow.setAttribute("aria-hidden", "true");
+  crow.className = "flying-crow";
 
-  crow.setAttribute(
-    "aria-hidden",
-    "true"
-  );
+  const fromLeft = Math.random() < 0.5;
+  const size = 65 + Math.random() * 25;
+  const top = 60 + Math.random() * (window.innerHeight * 0.45);
 
-  crow.className =
-    "flying-crow";
+  /* CSSに頼らず初期位置を直接指定 */
+  crow.style.position = "fixed";
+  crow.style.zIndex = "99999";
+  crow.style.top = `${top}px`;
+  crow.style.width = `${size}px`;
+  crow.style.height = "auto";
+  crow.style.opacity = "0.9";
+  crow.style.cursor = "pointer";
+  crow.style.pointerEvents = "auto";
+  crow.style.touchAction = "manipulation";
 
-  const fromLeft =
-    Math.random() < 0.5;
+  if (fromLeft) {
+    crow.style.left = `-${size + 20}px`;
+  } else {
+    crow.style.left = `${window.innerWidth + size + 20}px`;
+    crow.style.transform = "scaleX(-1)";
+  }
 
-  crow.classList.add(
-    fromLeft
-      ? "fly-ltr"
-      : "fly-rtl"
-  );
+  document.body.appendChild(crow);
 
-  const maxTop =
-    Math.max(
-      100,
-      window.innerHeight *
-      0.45
-    );
+  /* タップしたら着地 */
+  crow.addEventListener("click", event => {
+    event.stopPropagation();
 
-  const top =
-    50 +
-    Math.random() *
-    maxTop;
+    /* 飛行アニメーションを停止 */
+    if (crow._flightAnimation) {
+      crow._flightAnimation.cancel();
+    }
 
-  crow.style.setProperty(
-    "--crow-top",
-    `${top}px`
-  );
+    landCrow(crow);
+  });
 
-  crow.style.width =
-    `${65 + Math.random() * 25}px`;
+  crow.addEventListener("error", () => {
+    console.error("クロ助画像が見つかりません");
+    crow.remove();
+  });
 
-  document.body.appendChild(
-    crow
-  );
+  const startX = fromLeft
+    ? -(size + 20)
+    : window.innerWidth + size + 20;
 
-  /* 飛んでるクロ助をタップしたら着地 */
-  crow.addEventListener(
-    "click",
-    event => {
-      event.stopPropagation();
-      landCrow(crow);
+  const endX = fromLeft
+    ? window.innerWidth + size + 20
+    : -(size + 20);
+
+  /*
+    CSS animationではなく
+    JavaScriptで直接飛ばす
+  */
+  const animation = crow.animate(
+    [
+      {
+        left: `${startX}px`,
+        top: `${top}px`,
+        opacity: 0
+      },
+      {
+        left: `${startX + (endX - startX) * 0.08}px`,
+        top: `${top - 3}px`,
+        opacity: 0.9,
+        offset: 0.08
+      },
+      {
+        left: `${endX}px`,
+        top: `${top - 35}px`,
+        opacity: 0
+      }
+    ],
+    {
+      duration: 4800,
+      easing: "linear",
+      fill: "forwards"
     }
   );
 
-  crow.addEventListener(
-    "animationend",
-    () => {
+  crow._flightAnimation = animation;
+
+  animation.addEventListener("finish", () => {
+    if (crow.isConnected) {
       crow.remove();
     }
-  );
-
-  crow.addEventListener(
-    "error",
-    () => {
-      crow.remove();
-    }
-  );
+  });
 }
-
 
 /* ---------------------------------
    クロ助を近くの写真へ着地させる
