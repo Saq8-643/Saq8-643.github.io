@@ -559,7 +559,7 @@ document.addEventListener("click", event => {
   createStarBurst(event.clientX, event.clientY);
 
   /* 約25クリックに1回だけカラス */
-  if (Math.random() < 0.04) {
+  if (Math.random() < 1) {
     flyCrow();
   }
 });
