@@ -1023,7 +1023,7 @@ function flyCrow() {
     );
 
   crow.src =
-    "images/crow-silhouette.png";
+    "crow-silhouette.png";
 
   crow.alt = "";
 
@@ -1151,7 +1151,7 @@ function showPerchedCrow() {
     );
 
   crow.src =
-    "images/crow-perched.png";
+    "crow-perched.png";
 
   crow.alt = "";
 
