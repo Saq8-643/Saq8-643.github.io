@@ -584,7 +584,7 @@ document.addEventListener("click", event => {
   );
 
   /* 約25クリックに1回クロ助 */
-  if (Math.random() < 0.04) {
+  if (Math.random() < 1) {
     showCrowEvent();
   }
 });
