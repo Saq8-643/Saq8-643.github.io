@@ -139,6 +139,8 @@ function renderDailyPhoto() {
   dailyPhotoTags.textContent =
     (photo.tags || []).join(" / ");
 
+   dailyPhotoNote.textContent = photo.alt || "";
+
   dailyPhotoButton.onclick = () => {
     openLightbox(photo);
   };
