@@ -707,7 +707,7 @@ function flyCrow() {
     document.createElement("img");
 
   crow.src =
-    "images/crow-silhouette.png";
+    "crow-silhouette.png";
 
   crow.alt = "";
 
@@ -893,7 +893,7 @@ function landCrow(flyingCrow) {
     document.createElement("img");
 
   crow.src =
-    "images/crow-perched.png";
+    "crow-perched.png";
 
   crow.alt = "";
 
