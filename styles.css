@@ -736,7 +736,9 @@ footer{
   width:86px;
   height:auto;
 
-  pointer-events:none;
+  pointer-events:auto;
+cursor:pointer;
+touch-action:manipulation;
   opacity:0;
 
   filter:drop-shadow(0 4px 5px rgba(0,0,0,.08));
@@ -814,7 +816,9 @@ footer{
   width:72px;
   height:auto;
 
-  pointer-events:none;
+  pointer-events:auto;
+cursor:pointer;
+touch-action:manipulation;
   opacity:0;
 
   filter:drop-shadow(0 4px 5px rgba(0,0,0,.08));
