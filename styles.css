@@ -723,3 +723,79 @@ footer{
       rotate(var(--star-r));
   }
 }
+/* --------------------
+   FLYING CROW
+-------------------- */
+
+.flying-crow{
+  position:fixed;
+  top:var(--crow-top);
+  left:-140px;
+  z-index:9998;
+
+  width:86px;
+  height:auto;
+
+  pointer-events:none;
+  opacity:0;
+
+  filter:drop-shadow(0 4px 5px rgba(0,0,0,.08));
+}
+
+.flying-crow.fly-ltr{
+  animation:crow-fly-ltr 3.8s linear forwards;
+}
+
+.flying-crow.fly-rtl{
+  left:calc(100vw + 140px);
+  transform:scaleX(-1);
+  animation:crow-fly-rtl 3.8s linear forwards;
+}
+
+@keyframes crow-fly-ltr{
+  0%{
+    left:-140px;
+    opacity:0;
+  }
+
+  10%{
+    opacity:.88;
+  }
+
+  90%{
+    opacity:.88;
+  }
+
+  100%{
+    left:calc(100vw + 140px);
+    top:calc(var(--crow-top) - 35px);
+    opacity:0;
+  }
+}
+
+@keyframes crow-fly-rtl{
+  0%{
+    left:calc(100vw + 140px);
+    opacity:0;
+  }
+
+  10%{
+    opacity:.88;
+  }
+
+  90%{
+    opacity:.88;
+  }
+
+  100%{
+    left:-140px;
+    top:calc(var(--crow-top) - 35px);
+    opacity:0;
+  }
+}
+
+@media(max-width:780px){
+  .flying-crow{
+    width:62px;
+  }
+}
