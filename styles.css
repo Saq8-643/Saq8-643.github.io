@@ -149,9 +149,9 @@ h1{
 .daily-photo-image{
   display:block;
   width:100%;
-  height:auto;
-  aspect-ratio:auto;
-  object-fit:contain;
+  aspect-ratio:4/5;
+  object-fit:cover;
+  object-position:center;
   background:#ddd;
   transition:.3s ease;
 }
