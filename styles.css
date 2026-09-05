@@ -596,10 +596,6 @@ footer{
     gap:15px;
   }
 
-  .daily-photo-image{
-    aspect-ratio:4/3;
-  }
-
   .daily-photo-info{
     gap:16px;
   }
