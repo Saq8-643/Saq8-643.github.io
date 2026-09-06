@@ -135,6 +135,29 @@ h1{
   line-height:2;
 }
 
+/* 今日の1枚：K'S NOTE */
+.daily-note{
+  max-width:420px;
+  margin-left:auto;
+}
+
+.daily-note-label{
+  margin:0 0 10px;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.18em;
+}
+
+.daily-note-text{
+  margin:0;
+  color:var(--text);
+  font-size:12px;
+  line-height:1.9;
+  letter-spacing:.02em;
+  white-space:pre-line;
+}
+
 .daily-photo-card{
   display:block;
   width:100%;
@@ -516,6 +539,7 @@ footer{
 .lightbox{
   width:min(1100px,calc(100vw - 38px));
   max-height:92vh;
+  overflow:auto;
   border:0;
   padding:18px;
   background:#0f0f10;
@@ -535,8 +559,10 @@ footer{
 .lightbox-caption{
   display:flex;
   justify-content:space-between;
-  gap:24px;
-  padding:16px 2px 2px;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  gap:14px 28px;
+  padding-top:14px;
 }
 
 .lightbox-main{
@@ -558,9 +584,38 @@ footer{
 }
 
 #lightboxMeta{
+  margin-left:auto;
   font-size:10px;
   color:#aaa;
   text-align:right;
+}
+
+/* 拡大画面：K'S NOTE */
+.lightbox-note{
+  flex-basis:100%;
+  width:100%;
+  margin-top:2px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.13);
+}
+
+.lightbox-note-label{
+  display:block;
+  margin-bottom:8px;
+  color:rgba(255,255,255,.5);
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.18em;
+}
+
+.lightbox-note-text{
+  max-width:760px;
+  margin:0;
+  color:rgba(255,255,255,.82);
+  font-size:12px;
+  line-height:1.9;
+  letter-spacing:.02em;
+  white-space:pre-line;
 }
 
 .close-button{
@@ -598,6 +653,44 @@ footer{
 
   .daily-photo-info{
     gap:16px;
+  }
+
+  .daily-note{
+    max-width:none;
+    margin-left:0;
+  }
+
+  .daily-note-text{
+    font-size:11px;
+  }
+
+  .lightbox{
+    width:min(100% - 18px,1100px);
+    padding:10px;
+  }
+
+  .lightbox-image{
+    max-height:70vh;
+  }
+
+  .lightbox-caption{
+    gap:12px 18px;
+    padding-top:12px;
+  }
+
+  #lightboxMeta{
+    margin-left:0;
+    text-align:left;
+  }
+
+  .lightbox-note{
+    margin-top:0;
+    padding-top:12px;
+  }
+
+  .lightbox-note-text{
+    font-size:11px;
+    line-height:1.85;
   }
 
   .hero{
