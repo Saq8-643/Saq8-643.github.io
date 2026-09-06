@@ -514,13 +514,15 @@ function openLightbox(photo) {
   }
 
   lightboxMeta.textContent = [
-    ...(photo.tags || []),
-    photo.meta || ""
-  ]
-    .filter(Boolean)
-    .join(" / ");
+  ...(photo.tags || []),
+  photo.meta || ""
+]
+  .filter(Boolean)
+  .join(" / ");
 
-  lightbox.showModal();
+lightboxNote.textContent = photo.alt || "";
+
+lightbox.showModal();
 }
 
 function formatDate(dateString) {
