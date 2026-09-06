@@ -593,113 +593,166 @@
       "prefecture": "福井県",
       "place": "勝山市"
     },
-  {
-    "file": "object2.jpg",
-    "title": "Waiting for Steam",
-    "alt": "走る時間を終えて、静かに次の出番を待つ。黒い車体には、今も昔の時間が残っている。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・蒸気機関車12号",
-    "tags": ["OBJECTS", "TRAVEL"]
-  },
-  {
-    "file": "architecture1.jpg",
-    "title": "Reflections of an Era",
-    "alt": "水面に映るもうひとつの建物。時代を越えて残った姿が、静かな池の上でもう一度立ち上がる。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・帝国ホテル中央玄関",
-    "tags": ["ARCHITECTURE", "TRAVEL"]
-  },
-  {
-    "file": "nunu15.jpg",
-    "title": "Tiny Visitors",
-    "alt": "大きな赤レンガの門の真ん中に、こまちゃんとなるちゃんがちょこん。小さなふたりも、今日の旅の仲間。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・金沢監獄正門",
-    "tags": ["ARCHITECTURE", "NUNU", "TRAVEL"]
-  },
-  {
-    "file": "architecture2.jpg",
-    "title": "Light in Silence",
-    "alt": "暗い堂内の奥で、ステンドグラスの色だけが静かに光る。見上げるほど、天井の線が一点へ集まっていく。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・聖ザビエル天主堂",
-    "tags": ["ARCHITECTURE", "TRAVEL"]
-  },
-  {
-    "file": "architecture3.jpg",
-    "title": "The Quiet Floor",
-    "alt": "誰もいない道場に、木の線と磨かれた床だけがまっすぐ続く。静けさの中に、昔の足音が残っているようだった。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・第四高等学校武術道場「無声堂」",
-    "tags": ["ARCHITECTURE", "TRAVEL"]
-  },
-  {
-    "file": "nunu16.jpg",
-    "title": "Two by the Lighthouse",
-    "alt": "空へ伸びる白い灯台の足元に、こまちゃんとなるちゃん。大きな景色の中に、小さな旅の記念を残した。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・品川燈台",
-    "tags": ["ARCHITECTURE", "NUNU", "TRAVEL"]
-  },
-  {
-    "file": "architecture4.jpg",
-    "title": "Under a Heavy Sky",
-    "alt": "重たい雲の下、白い柱と回廊が静かに並ぶ。華やかさよりも、長い時間を抱えた佇まいに目が止まった。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・三重県庁舎",
-    "tags": ["ARCHITECTURE", "TRAVEL"]
-  },
-  {
-    "file": "architecture5.jpg",
-    "title": "Twin Spires",
-    "alt": "ふたつの塔が並んで空を指す。赤レンガと白い壁の間に、遠い時代の教会がそのまま立っていた。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・聖ヨハネ教会堂",
-    "tags": ["ARCHITECTURE", "TRAVEL"]
-  },
-  {
-  "file": "architecture6.jpg",
-  "title": "Through the Nave",
-  "alt": "木の柱とアーチが連なり、その先でステンドグラスが淡く光る。静かな堂内を、光だけがゆっくり歩いているようだった。",
-  "date": "2026-09-06",
-  "prefecture": "愛知",
-  "place": "博物館明治村・聖ザビエル天主堂",
-  "tags": ["ARCHITECTURE", "TRAVEL"]
-  },
-  {
-  "file": "nunu17.jpg",
-  "title": "Room for Two",
-  "alt": "独房の小さな布団に、こまちゃんとなるちゃんがちょこん。妙にくつろいで見える、ふたりの収監生活。",
-  "date": "2026-09-06",
-  "prefecture": "愛知",
-  "place": "博物館明治村",
-  "tags": ["NUNU", "TRAVEL", "ARCHITECTURE"]
-},
-{
-  "file": "nunu18.jpg",
-  "title": "Behind Bars",
-  "alt": "木の格子の隙間からするり。どうやら脱獄は、もう半分成功している。",
-  "date": "2026-09-06",
-  "prefecture": "愛知",
-  "place": "博物館明治村",
-  "tags": ["NUNU", "TRAVEL", "ARCHITECTURE"]
-},
-{
-    "file": "nunu19.jpg",
-    "title": "Front Desk Duty",
-    "alt": "古いホテルのカウンターに並ぶ、こまちゃんとなるちゃん。今日はふたりで受付係。",
-    "date": "2026-09-06",
-    "prefecture": "愛知",
-    "place": "博物館明治村・帝国ホテル中央玄関",
-    "tags": ["NUNU", "TRAVEL", "ARCHITECTURE"]
-  }
-    ]
+    {
+      "file": "object2.jpg",
+      "title": "Waiting for Steam",
+      "alt": "走る時間を終えて、静かに次の出番を待つ。黒い車体には、今も昔の時間が残っている。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・蒸気機関車12号",
+      "tags": [
+        "OBJECTS",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "architecture1.jpg",
+      "title": "Reflections of an Era",
+      "alt": "水面に映るもうひとつの建物。時代を越えて残った姿が、静かな池の上でもう一度立ち上がる。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・帝国ホテル中央玄関",
+      "tags": [
+        "ARCHITECTURE",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "nunu15.jpg",
+      "title": "Tiny Visitors",
+      "alt": "大きな赤レンガの門の真ん中に、こまちゃんとなるちゃんがちょこん。小さなふたりも、今日の旅の仲間。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・金沢監獄正門",
+      "tags": [
+        "ARCHITECTURE",
+        "NUIKATSU",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "architecture2.jpg",
+      "title": "Light in Silence",
+      "alt": "暗い堂内の奥で、ステンドグラスの色だけが静かに光る。見上げるほど、天井の線が一点へ集まっていく。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・聖ザビエル天主堂",
+      "tags": [
+        "ARCHITECTURE",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "architecture3.jpg",
+      "title": "The Quiet Floor",
+      "alt": "誰もいない道場に、木の線と磨かれた床だけがまっすぐ続く。静けさの中に、昔の足音が残っているようだった。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・第四高等学校武術道場「無声堂」",
+      "tags": [
+        "ARCHITECTURE",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "nunu16.jpg",
+      "title": "Two by the Lighthouse",
+      "alt": "空へ伸びる白い灯台の足元に、こまちゃんとなるちゃん。大きな景色の中に、小さな旅の記念を残した。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・品川燈台",
+      "tags": [
+        "ARCHITECTURE",
+        "NUIKATSU",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "architecture4.jpg",
+      "title": "Under a Heavy Sky",
+      "alt": "重たい雲の下、白い柱と回廊が静かに並ぶ。華やかさよりも、長い時間を抱えた佇まいに目が止まった。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・三重県庁舎",
+      "tags": [
+        "ARCHITECTURE",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "architecture5.jpg",
+      "title": "Twin Spires",
+      "alt": "ふたつの塔が並んで空を指す。赤レンガと白い壁の間に、遠い時代の教会がそのまま立っていた。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・聖ヨハネ教会堂",
+      "tags": [
+        "ARCHITECTURE",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "architecture6.jpg",
+      "title": "Through the Nave",
+      "alt": "木の柱とアーチが連なり、その先でステンドグラスが淡く光る。静かな堂内を、光だけがゆっくり歩いているようだった。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・聖ザビエル天主堂",
+      "tags": [
+        "ARCHITECTURE",
+        "TRAVEL"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "nunu17.jpg",
+      "title": "Room for Two",
+      "alt": "独房の小さな布団に、こまちゃんとなるちゃんがちょこん。妙にくつろいで見える、ふたりの収監生活。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村",
+      "tags": [
+        "NUIKATSU",
+        "TRAVEL",
+        "ARCHITECTURE"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "nunu18.jpg",
+      "title": "Behind Bars",
+      "alt": "木の格子の隙間からするり。どうやら脱獄は、もう半分成功している。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村",
+      "tags": [
+        "NUIKATSU",
+        "TRAVEL",
+        "ARCHITECTURE"
+      ],
+      "prefectureCode": 23
+    },
+    {
+      "file": "nunu19.jpg",
+      "title": "Front Desk Duty",
+      "alt": "古いホテルのカウンターに並ぶ、こまちゃんとなるちゃん。今日はふたりで受付係。",
+      "date": "2026-09-06",
+      "prefecture": "愛知県",
+      "place": "博物館明治村・帝国ホテル中央玄関",
+      "tags": [
+        "NUIKATSU",
+        "TRAVEL",
+        "ARCHITECTURE"
+      ],
+      "prefectureCode": 23
+    }
+  ]
 }
