@@ -12,7 +12,7 @@
         "CITY"
       ],
       "layout": "",
-      "alt": "街中に佇むカラス",
+      "alt": "静かに止まっているだけなのに、目が離せない。黒い羽のつやまで、ひとつの景色として立ち上がってくる。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -26,7 +26,7 @@
         "NIGHT"
       ],
       "layout": "wide",
-      "alt": "雲のある夜空に浮かぶ満月",
+      "alt": "薄い雲の向こうに、丸い月が大きく浮かんでいた。近くに見えるほど、やっぱり遠い。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -40,7 +40,7 @@
         "CITY"
       ],
       "layout": "",
-      "alt": "飛び立つカラス",
+      "alt": "地面を離れたカラスの羽が、一瞬だけ大きくひらいた。飛び立つ瞬間は、いつだって少しかっこいい。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -54,7 +54,7 @@
         "NATURE"
       ],
       "layout": "",
-      "alt": "緑の中の小鳥",
+      "alt": "枝分かれした木の先に、小さな鳥がひとり。柔らかな緑の中で、その小ささだけがくっきりしていた。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -68,7 +68,7 @@
         "CITY"
       ],
       "layout": "wide",
-      "alt": "柵の上にいるカラス",
+      "alt": "柵の上から、カラスがまっすぐこちらを見ていた。見ているのは私なのか、それともその向こうなのか。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -82,7 +82,7 @@
         "FLOWERS"
       ],
       "layout": "",
-      "alt": "青と紫の紫陽花",
+      "alt": "木陰の道に沿って、青い紫陽花がずっと続いていた。梅雨の色は、雨が降っていなくてもどこか涼しい。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -96,7 +96,7 @@
         "NATURE"
       ],
       "layout": "",
-      "alt": "水辺の小鳥",
+      "alt": "水辺の石に、小さな鳥が軽やかに降りていた。流れる水のそばでは、小さな身体まで生き生きして見える。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -111,7 +111,7 @@
         "LANDSCAPE"
       ],
       "layout": "wide",
-      "alt": "雲の間に見える星空",
+      "alt": "雲の切れ間いっぱいに星が散っていた。見上げた夜にこんなに光があったことを、写真にしてからもう一度知る。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -125,7 +125,7 @@
         "NIGHT"
       ],
       "layout": "wide",
-      "alt": "夜の喫茶店",
+      "alt": "夜の喫茶店は閉まっているのに、看板も自転車も椅子も、まだそこに人の気配を残していた。古い街の夜は、静かなほどよく喋る。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -139,7 +139,7 @@
         "CITY"
       ],
       "layout": "tall",
-      "alt": "街角に座る猫",
+      "alt": "車のかげで、猫がきちんと前足をそろえていた。街の片隅にも、自分だけの居場所がちゃんとある。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -153,7 +153,7 @@
         "NIGHT"
       ],
       "layout": "",
-      "alt": "黒い夜空に浮かぶ月",
+      "alt": "半分だけ光を受けた月には、満月とは違う静けさがある。暗い側までそこにあることを、ちゃんと想像させてくれる。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -167,7 +167,7 @@
         "SKY"
       ],
       "layout": "wide",
-      "alt": "夕暮れの水辺に立つ鳥居",
+      "alt": "淡い桃色と青に染まる空の下、赤い鳥居だけが静かに立っていた。日が沈む少し前、景色がいちばん夢に近づく時間。",
       "date": "2026-08-29",
       "prefectureCode": 22,
       "prefecture": "静岡県",
@@ -180,7 +180,7 @@
         "NUIKATSU"
       ],
       "layout": "",
-      "alt": "京ちゃんと涼ちゃんシーソー遊び",
+      "alt": "ふたりでシーソーに乗った午後。遊具の色まで楽しそうで、公園が少しだけ小さな世界になっていた。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -193,7 +193,7 @@
         "NUIKATSU"
       ],
       "layout": "",
-      "alt": "京ちゃんと涼ちゃんブランコ遊び",
+      "alt": "赤と青、ひとつずつ空いたブランコに、ふたりがちょこん。誰もいない公園なのに、ちゃんと遊び声が聞こえてきそうだった。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -206,7 +206,7 @@
         "NUIKATSU"
       ],
       "layout": "",
-      "alt": "ペロと遊具",
+      "alt": "パンダの上から、得意げにこちらを見下ろしている。乗り物が違っても、本人はたぶん立派な冒険の途中。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -219,7 +219,7 @@
         "NUIKATSU"
       ],
       "layout": "",
-      "alt": "ペロちゃんブランコ遊び",
+      "alt": "大きなブランコにひとりで座って、少しだけよそ行きの顔。小さな身体には、いつもの公園もずいぶん広い。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -233,7 +233,7 @@
         "CAMP"
       ],
       "layout": "wide",
-      "alt": "一号、ペロ、ぬぬ三兄弟でキャンプ",
+      "alt": "山を眺めるために、三人ぶんの小さな椅子を並べた。何を話していたのかは、たぶん三人だけの秘密。",
       "date": "",
       "prefectureCode": 21,
       "prefecture": "岐阜県",
@@ -246,7 +246,7 @@
         "NUIKATSU"
       ],
       "layout": "",
-      "alt": "なるちゃんと公園",
+      "alt": "広い草原の真ん中に、ひとりだけ。寂しそうに見えて、本人は案外この景色を独り占めしているのかもしれない。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -259,7 +259,7 @@
         "NUIKATSU"
       ],
       "layout": "",
-      "alt": "ほだちゃん",
+      "alt": "無機質な場所に、ぽつんと小さなぬいぐるみ。周りが静かなほど、この子だけが妙に生き生きして見えた。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -273,7 +273,7 @@
         "NATURE"
       ],
       "layout": "",
-      "alt": "アオサギの視線",
+      "alt": "黄色い光を背に、大きな鳥の横顔をそっと覗き込んだ。羽毛も瞳も、近くで見るほど精巧だった。",
       "date": "",
       "prefectureCode": 23,
       "prefecture": "愛知県",
@@ -286,7 +286,7 @@
         "AQUARIUM"
       ],
       "layout": "",
-      "alt": "ナイトアクアリウム",
+      "alt": "青い水槽の向こうを、魚たちが静かに行き交う。ここだけ時間が、水の速さで流れていた。",
       "date": "2026-08-29",
       "prefectureCode": 22,
       "prefecture": "静岡県",
@@ -299,7 +299,7 @@
         "AQUARIUM"
       ],
       "layout": "",
-      "alt": "ナイトアクアリウム",
+      "alt": "小さな水槽が並ぶ暗い部屋に、青と紫の光だけが浮かんでいた。夜の研究室みたいな、不思議な静けさ。",
       "date": "2026-08-29",
       "prefectureCode": 22,
       "prefecture": "静岡県",
@@ -312,7 +312,7 @@
         "AQUARIUM"
       ],
       "layout": "",
-      "alt": "ナイトアクアリウム",
+      "alt": "青紫の光の中、大きなカニが両腕を広げてこちらを見ていた。ちょっと威張っているようで、どこか可笑しい。",
       "date": "2026-08-29",
       "prefectureCode": 22,
       "prefecture": "静岡県",
@@ -325,8 +325,8 @@
         "NUIKATSU"
       ],
       "layout": "",
-      "alt": "京ちゃんと涼ちゃんと海",
-      "date": "",
+      "alt": "大きな椅子の上で、ふたり肩を寄せてひなたぼっこ。旅先でも、隣にいる場所がいちばん落ち着くらしい。",
+      "date": "2026-08-31",
       "prefectureCode": 23,
       "prefecture": "愛知県",
       "place": "常滑市"
@@ -338,8 +338,8 @@
         "NUIKATSU"
       ],
       "layout": "wide",
-      "alt": "京ちゃんと涼ちゃんと空港",
-      "date": "",
+      "alt": "ベンチの端で、ふたり仲良く休憩中。荷物にもたれている姿まで、ちゃんと一日遊び歩いた人みたいだった。",
+      "date": "2026-08-31",
       "prefectureCode": 23,
       "prefecture": "愛知県",
       "place": "常滑市"
@@ -352,8 +352,8 @@
         "SKY"
       ],
       "layout": "",
-      "alt": "離陸",
-      "date": "",
+      "alt": "白い雲を背に、機体が空へ向かって上がっていった。重たいものが飛ぶ瞬間は、何度見ても少し不思議だ。",
+      "date": "2026-08-31",
       "prefectureCode": 23,
       "prefecture": "愛知県",
       "place": "常滑市"
@@ -366,8 +366,8 @@
         "SKY"
       ],
       "layout": "",
-      "alt": "着陸",
-      "date": "",
+      "alt": "霞んだ海の向こうから、飛行機がまっすぐこちらへ降りてくる。遠かったものが、少しずつ現実の大きさになっていく。",
+      "date": "2026-08-31",
       "prefectureCode": 23,
       "prefecture": "愛知県",
       "place": "常滑市"
@@ -593,5 +593,105 @@
       "prefecture": "福井県",
       "place": "勝山市"
     }
-  ]
+    [
+  {
+    "file": "1000052382.jpg",
+    "title": "Waiting for Steam",
+    "alt": "走る時間を終えて、静かに次の出番を待つ。黒い車体には、今も昔の時間が残っている。",
+    "date": "2026-09-06",
+    "prefecture": "愛知",
+    "place": "博物館明治村・蒸気機関車12号",
+    "tags": ["OBJECTS", "TRAVEL"]
+  },
+  {
+    "file": "1000052386.jpg",
+    "title": "Reflections of an Era",
+    "alt": "水面に映るもうひとつの建物。時代を越えて残った姿が、静かな池の上でもう一度立ち上がる。",
+    "date": "2026-09-06",
+    "prefecture": "愛知",
+    "place": "博物館明治村・帝国ホテル中央玄関",
+    "tags": ["ARCHITECTURE", "TRAVEL"]
+  },
+  {
+    "file": "1000052394.jpg",
+    "title": "Tiny Visitors",
+    "alt": "大きな赤レンガの門の真ん中に、こまちゃんとなるちゃんがちょこん。小さなふたりも、今日の旅の仲間。",
+    "date": "2026-09-06",
+    "prefecture": "愛知",
+    "place": "博物館明治村・金沢監獄正門",
+    "tags": ["ARCHITECTURE", "NUNU", "TRAVEL"]
+  },
+  {
+    "file": "1000052398.jpg",
+    "title": "Light in Silence",
+    "alt": "暗い堂内の奥で、ステンドグラスの色だけが静かに光る。見上げるほど、天井の線が一点へ集まっていく。",
+    "date": "2026-09-06",
+    "prefecture": "愛知",
+    "place": "博物館明治村・聖ザビエル天主堂",
+    "tags": ["ARCHITECTURE", "TRAVEL"]
+  },
+  {
+    "file": "1000052408.jpg",
+    "title": "The Quiet Floor",
+    "alt": "誰もいない道場に、木の線と磨かれた床だけがまっすぐ続く。静けさの中に、昔の足音が残っているようだった。",
+    "date": "2026-09-06",
+    "prefecture": "愛知",
+    "place": "博物館明治村・第四高等学校武術道場「無声堂」",
+    "tags": ["ARCHITECTURE", "TRAVEL"]
+  },
+  {
+    "file": "1000052412.jpg",
+    "title": "Two by the Lighthouse",
+    "alt": "空へ伸びる白い灯台の足元に、こまちゃんとなるちゃん。大きな景色の中に、小さな旅の記念を残した。",
+    "date": "2026-09-06",
+    "prefecture": "愛知",
+    "place": "博物館明治村・品川燈台",
+    "tags": ["ARCHITECTURE", "NUNU", "TRAVEL"]
+  },
+  {
+    "file": "1000052416.jpg",
+    "title": "Under a Heavy Sky",
+    "alt": "重たい雲の下、白い柱と回廊が静かに並ぶ。華やかさよりも、長い時間を抱えた佇まいに目が止まった。",
+    "date": "2026-09-06",
+    "prefecture": "愛知",
+    "place": "博物館明治村・三重県庁舎",
+    "tags": ["ARCHITECTURE", "TRAVEL"]
+  },
+  {
+    "file": "1000052418.jpg",
+    "title": "Twin Spires",
+    "alt": "ふたつの塔が並んで空を指す。赤レンガと白い壁の間に、遠い時代の教会がそのまま立っていた。",
+    "date": "2026-09-06",
+    "prefecture": "愛知",
+    "place": "博物館明治村・聖ヨハネ教会堂",
+    "tags": ["ARCHITECTURE", "TRAVEL"]
+  },
+  {
+  "file": "1000052400.jpg",
+  "title": "Through the Nave",
+  "alt": "木の柱とアーチが連なり、その先でステンドグラスが淡く光る。静かな堂内を、光だけがゆっくり歩いているようだった。",
+  "date": "2026-09-06",
+  "prefecture": "愛知",
+  "place": "博物館明治村・聖ザビエル天主堂",
+  "tags": ["ARCHITECTURE", "TRAVEL"]
+  },
+  {
+  "file": "DSC_8248.jpg",
+  "title": "Room for Two",
+  "alt": "独房の小さな布団に、こまちゃんとなるちゃんがちょこん。妙にくつろいで見える、ふたりの収監生活。",
+  "date": "2026-09-06",
+  "prefecture": "愛知",
+  "place": "博物館明治村",
+  "tags": ["NUNU", "TRAVEL", "ARCHITECTURE"]
+},
+{
+  "file": "DSC_8254.jpg",
+  "title": "Behind Bars",
+  "alt": "木の格子の隙間から、こまちゃんがするり。どうやら脱獄は、もう半分成功している。",
+  "date": "2026-09-06",
+  "prefecture": "愛知",
+  "place": "博物館明治村",
+  "tags": ["NUNU", "TRAVEL", "ARCHITECTURE"]
+}
+    ]
 }
