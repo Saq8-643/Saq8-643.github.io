@@ -25,6 +25,7 @@ const lightboxTitle = document.getElementById("lightboxTitle");
 const lightboxDate = document.getElementById("lightboxDate");
 const lightboxPlace = document.getElementById("lightboxPlace");
 const lightboxMeta = document.getElementById("lightboxMeta");
+const lightboxNote = document.getElementById("lightboxNote");
 const closeLightbox = document.getElementById("closeLightbox");
 
 const PAGE_SIZE = 12;
