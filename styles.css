@@ -978,3 +978,178 @@ footer{
     width:56px;
   }
 }
+/* --------------------
+   TODAY'S PHOTO PEEL
+-------------------- */
+
+.daily-photo-card{
+  position:relative;
+  overflow:hidden;
+}
+
+/* めくる前は写真情報も少し隠す */
+#daily:not(.is-revealed) .daily-photo-info{
+  opacity:.18;
+  filter:blur(3px);
+  pointer-events:none;
+}
+
+#daily:not(.is-revealed) .daily-note-text{
+  opacity:0;
+}
+
+.daily-photo-info,
+.daily-note-text{
+  transition:
+    opacity .65s ease,
+    filter .65s ease;
+}
+
+
+/* 紙 */
+.daily-peel-cover{
+  position:absolute;
+  inset:0 0 auto 0;
+  z-index:20;
+
+  width:100%;
+  aspect-ratio:4/5;
+
+  background:
+    linear-gradient(
+      110deg,
+      #f1f1ee 0%,
+      #fafaf7 58%,
+      #ecece8 100%
+    );
+
+  border:1px solid rgba(0,0,0,.08);
+
+  cursor:grab;
+  touch-action:none;
+  user-select:none;
+
+  will-change:transform;
+
+  transition:
+    transform .7s cubic-bezier(.2,.8,.2,1),
+    opacity .5s ease;
+}
+
+.daily-peel-cover:active{
+  cursor:grabbing;
+}
+
+
+/* 紙の中身 */
+.daily-peel-inner{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  padding:40px;
+  text-align:center;
+}
+
+.daily-peel-small{
+  margin-bottom:18px;
+
+  color:var(--muted);
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.2em;
+}
+
+.daily-peel-inner strong{
+  font-size:clamp(20px,3vw,38px);
+  font-weight:500;
+  letter-spacing:-.03em;
+}
+
+
+/* PULL */
+.daily-peel-hint{
+  position:absolute;
+  right:30px;
+  bottom:28px;
+
+  color:var(--muted);
+
+  font-size:9px;
+  font-weight:600;
+  letter-spacing:.18em;
+
+  animation:peel-hint 1.8s ease-in-out infinite;
+}
+
+@keyframes peel-hint{
+  0%,100%{
+    transform:translateX(0);
+  }
+
+  50%{
+    transform:translateX(7px);
+  }
+}
+
+
+/* めくれてる紙の端っこ */
+.daily-peel-edge{
+  position:absolute;
+  top:0;
+  right:-22px;
+
+  width:44px;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.08),
+      rgba(255,255,255,.8)
+    );
+
+  opacity:.4;
+
+  transform:skewY(-2deg);
+
+  pointer-events:none;
+}
+
+
+/* 開いたあと */
+.daily-peel-cover.is-open{
+  transform:translateX(110%) rotate(1.2deg);
+  opacity:0;
+  pointer-events:none;
+}
+
+
+/* 成功時ちょっとぺろん */
+.daily-peel-cover.is-finishing{
+  transition:
+    transform .9s cubic-bezier(.12,.86,.2,1),
+    opacity .55s ease;
+}
+
+
+/* スマホ */
+@media(max-width:780px){
+
+  .daily-peel-inner{
+    padding:24px;
+  }
+
+  .daily-peel-hint{
+    right:20px;
+    bottom:20px;
+  }
+
+  .daily-peel-cover{
+    aspect-ratio:4/5;
+  }
+}
