@@ -2009,24 +2009,20 @@ function setupDailyPeel() {
             1
           );
 
-        currentX =
-          Math.min(
-            Math.max(
-              0,
-              event.clientX -
-              startX
-            ),
-            width
-          );
-
+       currentX =
+  Math.min(
+    Math.max(
+      0,
+      startX - event.clientX
+    ),
+    width
+  );
         const progress =
           currentX /
           width;
 
-        dailyPeelCover
-          .style
-          .transform =
-            `translateX(${currentX}px) rotate(${progress * 2}deg)`;
+        dailyPeelCover.style.transform =
+  `translateX(-${currentX}px) rotate(${-progress * 2}deg)`;
 
         dailyPeelCover
           .style
