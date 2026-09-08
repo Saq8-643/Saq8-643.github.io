@@ -44,21 +44,26 @@ let currentPrefectureName = "";
 let resizeTimer;
 
 
-/* ==============================
-   SITE LOAD
-============================== */
+/* ---------------------------------
+   LOAD
+--------------------------------- */
 
 async function loadSite() {
   try {
-    const response = await fetch("photos.json?v=16");
+    const response = await fetch("photos.json?v=17");
 
     if (!response.ok) {
-      throw new Error(`photos.json: ${response.status}`);
+      throw new Error(
+        `photos.json: ${response.status}`
+      );
     }
 
     const data = await response.json();
 
-    if (heroPhoto && data.hero?.file) {
+    if (
+      heroPhoto &&
+      data.hero?.file
+    ) {
       heroPhoto.style.backgroundImage =
         `url("${data.hero.file}")`;
 
@@ -68,9 +73,10 @@ async function loadSite() {
       );
     }
 
-    photos = sortPhotosByDate(
-      data.photos || []
-    );
+    photos =
+      sortPhotosByDate(
+        data.photos || []
+      );
 
     renderDailyPhoto();
     setupDailyPeel();
@@ -79,6 +85,7 @@ async function loadSite() {
     applyFilters();
 
   } catch (error) {
+
     console.error(error);
 
     if (galleryGrid) {
@@ -97,11 +104,12 @@ async function loadSite() {
 }
 
 
-/* ==============================
+/* ---------------------------------
    SORT
-============================== */
+--------------------------------- */
 
 function sortPhotosByDate(photoList) {
+
   return photoList
     .map((photo, index) => ({
       ...photo,
@@ -109,7 +117,11 @@ function sortPhotosByDate(photoList) {
     }))
     .sort((a, b) => {
 
-      if (a.date && b.date) {
+      if (
+        a.date &&
+        b.date
+      ) {
+
         const diff =
           new Date(b.date) -
           new Date(a.date);
@@ -132,11 +144,12 @@ function sortPhotosByDate(photoList) {
 }
 
 
-/* ==============================
+/* ---------------------------------
    TODAY'S PHOTO
-============================== */
+--------------------------------- */
 
 function renderDailyPhoto() {
+
   if (
     !photos.length ||
     !dailyPhotoImage
@@ -183,13 +196,17 @@ function renderDailyPhoto() {
     photo.alt || "";
 
   if (photo.date) {
+
     dailyPhotoDate.textContent =
-      formatDate(photo.date);
+      formatDate(
+        photo.date
+      );
 
     dailyPhotoDate.hidden =
       false;
 
   } else {
+
     dailyPhotoDate.textContent =
       "";
 
@@ -202,32 +219,43 @@ function renderDailyPhoto() {
 }
 
 
-/* ==============================
+/* ---------------------------------
    JAPAN DATE
-============================== */
+--------------------------------- */
 
 function getJapanDateKey() {
+
   const parts =
     new Intl.DateTimeFormat(
       "en-US",
       {
-        timeZone: "Asia/Tokyo",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
+        timeZone:
+          "Asia/Tokyo",
+
+        year:
+          "numeric",
+
+        month:
+          "2-digit",
+
+        day:
+          "2-digit"
       }
     )
       .formatToParts(
         new Date()
       );
 
-  const get = type =>
-    parts.find(
-      part =>
-        part.type === type
-    ).value;
+  const get =
+    type =>
+      parts.find(
+        part =>
+          part.type === type
+      ).value;
 
-  return `${get("year")}-${get("month")}-${get("day")}`;
+  return (
+    `${get("year")}-${get("month")}-${get("day")}`
+  );
 }
 
 
@@ -235,6 +263,7 @@ function getDailyPhotoIndex(
   dateKey,
   photoCount
 ) {
+
   let hash =
     2166136261;
 
@@ -243,6 +272,7 @@ function getDailyPhotoIndex(
     i < dateKey.length;
     i++
   ) {
+
     hash ^=
       dateKey.charCodeAt(i);
 
@@ -263,6 +293,7 @@ function getDailyPhotoIndex(
 function formatDate(
   dateString
 ) {
+
   const [
     year,
     month,
@@ -270,15 +301,18 @@ function formatDate(
   ] =
     dateString.split("-");
 
-  return `${year}.${month}.${day}`;
+  return (
+    `${year}.${month}.${day}`
+  );
 }
 
 
-/* ==============================
+/* ---------------------------------
    MAP
-============================== */
+--------------------------------- */
 
 function getPhotographedPrefectureCodes() {
+
   return new Set(
     photos
       .map(
@@ -298,6 +332,7 @@ function getPhotographedPrefectureCodes() {
 
 
 function renderJapanMap() {
+
   if (!mapContainer) {
     return;
   }
@@ -306,6 +341,7 @@ function renderJapanMap() {
     !window.jpmap ||
     !jpmap.japanMap
   ) {
+
     mapContainer.innerHTML = `
       <p class="empty-gallery">
         日本地図を読み込めませんでした。<br>
@@ -322,13 +358,15 @@ function renderJapanMap() {
   const photographed =
     getPhotographedPrefectureCodes();
 
-  const areas = [];
+  const areas =
+    [];
 
   for (
     let code = 1;
     code <= 47;
     code++
   ) {
+
     let color =
       photographed.has(code)
         ? MAP_VISITED
@@ -363,12 +401,18 @@ function renderJapanMap() {
     {
       areas,
       width,
-      movesIslands: true,
-      showsPrefectureName: true,
+
+      movesIslands:
+        true,
+
+      showsPrefectureName:
+        true,
+
       borderLineColor:
         "#ffffff",
 
       onSelect(data) {
+
         selectPrefecture(
           Number(
             data.code
@@ -385,6 +429,7 @@ function selectPrefecture(
   code,
   name
 ) {
+
   currentPrefectureCode =
     code;
 
@@ -393,7 +438,8 @@ function selectPrefecture(
       photo =>
         Number(
           photo.prefectureCode
-        ) === code
+        ) ===
+        code
     )?.prefecture ||
     name ||
     `PREFECTURE ${code}`;
@@ -418,6 +464,7 @@ function selectPrefecture(
     ?.scrollIntoView({
       behavior:
         "smooth",
+
       block:
         "start"
     });
@@ -430,6 +477,7 @@ function selectPrefecture(
 
 
 function clearPrefecture() {
+
   currentPrefectureCode =
     null;
 
@@ -453,6 +501,7 @@ function clearPrefecture() {
 
 
 function updateMapStatus() {
+
   if (
     !selectedPrefecture ||
     !selectedCount ||
@@ -465,6 +514,7 @@ function updateMapStatus() {
     currentPrefectureCode ===
     null
   ) {
+
     selectedPrefecture.textContent =
       "ALL JAPAN";
 
@@ -519,11 +569,12 @@ clearMapFilter
   );
 
 
-/* ==============================
+/* ---------------------------------
    FILTER
-============================== */
+--------------------------------- */
 
 function createFilters() {
+
   if (!filtersContainer) {
     return;
   }
@@ -553,6 +604,7 @@ function createFilters() {
 
   tags.forEach(
     tag => {
+
       filtersContainer.appendChild(
         makeFilterButton(
           tag,
@@ -570,6 +622,7 @@ function makeFilterButton(
   value,
   active
 ) {
+
   const button =
     document.createElement(
       "button"
@@ -591,6 +644,7 @@ function makeFilterButton(
   button.addEventListener(
     "click",
     () => {
+
       currentTag =
         value;
 
@@ -612,12 +666,14 @@ function makeFilterButton(
 function setActiveTagButton(
   value
 ) {
+
   document
     .querySelectorAll(
       ".filter"
     )
     .forEach(
       button => {
+
         button.classList.toggle(
           "active",
           button.dataset.filter ===
@@ -629,6 +685,7 @@ function setActiveTagButton(
 
 
 function applyFilters() {
+
   currentPhotos =
     photos.filter(
       photo => {
@@ -661,11 +718,12 @@ function applyFilters() {
 }
 
 
-/* ==============================
+/* ---------------------------------
    GALLERY
-============================== */
+--------------------------------- */
 
 function renderVisiblePhotos() {
+
   if (!galleryGrid) {
     return;
   }
@@ -682,6 +740,7 @@ function renderVisiblePhotos() {
   if (
     !visiblePhotos.length
   ) {
+
     galleryGrid.innerHTML = `
       <p class="empty-gallery">
         ここには、まだ写真がありません。
@@ -827,6 +886,7 @@ function renderVisiblePhotos() {
 
 
 function updateMoreButton() {
+
   const remaining =
     currentPhotos.length -
     visibleCount;
@@ -834,6 +894,7 @@ function updateMoreButton() {
   if (
     remaining > 0
   ) {
+
     moreButton.hidden =
       false;
 
@@ -846,6 +907,7 @@ function updateMoreButton() {
       }`;
 
   } else {
+
     moreButton.hidden =
       true;
 
@@ -859,6 +921,7 @@ moreButton
   ?.addEventListener(
     "click",
     () => {
+
       visibleCount +=
         PAGE_SIZE;
 
@@ -867,13 +930,14 @@ moreButton
   );
 
 
-/* ==============================
+/* ---------------------------------
    LIGHTBOX
-============================== */
+--------------------------------- */
 
 function openLightbox(
   photo
 ) {
+
   if (!lightbox) {
     return;
   }
@@ -891,6 +955,7 @@ function openLightbox(
     "";
 
   if (photo.date) {
+
     lightboxDate.textContent =
       formatDate(
         photo.date
@@ -900,6 +965,7 @@ function openLightbox(
       false;
 
   } else {
+
     lightboxDate.textContent =
       "";
 
@@ -930,6 +996,7 @@ function openLightbox(
       .join(" / ");
 
   if (lightboxNote) {
+
     lightboxNote.textContent =
       photo.alt || "";
   }
@@ -950,6 +1017,7 @@ lightbox
   ?.addEventListener(
     "click",
     event => {
+
       const rect =
         lightbox
           .getBoundingClientRect();
@@ -974,6 +1042,7 @@ lightbox
 document.addEventListener(
   "keydown",
   event => {
+
     if (
       event.key ===
         "Escape" &&
@@ -985,13 +1054,14 @@ document.addEventListener(
 );
 
 
-/* ==============================
+/* ---------------------------------
    RESIZE
-============================== */
+--------------------------------- */
 
 window.addEventListener(
   "resize",
   () => {
+
     clearTimeout(
       resizeTimer
     );
@@ -1005,9 +1075,9 @@ window.addEventListener(
 );
 
 
-/* ==============================
+/* ---------------------------------
    CLICK STAR
-============================== */
+--------------------------------- */
 
 document.addEventListener(
   "click",
@@ -1032,6 +1102,7 @@ function createStarBurst(
   x,
   y
 ) {
+
   const symbols = [
     "✦",
     "✧",
@@ -1050,6 +1121,7 @@ function createStarBurst(
     i < count;
     i++
   ) {
+
     const star =
       document.createElement(
         "span"
@@ -1127,11 +1199,12 @@ function createStarBurst(
 }
 
 
-/* ==============================
+/* ---------------------------------
    CRO
-============================== */
+--------------------------------- */
 
 function showCrowEvent() {
+
   if (
     !hasActiveCrow()
   ) {
@@ -1141,6 +1214,7 @@ function showCrowEvent() {
 
 
 function hasActiveCrow() {
+
   return Boolean(
     document.querySelector(
       ".flying-crow, .perched-crow"
@@ -1150,6 +1224,7 @@ function hasActiveCrow() {
 
 
 function flyCrow() {
+
   if (
     hasActiveCrow()
   ) {
@@ -1207,6 +1282,7 @@ function flyCrow() {
   Object.assign(
     crow.style,
     {
+
       position:
         "fixed",
 
@@ -1240,6 +1316,7 @@ function flyCrow() {
   );
 
   if (!fromLeft) {
+
     crow.style.transform =
       "scaleX(-1)";
   }
@@ -1251,6 +1328,7 @@ function flyCrow() {
   crow.addEventListener(
     "click",
     event => {
+
       event.stopPropagation();
 
       landCrow(
@@ -1268,6 +1346,7 @@ function flyCrow() {
   const animation =
     crow.animate(
       [
+
         {
           left:
             `${startX}px`,
@@ -1330,6 +1409,7 @@ function flyCrow() {
   animation.addEventListener(
     "finish",
     () => {
+
       if (
         crow.isConnected
       ) {
@@ -1343,6 +1423,7 @@ function flyCrow() {
 function landCrow(
   flyingCrow
 ) {
+
   if (
     !flyingCrow
       ?.isConnected
@@ -1366,8 +1447,11 @@ function landCrow(
 
   const candidates =
     [
+
       heroPhoto,
+
       dailyPhotoButton,
+
       ...document
         .querySelectorAll(
           ".gallery-item"
@@ -1375,6 +1459,7 @@ function landCrow(
     ]
       .filter(
         element => {
+
           if (!element) {
             return false;
           }
@@ -1430,6 +1515,7 @@ function landCrow(
         distance <
         nearestDistance
       ) {
+
         nearestDistance =
           distance;
 
@@ -1447,6 +1533,7 @@ function landCrow(
     flyingCrow
       ._flightAnimation
   ) {
+
     flyingCrow
       ._flightAnimation
       .cancel();
@@ -1508,6 +1595,7 @@ function landCrow(
     rect.width /
     2
   ) {
+
     crow.classList.add(
       "flip"
     );
@@ -1522,9 +1610,11 @@ function landCrow(
 
   setTimeout(
     () => {
+
       if (
         crow.isConnected
       ) {
+
         crow.style.animation =
           "crow-perch-idle 1.6s ease-in-out infinite";
       }
@@ -1535,6 +1625,7 @@ function landCrow(
   crow.addEventListener(
     "click",
     event => {
+
       event.stopPropagation();
 
       sendPerchedCrowFlying(
@@ -1568,6 +1659,7 @@ function landCrow(
 function sendPerchedCrowFlying(
   perchedCrow
 ) {
+
   if (
     !perchedCrow
       ?.isConnected
@@ -1583,6 +1675,7 @@ function sendPerchedCrowFlying(
     );
 
   if (timerId) {
+
     clearTimeout(
       timerId
     );
@@ -1598,6 +1691,7 @@ function sendPerchedCrowFlying(
         perchedCrow
           .isConnected
       ) {
+
         perchedCrow.remove();
       }
 
@@ -1608,11 +1702,12 @@ function sendPerchedCrowFlying(
 }
 
 
-/* ==============================
-   DAILY PEEL STYLE
-============================== */
+/* ---------------------------------
+   TODAY'S PHOTO PEEL
+--------------------------------- */
 
 function ensureDailyPeelStyles() {
+
   if (
     document.getElementById(
       "dailyPeelRuntimeStyles"
@@ -1801,7 +1896,7 @@ function ensureDailyPeelStyles() {
 
       50%{
         transform:
-          translateX(7px);
+          translateX(-7px);
       }
     }
 
@@ -1825,11 +1920,12 @@ function ensureDailyPeelStyles() {
 }
 
 
-/* ==============================
-   DAILY PEEL
-============================== */
+/* ---------------------------------
+   PEEL SETUP
+--------------------------------- */
 
 function setupDailyPeel() {
+
   if (
     !dailyPeelCover ||
     !dailySection
@@ -1839,14 +1935,31 @@ function setupDailyPeel() {
 
   ensureDailyPeelStyles();
 
+
+  /*
+    HTMLの PULL → も
+    自動で ← PULL に変更
+  */
+
+  const peelHint =
+    dailyPeelCover.querySelector(
+      ".daily-peel-hint"
+    );
+
+  if (peelHint) {
+
+    peelHint.textContent =
+      "← PULL";
+  }
+
+
   /*
     新しい保存キー。
-    今までの失敗テストの記録に
-    邪魔されない。
+    前のテスト結果に邪魔されない。
   */
 
   const STORAGE_KEY =
-    "saq8DailyPhotoOpenedV3";
+    "saq8DailyPhotoOpenedV4";
 
   const todayKey =
     getJapanDateKey();
@@ -1855,6 +1968,7 @@ function setupDailyPeel() {
     localStorage.getItem(
       STORAGE_KEY
     );
+
 
   /*
     初期状態
@@ -1893,13 +2007,14 @@ function setupDailyPeel() {
 
 
   /*
-    今日すでに開けた場合
+    今日すでに開封済み
   */
 
   if (
     savedDate ===
     todayKey
   ) {
+
     revealDailyPhoto(
       false
     );
@@ -1922,8 +2037,7 @@ function setupDailyPeel() {
 
 
   /*
-    ブラウザ標準の
-    ドラッグを止める
+    ブラウザ標準ドラッグ停止
   */
 
   dailyPeelCover
@@ -1972,6 +2086,7 @@ function setupDailyPeel() {
             "none";
 
         try {
+
           dailyPeelCover
             .setPointerCapture(
               event.pointerId
@@ -1983,7 +2098,7 @@ function setupDailyPeel() {
 
 
   /*
-    ペリペリ中
+    右から左へペリペリ
   */
 
   dailyPeelCover
@@ -2009,25 +2124,45 @@ function setupDailyPeel() {
             1
           );
 
-       currentX =
-  Math.min(
-    Math.max(
-      0,
-      startX - event.clientX
-    ),
-    width
-  );
+
+        /*
+          開始位置より
+          左へ動いた距離
+        */
+
+        currentX =
+          Math.min(
+            Math.max(
+              0,
+              startX -
+              event.clientX
+            ),
+            width
+          );
+
         const progress =
           currentX /
           width;
 
-        dailyPeelCover.style.transform =
-  `translateX(-${currentX}px) rotate(${-progress * 2}deg)`;
+
+        /*
+          カバーを左へ動かす
+        */
+
+        dailyPeelCover
+          .style
+          .transform =
+            `translateX(-${currentX}px) rotate(${-progress * 2}deg)`;
+
+
+        /*
+          右側のめくれ端に影
+        */
 
         dailyPeelCover
           .style
           .boxShadow =
-            `${-24 * progress}px 10px ${42 * progress}px rgba(0,0,0,${0.20 * progress})`;
+            `${24 * progress}px 10px ${42 * progress}px rgba(0,0,0,${0.20 * progress})`;
       }
     );
 
@@ -2061,7 +2196,7 @@ function setupDailyPeel() {
 
 
   /*
-    操作キャンセル
+    キャンセル
   */
 
   dailyPeelCover
@@ -2089,6 +2224,7 @@ function setupDailyPeel() {
   function finishPointer(
     pointerId
   ) {
+
     dragging =
       false;
 
@@ -2096,6 +2232,7 @@ function setupDailyPeel() {
       null;
 
     try {
+
       dailyPeelCover
         .releasePointerCapture(
           pointerId
@@ -2110,6 +2247,7 @@ function setupDailyPeel() {
   */
 
   function finishDailyPeel() {
+
     const width =
       Math.max(
         dailyPeelCover
@@ -2122,14 +2260,17 @@ function setupDailyPeel() {
       currentX /
       width;
 
+
     /*
-      35％まで引けたら成功
+      35％まで左へ引いたら
+      開封成功
     */
 
     if (
       progress >=
       0.35
     ) {
+
       localStorage.setItem(
         STORAGE_KEY,
         todayKey
@@ -2140,16 +2281,19 @@ function setupDailyPeel() {
       );
 
     } else {
+
       resetDailyPeel();
     }
   }
 
 
   /*
-    足りなければ戻る
+    足りなかったら
+    元の位置へ戻す
   */
 
   function resetDailyPeel() {
+
     dailyPeelCover
       .style
       .transition =
@@ -2171,13 +2315,14 @@ function setupDailyPeel() {
 }
 
 
-/* ==============================
+/* ---------------------------------
    REVEAL DAILY PHOTO
-============================== */
+--------------------------------- */
 
 function revealDailyPhoto(
   withEffect = true
 ) {
+
   if (
     !dailyPeelCover ||
     !dailySection
@@ -2198,10 +2343,11 @@ function revealDailyPhoto(
 
 
   /*
-    今日すでに開けてた場合
+    今日すでに開けた場合
   */
 
   if (!withEffect) {
+
     dailyPeelCover
       .style
       .transition =
@@ -2210,7 +2356,7 @@ function revealDailyPhoto(
     dailyPeelCover
       .style
       .transform =
-        "translateX(110%) rotate(1.5deg)";
+        "translateX(-110%) rotate(-1.5deg)";
 
     dailyPeelCover
       .style
@@ -2227,7 +2373,8 @@ function revealDailyPhoto(
 
 
   /*
-    ペリッと最後まで抜ける
+    35％以上引いたら
+    そのまま左へぺろん
   */
 
   dailyPeelCover
@@ -2245,7 +2392,7 @@ function revealDailyPhoto(
           dailyPeelCover
             .style
             .transform =
-              "translateX(110%) rotate(2deg)";
+              "translateX(-110%) rotate(-2deg)";
 
           dailyPeelCover
             .style
@@ -2255,7 +2402,7 @@ function revealDailyPhoto(
           dailyPeelCover
             .style
             .boxShadow =
-              "-30px 10px 45px rgba(0,0,0,.14)";
+              "30px 10px 45px rgba(0,0,0,.14)";
         }
       );
     }
@@ -2308,8 +2455,8 @@ function revealDailyPhoto(
 }
 
 
-/* ==============================
+/* ---------------------------------
    GO
-============================== */
+--------------------------------- */
 
 loadSite();
