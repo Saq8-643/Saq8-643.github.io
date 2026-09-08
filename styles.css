@@ -158,7 +158,7 @@ h1{
   white-space:pre-line;
 }
 
-.daily-photo-card{
+.{
   display:block;
   width:100%;
   padding:0;
@@ -982,9 +982,16 @@ footer{
    TODAY'S PHOTO PEEL
 -------------------- */
 
+.daily-photo-wrap{
+  position:relative;
+  width:100%;
+  overflow:hidden;
+}
+
 .daily-photo-card{
   position:relative;
-  overflow:hidden;
+  display:block;
+  width:100%;
 }
 
 /* めくる前は写真情報も少し隠す */
@@ -1009,7 +1016,8 @@ footer{
 /* 紙 */
 .daily-peel-cover{
   position:absolute;
-  inset:0 0 auto 0;
+  top:0;
+  left:0;
   z-index:20;
 
   width:100%;
