@@ -1,188 +1,492 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Saq8 PHOTO</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles.css?v=14">
 </head>
 
+
 <body>
+
+  <!-- ====================
+       HEADER
+  ===================== -->
+
   <header class="site-header">
-    <a class="logo" href="#">Saq8 PHOTO</a>
+
+    <a class="logo" href="#">
+      Saq8 PHOTO
+    </a>
+
     <nav class="nav">
       <a href="#map">MAP</a>
       <a href="#gallery">GALLERY</a>
       <a href="#about">ABOUT</a>
     </nav>
+
   </header>
 
+
   <main>
-       <section class="hero">
-      <div id="heroPhoto" class="hero-photo"></div>
+
+    <!-- ====================
+         HERO
+    ===================== -->
+
+    <section class="hero">
+
+      <div
+        id="heroPhoto"
+        class="hero-photo"
+      ></div>
 
       <div class="hero-copy">
-        <p class="eyebrow">PHOTOGRAPHS / JAPAN</p>
-        <h1>日々の途中で、<br>立ち止まった景色。</h1>
+
+        <p class="eyebrow">
+          PHOTOGRAPHS / JAPAN
+        </p>
+
+        <h1>
+          日々の途中で、<br>
+          立ち止まった景色。
+        </h1>
+
         <p class="hero-text">
           街、夜、空、鳥、花、ときどき猫。<br>
           「きれい」と思った瞬間を残していく、小さな写真置き場。
         </p>
+
       </div>
+
     </section>
 
-    <section id="daily" class="daily-section">
+
+    <!-- ====================
+         TODAY'S PHOTO
+    ===================== -->
+
+    <section
+      id="daily"
+      class="daily-section"
+    >
+
       <div class="daily-heading">
+
         <div>
-          <p class="eyebrow">TODAY'S PHOTO</p>
-          <h2>今日の1枚</h2>
+
+          <p class="eyebrow">
+            TODAY'S PHOTO
+          </p>
+
+          <h2>
+            今日の1枚
+          </h2>
+
         </div>
+
+
+        <!-- K'S NOTE -->
 
         <div class="daily-note">
-  <p class="daily-note-label">K'S NOTE</p>
-  <p id="dailyPhotoNote" class="daily-note-text"></p>
-</div>
+
+          <p class="daily-note-label">
+            K'S NOTE
+          </p>
+
+          <p
+            id="dailyPhotoNote"
+            class="daily-note-text"
+          ></p>
+
+        </div>
+
       </div>
-<button id="dailyPhoto" class="daily-photo-card" type="button">
 
-  <div id="dailyPeelCover" class="daily-peel-cover" aria-label="今日の1枚を開く">
-    <div class="daily-peel-inner">
-      <span class="daily-peel-small">OPEN TODAY</span>
-      <strong>今日の景色を、ひらく。</strong>
 
-      <span class="daily-peel-hint">
-        PULL →
-      </span>
-    </div>
+      <!--
+        写真とペリペリカバーを
+        同じ場所に重ねるラッパー
+      -->
 
-    <div class="daily-peel-edge"></div>
-  </div>
+      <div class="daily-photo-wrap">
 
-  <img id="dailyPhotoImage" class="daily-photo-image" alt="">
 
-  <span class="daily-photo-info">
-    <span class="daily-photo-main">
-      <strong id="dailyPhotoTitle"></strong>
-      <span id="dailyPhotoPlace"></span>
-    </span>
+        <!-- ====================
+             ペリペリカバー
+        ===================== -->
 
-    <span class="daily-photo-side">
-      <time id="dailyPhotoDate"></time>
-      <span id="dailyPhotoTags"></span>
-    </span>
-  </span>
-</button>
-      <button id="dailyPhoto" class="daily-photo-card" type="button">
-        <img id="dailyPhotoImage" class="daily-photo-image" alt="">
+        <div
+          id="dailyPeelCover"
+          class="daily-peel-cover"
+          aria-label="今日の1枚を開く"
+        >
 
-        <span class="daily-photo-info">
-          <span class="daily-photo-main">
-            <strong id="dailyPhotoTitle"></strong>
-            <span id="dailyPhotoPlace"></span>
+          <div class="daily-peel-inner">
+
+            <span class="daily-peel-small">
+              OPEN TODAY
+            </span>
+
+            <strong>
+              今日の景色を、ひらく。
+            </strong>
+
+            <span class="daily-peel-hint">
+              PULL →
+            </span>
+
+          </div>
+
+
+          <div class="daily-peel-edge"></div>
+
+        </div>
+
+
+        <!-- ====================
+             今日の写真
+        ===================== -->
+
+        <button
+          id="dailyPhoto"
+          class="daily-photo-card"
+          type="button"
+        >
+
+          <img
+            id="dailyPhotoImage"
+            class="daily-photo-image"
+            alt=""
+          >
+
+
+          <span class="daily-photo-info">
+
+            <span class="daily-photo-main">
+
+              <strong
+                id="dailyPhotoTitle"
+              ></strong>
+
+              <span
+                id="dailyPhotoPlace"
+              ></span>
+
+            </span>
+
+
+            <span class="daily-photo-side">
+
+              <time
+                id="dailyPhotoDate"
+              ></time>
+
+              <span
+                id="dailyPhotoTags"
+              ></span>
+
+            </span>
+
           </span>
 
-          <span class="daily-photo-side">
-            <time id="dailyPhotoDate"></time>
-            <span id="dailyPhotoTags"></span>
-          </span>
-        </span>
-      </button>
+        </button>
+
+      </div>
+
     </section>
 
-    <section id="map" class="map-section">
+
+    <!-- ====================
+         PHOTO MAP
+    ===================== -->
+
+    <section
+      id="map"
+      class="map-section"
+    >
+
       <div class="map-heading">
+
         <div>
-          <p class="eyebrow">PHOTO MAP</p>
-          <h2>Where I’ve Been</h2>
-          <p class="map-description">
-            色のついた都道府県をクリックすると、そこで撮った写真が出てきます。
+
+          <p class="eyebrow">
+            PHOTO MAP
           </p>
+
+          <h2>
+            Where I’ve Been
+          </h2>
+
+          <p class="map-description">
+            色のついた都道府県をクリックすると、
+            そこで撮った写真が出てきます。
+          </p>
+
         </div>
+
 
         <div class="map-legend">
-          <span><i class="legend-dot visited"></i>PHOTOGRAPHED</span>
-          <span><i class="legend-dot selected"></i>SELECTED</span>
+
+          <span>
+            <i class="legend-dot visited"></i>
+            PHOTOGRAPHED
+          </span>
+
+          <span>
+            <i class="legend-dot selected"></i>
+            SELECTED
+          </span>
+
         </div>
+
       </div>
+
 
       <div class="map-layout">
-        <div id="japanMap" class="japan-map" aria-label="撮影地から写真を探す日本地図"></div>
+
+        <div
+          id="japanMap"
+          class="japan-map"
+          aria-label="撮影地から写真を探す日本地図"
+        ></div>
+
 
         <aside class="map-status">
-          <p class="eyebrow">SELECTED AREA</p>
-          <strong id="selectedPrefecture">ALL JAPAN</strong>
+
+          <p class="eyebrow">
+            SELECTED AREA
+          </p>
+
+          <strong id="selectedPrefecture">
+            ALL JAPAN
+          </strong>
+
           <span id="selectedCount"></span>
 
-          <button id="clearMapFilter" class="clear-map-button" type="button" hidden>
+
+          <button
+            id="clearMapFilter"
+            class="clear-map-button"
+            type="button"
+            hidden
+          >
             SHOW ALL JAPAN
           </button>
+
         </aside>
+
       </div>
+
     </section>
 
-    <section id="gallery" class="gallery-section">
+
+    <!-- ====================
+         GALLERY
+    ===================== -->
+
+    <section
+      id="gallery"
+      class="gallery-section"
+    >
+
       <div class="section-heading">
+
         <div>
-          <p class="eyebrow">GALLERY</p>
-          <h2 id="galleryHeading">Photographs</h2>
+
+          <p class="eyebrow">
+            GALLERY
+          </p>
+
+          <h2 id="galleryHeading">
+            Photographs
+          </h2>
+
         </div>
 
-        <div id="filters" class="filters" aria-label="写真カテゴリ"></div>
+
+        <div
+          id="filters"
+          class="filters"
+          aria-label="写真カテゴリ"
+        ></div>
+
       </div>
 
-      <div id="galleryGrid" class="gallery-grid"></div>
+
+      <div
+        id="galleryGrid"
+        class="gallery-grid"
+      ></div>
+
 
       <div class="more-wrap">
-        <button id="moreButton" class="more-button" type="button">
-          MORE <span id="moreCount"></span>
+
+        <button
+          id="moreButton"
+          class="more-button"
+          type="button"
+        >
+          MORE
+          <span id="moreCount"></span>
         </button>
+
       </div>
+
     </section>
 
-    <section id="about" class="about">
-      <p class="eyebrow">ABOUT</p>
+
+    <!-- ====================
+         ABOUT
+    ===================== -->
+
+    <section
+      id="about"
+      class="about"
+    >
+
+      <p class="eyebrow">
+        ABOUT
+      </p>
+
+
       <div class="about-grid">
-        <h2>好きな景色を、<br>好きなまま。</h2>
+
+        <h2>
+          好きな景色を、<br>
+          好きなまま。
+        </h2>
+
+
         <p>
           上手く撮れた日も、ちょっと違った日も。<br>
-          出かけた先で見つけた光や空気を、気ままに残しています。
+          出かけた先で見つけた光や空気を、
+          気ままに残しています。
         </p>
+
       </div>
+
     </section>
+
   </main>
 
+
+  <!-- ====================
+       FOOTER
+  ===================== -->
+
   <footer>
-    <span>© 2026 Saq8 PHOTO</span>
-    <a href="#">BACK TO TOP ↑</a>
+
+    <span>
+      © 2026 Saq8 PHOTO
+    </span>
+
+    <a href="#">
+      BACK TO TOP ↑
+    </a>
+
   </footer>
 
-  <dialog class="lightbox" id="lightbox">
-    <button class="close-button" id="closeLightbox" aria-label="閉じる">×</button>
-    <img class="lightbox-image" id="lightboxImage" alt="">
 
-   <div class="lightbox-caption">
-  <div class="lightbox-main">
-    <strong id="lightboxTitle"></strong>
-    <time id="lightboxDate"></time>
-    <span id="lightboxPlace"></span>
-  </div>
+  <!-- ====================
+       LIGHTBOX
+  ===================== -->
 
-  <span id="lightboxMeta"></span>
+  <dialog
+    class="lightbox"
+    id="lightbox"
+  >
 
-  <div class="lightbox-note">
-    <span class="lightbox-note-label">K'S NOTE</span>
-    <p id="lightboxNote" class="lightbox-note-text"></p>
-  </div>
-</div>
+    <button
+      class="close-button"
+      id="closeLightbox"
+      aria-label="閉じる"
+    >
+      ×
+    </button>
+
+
+    <img
+      class="lightbox-image"
+      id="lightboxImage"
+      alt=""
+    >
+
+
+    <div class="lightbox-caption">
+
+
+      <!-- 写真情報 -->
+
+      <div class="lightbox-main">
+
+        <strong
+          id="lightboxTitle"
+        ></strong>
+
+        <time
+          id="lightboxDate"
+        ></time>
+
+        <span
+          id="lightboxPlace"
+        ></span>
+
+      </div>
+
+
+      <!-- タグ -->
+
+      <span id="lightboxMeta"></span>
+
+
+      <!-- K'S NOTE -->
+
+      <div class="lightbox-note">
+
+        <span class="lightbox-note-label">
+          K'S NOTE
+        </span>
+
+        <p
+          id="lightboxNote"
+          class="lightbox-note-text"
+        ></p>
+
+      </div>
+
+    </div>
+
   </dialog>
 
-  <!-- クリックできる日本地図 -->
-  <script src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"></script>
-  <script src="script.js?v=13"></script>
+
+  <!-- ====================
+       JAPAN MAP
+  ===================== -->
+
+  <script
+    src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"
+  ></script>
+
+
+  <!-- ====================
+       MAIN SCRIPT
+  ===================== -->
+
+  <script src="script.js?v=14"></script>
+
 </body>
+
 </html>
