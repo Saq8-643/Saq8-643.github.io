@@ -31,7 +31,6 @@ const lightboxNote = document.getElementById("lightboxNote");
 const closeLightbox = document.getElementById("closeLightbox");
 
 const PAGE_SIZE = 12;
-
 const MAP_EMPTY = "#e6e6e2";
 const MAP_VISITED = "#938aaa";
 const MAP_SELECTED = "#171717";
@@ -39,39 +38,39 @@ const MAP_SELECTED = "#171717";
 let photos = [];
 let currentPhotos = [];
 let visibleCount = PAGE_SIZE;
-
 let currentTag = "all";
 let currentPrefectureCode = null;
 let currentPrefectureName = "";
-
 let resizeTimer;
 
 
-/* ---------------------------------
-   起動
---------------------------------- */
+/* ==============================
+   SITE LOAD
+============================== */
 
 async function loadSite() {
   try {
-    const response = await fetch("photos.json?v=14");
+    const response = await fetch("photos.json?v=16");
 
     if (!response.ok) {
-      throw new Error(
-        `photos.json の読み込みに失敗しました: ${response.status}`
-      );
+      throw new Error(`photos.json: ${response.status}`);
     }
 
     const data = await response.json();
 
-    heroPhoto.style.backgroundImage =
-      `url("${data.hero.file}")`;
+    if (heroPhoto && data.hero?.file) {
+      heroPhoto.style.backgroundImage =
+        `url("${data.hero.file}")`;
 
-    heroPhoto.setAttribute(
-      "aria-label",
-      data.hero.alt || "メイン写真"
+      heroPhoto.setAttribute(
+        "aria-label",
+        data.hero.alt || "メイン写真"
+      );
+    }
+
+    photos = sortPhotosByDate(
+      data.photos || []
     );
-
-    photos = sortPhotosByDate(data.photos);
 
     renderDailyPhoto();
     setupDailyPeel();
@@ -82,21 +81,25 @@ async function loadSite() {
   } catch (error) {
     console.error(error);
 
-    galleryGrid.innerHTML = `
-      <p class="empty-gallery">
-        写真一覧を読み込めませんでした。<br>
-        photos.json の書き方を確認してください。
-      </p>
-    `;
+    if (galleryGrid) {
+      galleryGrid.innerHTML = `
+        <p class="empty-gallery">
+          写真一覧を読み込めませんでした。<br>
+          photos.json を確認してください。
+        </p>
+      `;
+    }
 
-    moreButton.hidden = true;
+    if (moreButton) {
+      moreButton.hidden = true;
+    }
   }
 }
 
 
-/* ---------------------------------
-   日付順
---------------------------------- */
+/* ==============================
+   SORT
+============================== */
 
 function sortPhotosByDate(photoList) {
   return photoList
@@ -105,44 +108,52 @@ function sortPhotosByDate(photoList) {
       _originalIndex: index
     }))
     .sort((a, b) => {
-      const aHasDate = Boolean(a.date);
-      const bHasDate = Boolean(b.date);
 
-      if (aHasDate && bHasDate) {
-        const dateDiff =
-          new Date(b.date) - new Date(a.date);
+      if (a.date && b.date) {
+        const diff =
+          new Date(b.date) -
+          new Date(a.date);
 
-        if (dateDiff !== 0) {
-          return dateDiff;
-        }
-
-        return a._originalIndex - b._originalIndex;
+        return (
+          diff ||
+          a._originalIndex -
+          b._originalIndex
+        );
       }
 
-      if (aHasDate) return -1;
-      if (bHasDate) return 1;
+      if (a.date) return -1;
+      if (b.date) return 1;
 
-      return a._originalIndex - b._originalIndex;
+      return (
+        a._originalIndex -
+        b._originalIndex
+      );
     });
 }
 
 
-/* ---------------------------------
-   今日の1枚
---------------------------------- */
+/* ==============================
+   TODAY'S PHOTO
+============================== */
 
 function renderDailyPhoto() {
-  if (!photos.length) return;
+  if (
+    !photos.length ||
+    !dailyPhotoImage
+  ) {
+    return;
+  }
 
-  const todayKey = getJapanDateKey();
+  const todayKey =
+    getJapanDateKey();
 
-  const index =
-    getDailyPhotoIndex(
-      todayKey,
-      photos.length
-    );
-
-  const photo = photos[index];
+  const photo =
+    photos[
+      getDailyPhotoIndex(
+        todayKey,
+        photos.length
+      )
+    ];
 
   dailyPhotoImage.src =
     photo.file;
@@ -153,43 +164,47 @@ function renderDailyPhoto() {
     "";
 
   dailyPhotoTitle.textContent =
-    photo.title || "Untitled";
-
-  const place = [
-    photo.prefecture || "",
-    photo.place || ""
-  ]
-    .filter(Boolean)
-    .join(" / ");
+    photo.title ||
+    "Untitled";
 
   dailyPhotoPlace.textContent =
-    place;
+    [
+      photo.prefecture,
+      photo.place
+    ]
+      .filter(Boolean)
+      .join(" / ");
+
+  dailyPhotoTags.textContent =
+    (photo.tags || [])
+      .join(" / ");
+
+  dailyPhotoNote.textContent =
+    photo.alt || "";
 
   if (photo.date) {
     dailyPhotoDate.textContent =
       formatDate(photo.date);
 
-    dailyPhotoDate.hidden = false;
+    dailyPhotoDate.hidden =
+      false;
+
   } else {
-    dailyPhotoDate.textContent = "";
-    dailyPhotoDate.hidden = true;
+    dailyPhotoDate.textContent =
+      "";
+
+    dailyPhotoDate.hidden =
+      true;
   }
 
-  dailyPhotoTags.textContent =
-    (photo.tags || []).join(" / ");
-
-  dailyPhotoNote.textContent =
-    photo.alt || "";
-
-  dailyPhotoButton.onclick = () => {
-    openLightbox(photo);
-  };
+  dailyPhotoButton.onclick =
+    () => openLightbox(photo);
 }
 
 
-/* ---------------------------------
-   日本時間の「今日」を取得
---------------------------------- */
+/* ==============================
+   JAPAN DATE
+============================== */
 
 function getJapanDateKey() {
   const parts =
@@ -201,46 +216,35 @@ function getJapanDateKey() {
         month: "2-digit",
         day: "2-digit"
       }
-    ).formatToParts(new Date());
+    )
+      .formatToParts(
+        new Date()
+      );
 
-  const year =
+  const get = type =>
     parts.find(
       part =>
-        part.type === "year"
+        part.type === type
     ).value;
 
-  const month =
-    parts.find(
-      part =>
-        part.type === "month"
-    ).value;
-
-  const day =
-    parts.find(
-      part =>
-        part.type === "day"
-    ).value;
-
-  return `${year}-${month}-${day}`;
+  return `${get("year")}-${get("month")}-${get("day")}`;
 }
 
-
-/* ---------------------------------
-   日付から毎日同じ写真番号を作る
---------------------------------- */
 
 function getDailyPhotoIndex(
   dateKey,
   photoCount
 ) {
-  let hash = 2166136261;
+  let hash =
+    2166136261;
 
   for (
     let i = 0;
     i < dateKey.length;
     i++
   ) {
-    hash ^= dateKey.charCodeAt(i);
+    hash ^=
+      dateKey.charCodeAt(i);
 
     hash =
       Math.imul(
@@ -256,9 +260,23 @@ function getDailyPhotoIndex(
 }
 
 
-/* ---------------------------------
-   日本地図
---------------------------------- */
+function formatDate(
+  dateString
+) {
+  const [
+    year,
+    month,
+    day
+  ] =
+    dateString.split("-");
+
+  return `${year}.${month}.${day}`;
+}
+
+
+/* ==============================
+   MAP
+============================== */
 
 function getPhotographedPrefectureCodes() {
   return new Set(
@@ -280,6 +298,10 @@ function getPhotographedPrefectureCodes() {
 
 
 function renderJapanMap() {
+  if (!mapContainer) {
+    return;
+  }
+
   if (
     !window.jpmap ||
     !jpmap.japanMap
@@ -294,9 +316,10 @@ function renderJapanMap() {
     return;
   }
 
-  mapContainer.innerHTML = "";
+  mapContainer.innerHTML =
+    "";
 
-  const photographedCodes =
+  const photographed =
     getPhotographedPrefectureCodes();
 
   const areas = [];
@@ -306,18 +329,17 @@ function renderJapanMap() {
     code <= 47;
     code++
   ) {
-    let color = MAP_EMPTY;
+    let color =
+      photographed.has(code)
+        ? MAP_VISITED
+        : MAP_EMPTY;
 
     if (
-      photographedCodes.has(code)
+      currentPrefectureCode ===
+      code
     ) {
-      color = MAP_VISITED;
-    }
-
-    if (
-      currentPrefectureCode === code
-    ) {
-      color = MAP_SELECTED;
+      color =
+        MAP_SELECTED;
     }
 
     areas.push({
@@ -343,11 +365,14 @@ function renderJapanMap() {
       width,
       movesIslands: true,
       showsPrefectureName: true,
-      borderLineColor: "#ffffff",
+      borderLineColor:
+        "#ffffff",
 
       onSelect(data) {
         selectPrefecture(
-          Number(data.code),
+          Number(
+            data.code
+          ),
           data.name
         );
       }
@@ -363,47 +388,63 @@ function selectPrefecture(
   currentPrefectureCode =
     code;
 
-  const matchingPhoto =
+  currentPrefectureName =
     photos.find(
       photo =>
         Number(
           photo.prefectureCode
         ) === code
-    );
-
-  currentPrefectureName =
-    matchingPhoto?.prefecture ||
+    )?.prefecture ||
     name ||
     `PREFECTURE ${code}`;
 
-  currentTag = "all";
-  visibleCount = PAGE_SIZE;
+  currentTag =
+    "all";
 
-  setActiveTagButton("all");
+  visibleCount =
+    PAGE_SIZE;
+
+  setActiveTagButton(
+    "all"
+  );
 
   updateMapStatus();
   renderJapanMap();
 
   document
-    .getElementById("gallery")
-    .scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+    .getElementById(
+      "gallery"
+    )
+    ?.scrollIntoView({
+      behavior:
+        "smooth",
+      block:
+        "start"
     });
 
-  setTimeout(() => {
-    applyFilters();
-  }, 550);
+  setTimeout(
+    applyFilters,
+    500
+  );
 }
 
 
 function clearPrefecture() {
-  currentPrefectureCode = null;
-  currentPrefectureName = "";
-  currentTag = "all";
-  visibleCount = PAGE_SIZE;
+  currentPrefectureCode =
+    null;
 
-  setActiveTagButton("all");
+  currentPrefectureName =
+    "";
+
+  currentTag =
+    "all";
+
+  visibleCount =
+    PAGE_SIZE;
+
+  setActiveTagButton(
+    "all"
+  );
 
   updateMapStatus();
   renderJapanMap();
@@ -413,7 +454,16 @@ function clearPrefecture() {
 
 function updateMapStatus() {
   if (
-    currentPrefectureCode === null
+    !selectedPrefecture ||
+    !selectedCount ||
+    !galleryHeading
+  ) {
+    return;
+  }
+
+  if (
+    currentPrefectureCode ===
+    null
   ) {
     selectedPrefecture.textContent =
       "ALL JAPAN";
@@ -449,7 +499,9 @@ function updateMapStatus() {
 
   selectedCount.textContent =
     `${count} PHOTO${
-      count === 1 ? "" : "S"
+      count === 1
+        ? ""
+        : "S"
     }`;
 
   clearMapFilter.hidden =
@@ -460,25 +512,33 @@ function updateMapStatus() {
 }
 
 
-clearMapFilter.addEventListener(
-  "click",
-  clearPrefecture
-);
+clearMapFilter
+  ?.addEventListener(
+    "click",
+    clearPrefecture
+  );
 
 
-/* ---------------------------------
-   タグ
---------------------------------- */
+/* ==============================
+   FILTER
+============================== */
 
 function createFilters() {
-  const tags = [
-    ...new Set(
-      photos.flatMap(
-        photo =>
-          photo.tags || []
+  if (!filtersContainer) {
+    return;
+  }
+
+  const tags =
+    [
+      ...new Set(
+        photos.flatMap(
+          photo =>
+            photo.tags ||
+            []
+        )
       )
-    )
-  ].sort();
+    ]
+      .sort();
 
   filtersContainer.innerHTML =
     "";
@@ -491,15 +551,17 @@ function createFilters() {
     )
   );
 
-  tags.forEach(tag => {
-    filtersContainer.appendChild(
-      makeFilterButton(
-        tag,
-        tag,
-        false
-      )
-    );
-  });
+  tags.forEach(
+    tag => {
+      filtersContainer.appendChild(
+        makeFilterButton(
+          tag,
+          tag,
+          false
+        )
+      );
+    }
+  );
 }
 
 
@@ -529,8 +591,11 @@ function makeFilterButton(
   button.addEventListener(
     "click",
     () => {
-      currentTag = value;
-      visibleCount = PAGE_SIZE;
+      currentTag =
+        value;
+
+      visibleCount =
+        PAGE_SIZE;
 
       setActiveTagButton(
         value
@@ -544,57 +609,67 @@ function makeFilterButton(
 }
 
 
-function setActiveTagButton(value) {
+function setActiveTagButton(
+  value
+) {
   document
-    .querySelectorAll(".filter")
-    .forEach(button => {
-      button.classList.toggle(
-        "active",
-        button.dataset.filter ===
+    .querySelectorAll(
+      ".filter"
+    )
+    .forEach(
+      button => {
+        button.classList.toggle(
+          "active",
+          button.dataset.filter ===
           value
-      );
-    });
+        );
+      }
+    );
 }
 
 
-/* ---------------------------------
-   地図 + タグ
---------------------------------- */
-
 function applyFilters() {
   currentPhotos =
-    photos.filter(photo => {
-      const prefectureOK =
-        currentPrefectureCode ===
-          null ||
-        Number(
-          photo.prefectureCode
-        ) ===
-          currentPrefectureCode;
+    photos.filter(
+      photo => {
 
-      const tagOK =
-        currentTag === "all" ||
-        (photo.tags || [])
-          .includes(
-            currentTag
-          );
+        const prefectureOK =
+          currentPrefectureCode ===
+            null ||
+          Number(
+            photo.prefectureCode
+          ) ===
+            currentPrefectureCode;
 
-      return (
-        prefectureOK &&
-        tagOK
-      );
-    });
+        const tagOK =
+          currentTag ===
+            "all" ||
+          (photo.tags || [])
+            .includes(
+              currentTag
+            );
+
+        return (
+          prefectureOK &&
+          tagOK
+        );
+      }
+    );
 
   renderVisiblePhotos();
   updateMapStatus();
 }
 
 
-/* ---------------------------------
-   ギャラリー
---------------------------------- */
+/* ==============================
+   GALLERY
+============================== */
 
 function renderVisiblePhotos() {
+  if (!galleryGrid) {
+    return;
+  }
+
   galleryGrid.innerHTML =
     "";
 
@@ -605,7 +680,7 @@ function renderVisiblePhotos() {
     );
 
   if (
-    visiblePhotos.length === 0
+    !visiblePhotos.length
   ) {
     galleryGrid.innerHTML = `
       <p class="empty-gallery">
@@ -613,13 +688,24 @@ function renderVisiblePhotos() {
       </p>
     `;
 
-    moreButton.hidden = true;
+    moreButton.hidden =
+      true;
 
     return;
   }
 
+  const directions = [
+    [-180, 90, -7],
+    [160, -100, 6],
+    [-120, -140, -5],
+    [190, 80, 8],
+    [20, 150, -6],
+    [-170, 30, 7]
+  ];
+
   visiblePhotos.forEach(
     (photo, index) => {
+
       const item =
         document.createElement(
           "button"
@@ -627,19 +713,16 @@ function renderVisiblePhotos() {
 
       item.className =
         `gallery-item ${
-          photo.layout || ""
-        }`.trim();
+          photo.layout ||
+          ""
+        }`
+          .trim();
 
-      const directions = [
-        [-180, 90, -7],
-        [160, -100, 6],
-        [-120, -140, -5],
-        [190, 80, 8],
-        [20, 150, -6],
-        [-170, 30, 7]
-      ];
-
-      const [x, y, r] =
+      const [
+        x,
+        y,
+        r
+      ] =
         directions[
           index %
           directions.length
@@ -703,7 +786,8 @@ function renderVisiblePhotos() {
         );
 
       title.textContent =
-        photo.title || "";
+        photo.title ||
+        "";
 
       const meta =
         document.createElement(
@@ -726,9 +810,10 @@ function renderVisiblePhotos() {
 
       item.addEventListener(
         "click",
-        () => {
-          openLightbox(photo);
-        }
+        () =>
+          openLightbox(
+            photo
+          )
       );
 
       galleryGrid.appendChild(
@@ -746,7 +831,9 @@ function updateMoreButton() {
     currentPhotos.length -
     visibleCount;
 
-  if (remaining > 0) {
+  if (
+    remaining > 0
+  ) {
     moreButton.hidden =
       false;
 
@@ -768,22 +855,29 @@ function updateMoreButton() {
 }
 
 
-moreButton.addEventListener(
-  "click",
-  () => {
-    visibleCount +=
-      PAGE_SIZE;
+moreButton
+  ?.addEventListener(
+    "click",
+    () => {
+      visibleCount +=
+        PAGE_SIZE;
 
-    renderVisiblePhotos();
+      renderVisiblePhotos();
+    }
+  );
+
+
+/* ==============================
+   LIGHTBOX
+============================== */
+
+function openLightbox(
+  photo
+) {
+  if (!lightbox) {
+    return;
   }
-);
 
-
-/* ---------------------------------
-   拡大表示
---------------------------------- */
-
-function openLightbox(photo) {
   lightboxImage.src =
     photo.file;
 
@@ -793,7 +887,8 @@ function openLightbox(photo) {
     "";
 
   lightboxTitle.textContent =
-    photo.title || "";
+    photo.title ||
+    "";
 
   if (photo.date) {
     lightboxDate.textContent =
@@ -812,34 +907,27 @@ function openLightbox(photo) {
       true;
   }
 
-  const place = [
-    photo.prefecture || "",
-    photo.place || ""
-  ]
-    .filter(Boolean)
-    .join(" / ");
+  const place =
+    [
+      photo.prefecture,
+      photo.place
+    ]
+      .filter(Boolean)
+      .join(" / ");
 
-  if (place) {
-    lightboxPlace.textContent =
-      place;
+  lightboxPlace.textContent =
+    place;
 
-    lightboxPlace.hidden =
-      false;
+  lightboxPlace.hidden =
+    !place;
 
-  } else {
-    lightboxPlace.textContent =
-      "";
-
-    lightboxPlace.hidden =
-      true;
-  }
-
-  lightboxMeta.textContent = [
-    ...(photo.tags || []),
-    photo.meta || ""
-  ]
-    .filter(Boolean)
-    .join(" / ");
+  lightboxMeta.textContent =
+    [
+      ...(photo.tags || []),
+      photo.meta || ""
+    ]
+      .filter(Boolean)
+      .join(" / ");
 
   if (lightboxNote) {
     lightboxNote.textContent =
@@ -850,56 +938,46 @@ function openLightbox(photo) {
 }
 
 
-function formatDate(dateString) {
-  const [
-    year,
-    month,
-    day
-  ] =
-    dateString.split("-");
-
-  return `${year}.${month}.${day}`;
-}
+closeLightbox
+  ?.addEventListener(
+    "click",
+    () =>
+      lightbox.close()
+  );
 
 
-closeLightbox.addEventListener(
-  "click",
-  () => {
-    lightbox.close();
-  }
-);
+lightbox
+  ?.addEventListener(
+    "click",
+    event => {
+      const rect =
+        lightbox
+          .getBoundingClientRect();
 
+      const inside =
+        event.clientX >=
+          rect.left &&
+        event.clientX <=
+          rect.right &&
+        event.clientY >=
+          rect.top &&
+        event.clientY <=
+          rect.bottom;
 
-lightbox.addEventListener(
-  "click",
-  event => {
-    const rect =
-      lightbox
-        .getBoundingClientRect();
-
-    const inside =
-      event.clientX >=
-        rect.left &&
-      event.clientX <=
-        rect.right &&
-      event.clientY >=
-        rect.top &&
-      event.clientY <=
-        rect.bottom;
-
-    if (!inside) {
-      lightbox.close();
+      if (!inside) {
+        lightbox.close();
+      }
     }
-  }
-);
+  );
 
 
 document.addEventListener(
   "keydown",
   event => {
     if (
-      event.key === "Escape" &&
-      lightbox.open
+      event.key ===
+        "Escape" &&
+      lightbox?.open
     ) {
       lightbox.close();
     }
@@ -907,9 +985,9 @@ document.addEventListener(
 );
 
 
-/* ---------------------------------
-   地図のレスポンシブ再描画
---------------------------------- */
+/* ==============================
+   RESIZE
+============================== */
 
 window.addEventListener(
   "resize",
@@ -920,28 +998,26 @@ window.addEventListener(
 
     resizeTimer =
       setTimeout(
-        () => {
-          renderJapanMap();
-        },
+        renderJapanMap,
         180
       );
   }
 );
 
 
-/* ---------------------------------
-   クリックした場所に星
---------------------------------- */
+/* ==============================
+   CLICK STAR
+============================== */
 
 document.addEventListener(
   "click",
   event => {
+
     createStarBurst(
       event.clientX,
       event.clientY
     );
 
-    /* 約25クリックに1回クロ助 */
     if (
       Math.random() <
       0.04
@@ -962,15 +1038,16 @@ function createStarBurst(
     "·"
   ];
 
-  const starCount =
+  const count =
     3 +
     Math.floor(
-      Math.random() * 3
+      Math.random() *
+      3
     );
 
   for (
     let i = 0;
-    i < starCount;
+    i < count;
     i++
   ) {
     const star =
@@ -1005,22 +1082,20 @@ function createStarBurst(
       Math.random() *
       34;
 
-    const moveX =
-      Math.cos(angle) *
-      distance;
-
-    const moveY =
-      Math.sin(angle) *
-      distance;
-
     star.style.setProperty(
       "--star-x",
-      `${moveX}px`
+      `${
+        Math.cos(angle) *
+        distance
+      }px`
     );
 
     star.style.setProperty(
       "--star-y",
-      `${moveY}px`
+      `${
+        Math.sin(angle) *
+        distance
+      }px`
     );
 
     star.style.setProperty(
@@ -1045,24 +1120,23 @@ function createStarBurst(
 
     star.addEventListener(
       "animationend",
-      () => {
-        star.remove();
-      }
+      () =>
+        star.remove()
     );
   }
 }
 
 
-/* ---------------------------------
-   クロ助イベント
---------------------------------- */
+/* ==============================
+   CRO
+============================== */
 
 function showCrowEvent() {
-  if (hasActiveCrow()) {
-    return;
+  if (
+    !hasActiveCrow()
+  ) {
+    flyCrow();
   }
-
-  flyCrow();
 }
 
 
@@ -1075,12 +1149,10 @@ function hasActiveCrow() {
 }
 
 
-/* ---------------------------------
-   飛ぶクロ助
---------------------------------- */
-
 function flyCrow() {
-  if (hasActiveCrow()) {
+  if (
+    hasActiveCrow()
+  ) {
     return;
   }
 
@@ -1092,7 +1164,8 @@ function flyCrow() {
   crow.src =
     "crow-silhouette.png";
 
-  crow.alt = "";
+  crow.alt =
+    "";
 
   crow.setAttribute(
     "aria-hidden",
@@ -1103,7 +1176,8 @@ function flyCrow() {
     "flying-crow";
 
   const fromLeft =
-    Math.random() < 0.5;
+    Math.random() <
+    0.5;
 
   const size =
     65 +
@@ -1113,50 +1187,59 @@ function flyCrow() {
   const top =
     60 +
     Math.random() *
-    (
-      window.innerHeight *
-      0.45
-    );
+    window.innerHeight *
+    0.45;
 
-  crow.style.position =
-    "fixed";
+  const startX =
+    fromLeft
+      ? -(size + 20)
+      : window.innerWidth +
+        size +
+        20;
 
-  crow.style.zIndex =
-    "99999";
-
-  crow.style.top =
-    `${top}px`;
-
-  crow.style.width =
-    `${size}px`;
-
-  crow.style.height =
-    "auto";
-
-  crow.style.opacity =
-    "0.9";
-
-  crow.style.cursor =
-    "pointer";
-
-  crow.style.pointerEvents =
-    "auto";
-
-  crow.style.touchAction =
-    "manipulation";
-
-  if (fromLeft) {
-    crow.style.left =
-      `-${size + 20}px`;
-
-  } else {
-    crow.style.left =
-      `${
-        window.innerWidth +
+  const endX =
+    fromLeft
+      ? window.innerWidth +
         size +
         20
-      }px`;
+      : -(size + 20);
 
+  Object.assign(
+    crow.style,
+    {
+      position:
+        "fixed",
+
+      zIndex:
+        "99999",
+
+      top:
+        `${top}px`,
+
+      left:
+        `${startX}px`,
+
+      width:
+        `${size}px`,
+
+      height:
+        "auto",
+
+      opacity:
+        "0.9",
+
+      cursor:
+        "pointer",
+
+      pointerEvents:
+        "auto",
+
+      touchAction:
+        "manipulation"
+    }
+  );
+
+  if (!fromLeft) {
     crow.style.transform =
       "scaleX(-1)";
   }
@@ -1165,48 +1248,22 @@ function flyCrow() {
     crow
   );
 
-  /*
-    クロ助をタップ。
-    写真がある場所なら着地。
-    なければそのまま飛ぶ。
-  */
   crow.addEventListener(
     "click",
     event => {
       event.stopPropagation();
 
-      landCrow(crow);
+      landCrow(
+        crow
+      );
     }
   );
 
   crow.addEventListener(
     "error",
-    () => {
-      console.error(
-        "クロ助画像が見つかりません"
-      );
-
-      crow.remove();
-    }
+    () =>
+      crow.remove()
   );
-
-  const startX =
-    fromLeft
-      ? -(size + 20)
-      : (
-          window.innerWidth +
-          size +
-          20
-        );
-
-  const endX =
-    fromLeft
-      ? (
-          window.innerWidth +
-          size +
-          20
-        )
-      : -(size + 20);
 
   const animation =
     crow.animate(
@@ -1254,10 +1311,16 @@ function flyCrow() {
             0
         }
       ],
+
       {
-        duration: 4800,
-        easing: "linear",
-        fill: "forwards"
+        duration:
+          4800,
+
+        easing:
+          "linear",
+
+        fill:
+          "forwards"
       }
     );
 
@@ -1277,15 +1340,12 @@ function flyCrow() {
 }
 
 
-/* ---------------------------------
-   クロ助を写真へ着地
---------------------------------- */
-
 function landCrow(
   flyingCrow
 ) {
   if (
-    !flyingCrow?.isConnected
+    !flyingCrow
+      ?.isConnected
   ) {
     return;
   }
@@ -1296,53 +1356,55 @@ function landCrow(
 
   const crowX =
     crowRect.left +
-    crowRect.width / 2;
+    crowRect.width /
+    2;
 
   const crowY =
     crowRect.top +
-    crowRect.height / 2;
+    crowRect.height /
+    2;
 
-  /*
-    画面内に見えている
-    HERO・今日の1枚・
-    ギャラリーを候補にする
-  */
-  const candidates = [
-    heroPhoto,
-    dailyPhotoButton,
-    ...document
-      .querySelectorAll(
-        ".gallery-item"
-      )
-  ]
-    .filter(
-      element => {
-        if (!element) {
-          return false;
+  const candidates =
+    [
+      heroPhoto,
+      dailyPhotoButton,
+      ...document
+        .querySelectorAll(
+          ".gallery-item"
+        )
+    ]
+      .filter(
+        element => {
+          if (!element) {
+            return false;
+          }
+
+          const rect =
+            element
+              .getBoundingClientRect();
+
+          return (
+            rect.bottom >
+              0 &&
+            rect.top <
+              window.innerHeight &&
+            rect.right >
+              0 &&
+            rect.left <
+              window.innerWidth
+          );
         }
+      );
 
-        const rect =
-          element
-            .getBoundingClientRect();
-
-        return (
-          rect.bottom > 0 &&
-          rect.top <
-            window.innerHeight &&
-          rect.right > 0 &&
-          rect.left <
-            window.innerWidth
-        );
-      }
-    );
-
-  let nearest = null;
+  let nearest =
+    null;
 
   let nearestDistance =
     Infinity;
 
   candidates.forEach(
     element => {
+
       const rect =
         element
           .getBoundingClientRect();
@@ -1358,8 +1420,10 @@ function landCrow(
 
       const distance =
         Math.hypot(
-          crowX - nearestX,
-          crowY - rect.top
+          crowX -
+            nearestX,
+          crowY -
+            rect.top
         );
 
       if (
@@ -1375,19 +1439,10 @@ function landCrow(
     }
   );
 
-  /*
-    写真がなければ
-    クロ助は迷子にならず
-    そのまま飛ぶ
-  */
   if (!nearest) {
     return;
   }
 
-  /*
-    止まれる写真がある時だけ
-    飛行を停止
-  */
   if (
     flyingCrow
       ._flightAnimation
@@ -1396,9 +1451,6 @@ function landCrow(
       ._flightAnimation
       .cancel();
   }
-
-  flyingCrow.style.animation =
-    "none";
 
   flyingCrow.remove();
 
@@ -1414,7 +1466,8 @@ function landCrow(
   crow.src =
     "crow-perched.png";
 
-  crow.alt = "";
+  crow.alt =
+    "";
 
   crow.setAttribute(
     "aria-hidden",
@@ -1440,7 +1493,8 @@ function landCrow(
     );
 
   const perchY =
-    rect.top - 10;
+    rect.top -
+    10;
 
   crow.style.left =
     `${perchX}px`;
@@ -1448,16 +1502,11 @@ function landCrow(
   crow.style.top =
     `${perchY}px`;
 
-  /*
-    写真の中央を向く
-  */
-  const photoCenter =
-    rect.left +
-    rect.width / 2;
-
   if (
     perchX >
-    photoCenter
+    rect.left +
+    rect.width /
+    2
   ) {
     crow.classList.add(
       "flip"
@@ -1468,33 +1517,21 @@ function landCrow(
     crow
   );
 
-  /*
-    着地
-  */
   crow.style.animation =
     "crow-perch-in .35s ease-out forwards";
 
-  /*
-    ちょこん
-  */
   setTimeout(
     () => {
       if (
-        !crow.isConnected
+        crow.isConnected
       ) {
-        return;
+        crow.style.animation =
+          "crow-perch-idle 1.6s ease-in-out infinite";
       }
-
-      crow.style.animation =
-        "crow-perch-idle 1.6s ease-in-out infinite";
     },
     350
   );
 
-  /*
-    止まったクロ助を
-    タップすると再出発
-  */
   crow.addEventListener(
     "click",
     event => {
@@ -1508,39 +1545,32 @@ function landCrow(
 
   crow.addEventListener(
     "error",
-    () => {
-      crow.remove();
-    }
+    () =>
+      crow.remove()
   );
 
-  /*
-    放っておいても
-    8秒で帰る
-  */
   const leaveTimer =
     setTimeout(
-      () => {
+      () =>
         sendPerchedCrowFlying(
           crow
-        );
-      },
+        ),
       8000
     );
 
   crow.dataset.leaveTimer =
-    String(leaveTimer);
+    String(
+      leaveTimer
+    );
 }
 
-
-/* ---------------------------------
-   止まったクロ助が再出発
---------------------------------- */
 
 function sendPerchedCrowFlying(
   perchedCrow
 ) {
   if (
-    !perchedCrow?.isConnected
+    !perchedCrow
+      ?.isConnected
   ) {
     return;
   }
@@ -1563,6 +1593,7 @@ function sendPerchedCrowFlying(
 
   setTimeout(
     () => {
+
       if (
         perchedCrow
           .isConnected
@@ -1577,9 +1608,226 @@ function sendPerchedCrowFlying(
 }
 
 
-/* ---------------------------------
-   今日の1枚 ペリペリ
---------------------------------- */
+/* ==============================
+   DAILY PEEL STYLE
+============================== */
+
+function ensureDailyPeelStyles() {
+  if (
+    document.getElementById(
+      "dailyPeelRuntimeStyles"
+    )
+  ) {
+    return;
+  }
+
+  const style =
+    document.createElement(
+      "style"
+    );
+
+  style.id =
+    "dailyPeelRuntimeStyles";
+
+  style.textContent = `
+
+    .daily-photo-wrap{
+      position:relative !important;
+      width:100%;
+      overflow:hidden;
+    }
+
+    .daily-photo-card{
+      position:relative;
+      display:block;
+      width:100%;
+    }
+
+    .daily-peel-cover{
+      position:absolute !important;
+      top:0;
+      left:0;
+      z-index:30;
+      width:100%;
+      aspect-ratio:4 / 5;
+
+      background:
+        linear-gradient(
+          110deg,
+          #f1f1ee 0%,
+          #fafaf7 58%,
+          #ecece8 100%
+        );
+
+      border:
+        1px solid
+        rgba(0,0,0,.08);
+
+      cursor:grab;
+      touch-action:none;
+      user-select:none;
+      -webkit-user-select:none;
+
+      overflow:hidden;
+
+      will-change:
+        transform,
+        opacity;
+    }
+
+    .daily-peel-cover:active{
+      cursor:grabbing;
+    }
+
+    .daily-peel-inner{
+      position:absolute;
+      inset:0;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+
+      padding:40px;
+
+      text-align:center;
+
+      pointer-events:none;
+    }
+
+    .daily-peel-small{
+      margin-bottom:18px;
+
+      color:
+        var(
+          --muted,
+          #6e6e6a
+        );
+
+      font-size:9px;
+      font-weight:600;
+      letter-spacing:.2em;
+    }
+
+    .daily-peel-inner strong{
+      font-size:
+        clamp(
+          20px,
+          3vw,
+          38px
+        );
+
+      font-weight:500;
+      letter-spacing:-.03em;
+    }
+
+    .daily-peel-hint{
+      position:absolute;
+      right:30px;
+      bottom:28px;
+
+      color:
+        var(
+          --muted,
+          #6e6e6a
+        );
+
+      font-size:9px;
+      font-weight:600;
+      letter-spacing:.18em;
+
+      animation:
+        daily-peel-hint
+        1.8s
+        ease-in-out
+        infinite;
+    }
+
+    .daily-peel-edge{
+      position:absolute;
+      top:0;
+      right:-20px;
+
+      width:40px;
+      height:100%;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,0,0,.08),
+          rgba(255,255,255,.85)
+        );
+
+      opacity:.45;
+
+      pointer-events:none;
+    }
+
+    .daily-section:not(.is-revealed)
+    .daily-photo-info{
+      opacity:.18;
+      filter:blur(3px);
+      pointer-events:none;
+    }
+
+    .daily-section:not(.is-revealed)
+    .daily-note-text{
+      opacity:0;
+    }
+
+    .daily-photo-info,
+    .daily-note-text{
+      transition:
+        opacity .65s ease,
+        filter .65s ease;
+    }
+
+    .daily-section.is-revealed
+    .daily-photo-info,
+
+    .daily-section.is-revealed
+    .daily-note-text{
+      opacity:1;
+      filter:none;
+    }
+
+    @keyframes daily-peel-hint{
+
+      0%,
+      100%{
+        transform:
+          translateX(0);
+      }
+
+      50%{
+        transform:
+          translateX(7px);
+      }
+    }
+
+    @media(max-width:780px){
+
+      .daily-peel-inner{
+        padding:24px;
+      }
+
+      .daily-peel-hint{
+        right:20px;
+        bottom:20px;
+      }
+    }
+
+  `;
+
+  document.head.appendChild(
+    style
+  );
+}
+
+
+/* ==============================
+   DAILY PEEL
+============================== */
 
 function setupDailyPeel() {
   if (
@@ -1589,18 +1837,65 @@ function setupDailyPeel() {
     return;
   }
 
+  ensureDailyPeelStyles();
+
+  /*
+    新しい保存キー。
+    今までの失敗テストの記録に
+    邪魔されない。
+  */
+
+  const STORAGE_KEY =
+    "saq8DailyPhotoOpenedV3";
+
   const todayKey =
     getJapanDateKey();
 
   const savedDate =
     localStorage.getItem(
-      "dailyPhotoOpened"
+      STORAGE_KEY
     );
 
   /*
-    今日すでに開けていたら
-    最初から写真を表示
+    初期状態
   */
+
+  dailySection
+    .classList
+    .remove(
+      "is-revealed"
+    );
+
+  dailyPeelCover
+    .style
+    .pointerEvents =
+      "auto";
+
+  dailyPeelCover
+    .style
+    .opacity =
+      "1";
+
+  dailyPeelCover
+    .style
+    .transform =
+      "translateX(0) rotate(0deg)";
+
+  dailyPeelCover
+    .style
+    .boxShadow =
+      "none";
+
+  dailyPeelCover
+    .style
+    .transition =
+      "none";
+
+
+  /*
+    今日すでに開けた場合
+  */
+
   if (
     savedDate ===
     todayKey
@@ -1612,6 +1907,7 @@ function setupDailyPeel() {
     return;
   }
 
+
   let dragging =
     false;
 
@@ -1621,127 +1917,225 @@ function setupDailyPeel() {
   let currentX =
     0;
 
+  let activePointerId =
+    null;
+
+
   /*
-    カバーを触った時に
-    親の「写真を開くクリック」
-    が発動しないようにする
+    ブラウザ標準の
+    ドラッグを止める
   */
-  dailyPeelCover.addEventListener(
-    "click",
-    event => {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  );
 
-  dailyPeelCover.addEventListener(
-    "pointerdown",
-    event => {
-      dragging = true;
+  dailyPeelCover
+    .addEventListener(
+      "dragstart",
+      event =>
+        event.preventDefault()
+    );
 
-      startX =
-        event.clientX;
 
-      currentX = 0;
+  /*
+    ペリペリ開始
+  */
 
-      dailyPeelCover
-        .setPointerCapture(
+  dailyPeelCover
+    .addEventListener(
+      "pointerdown",
+      event => {
+
+        if (
+          event.pointerType ===
+            "mouse" &&
+          event.button !==
+            0
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+
+        dragging =
+          true;
+
+        activePointerId =
+          event.pointerId;
+
+        startX =
+          event.clientX;
+
+        currentX =
+          0;
+
+        dailyPeelCover
+          .style
+          .transition =
+            "none";
+
+        try {
+          dailyPeelCover
+            .setPointerCapture(
+              event.pointerId
+            );
+
+        } catch (_) {}
+      }
+    );
+
+
+  /*
+    ペリペリ中
+  */
+
+  dailyPeelCover
+    .addEventListener(
+      "pointermove",
+      event => {
+
+        if (
+          !dragging ||
+          event.pointerId !==
+            activePointerId
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+
+        const width =
+          Math.max(
+            dailyPeelCover
+              .getBoundingClientRect()
+              .width,
+            1
+          );
+
+        currentX =
+          Math.min(
+            Math.max(
+              0,
+              event.clientX -
+              startX
+            ),
+            width
+          );
+
+        const progress =
+          currentX /
+          width;
+
+        dailyPeelCover
+          .style
+          .transform =
+            `translateX(${currentX}px) rotate(${progress * 2}deg)`;
+
+        dailyPeelCover
+          .style
+          .boxShadow =
+            `${-24 * progress}px 10px ${42 * progress}px rgba(0,0,0,${0.20 * progress})`;
+      }
+    );
+
+
+  /*
+    指を離す
+  */
+
+  dailyPeelCover
+    .addEventListener(
+      "pointerup",
+      event => {
+
+        if (
+          !dragging ||
+          event.pointerId !==
+            activePointerId
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+
+        finishPointer(
           event.pointerId
         );
 
-      dailyPeelCover
-        .style
-        .transition =
-          "none";
-    }
-  );
-
-  dailyPeelCover.addEventListener(
-    "pointermove",
-    event => {
-      if (!dragging) {
-        return;
+        finishDailyPeel();
       }
+    );
 
-      const movement =
-        Math.max(
-          0,
-          event.clientX -
-          startX
+
+  /*
+    操作キャンセル
+  */
+
+  dailyPeelCover
+    .addEventListener(
+      "pointercancel",
+      event => {
+
+        if (
+          !dragging ||
+          event.pointerId !==
+            activePointerId
+        ) {
+          return;
+        }
+
+        finishPointer(
+          event.pointerId
         );
 
-      const width =
-        dailyPeelCover
-          .offsetWidth;
+        resetDailyPeel();
+      }
+    );
 
-      currentX =
-        Math.min(
-          movement,
-          width
+
+  function finishPointer(
+    pointerId
+  ) {
+    dragging =
+      false;
+
+    activePointerId =
+      null;
+
+    try {
+      dailyPeelCover
+        .releasePointerCapture(
+          pointerId
         );
 
-      const progress =
-        currentX /
-        width;
+    } catch (_) {}
+  }
 
-      dailyPeelCover
-        .style
-        .transform =
-          `translateX(${currentX}px) rotate(${progress * 1.5}deg)`;
 
-      dailyPeelCover
-        .style
-        .boxShadow =
-          `${-18 * progress}px 8px ${35 * progress}px rgba(0,0,0,${0.18 * progress})`;
-    }
-  );
-
-  dailyPeelCover.addEventListener(
-    "pointerup",
-    () => {
-      if (!dragging) {
-        return;
-      }
-
-      dragging = false;
-
-      finishDailyPeel();
-    }
-  );
-
-  dailyPeelCover.addEventListener(
-    "pointercancel",
-    () => {
-      if (!dragging) {
-        return;
-      }
-
-      dragging = false;
-
-      resetDailyPeel();
-    }
-  );
-
+  /*
+    開封判定
+  */
 
   function finishDailyPeel() {
     const width =
-      dailyPeelCover
-        .offsetWidth;
+      Math.max(
+        dailyPeelCover
+          .getBoundingClientRect()
+          .width,
+        1
+      );
 
     const progress =
       currentX /
       width;
 
     /*
-      45%以上めくったら
-      OPEN成功
+      35％まで引けたら成功
     */
+
     if (
       progress >=
-      0.45
+      0.35
     ) {
       localStorage.setItem(
-        "dailyPhotoOpened",
+        STORAGE_KEY,
         todayKey
       );
 
@@ -1755,11 +2149,15 @@ function setupDailyPeel() {
   }
 
 
+  /*
+    足りなければ戻る
+  */
+
   function resetDailyPeel() {
     dailyPeelCover
       .style
       .transition =
-        "transform .45s ease, box-shadow .45s ease";
+        "transform .48s cubic-bezier(.2,.8,.2,1), box-shadow .48s ease";
 
     dailyPeelCover
       .style
@@ -1770,13 +2168,16 @@ function setupDailyPeel() {
       .style
       .boxShadow =
         "none";
+
+    currentX =
+      0;
   }
 }
 
 
-/* ---------------------------------
-   今日の1枚を開く
---------------------------------- */
+/* ==============================
+   REVEAL DAILY PHOTO
+============================== */
 
 function revealDailyPhoto(
   withEffect = true
@@ -1788,75 +2189,131 @@ function revealDailyPhoto(
     return;
   }
 
-  dailySection.classList.add(
-    "is-revealed"
-  );
+  dailySection
+    .classList
+    .add(
+      "is-revealed"
+    );
 
-  dailyPeelCover.classList.add(
-    "is-finishing"
-  );
+  dailyPeelCover
+    .style
+    .pointerEvents =
+      "none";
+
+
+  /*
+    今日すでに開けてた場合
+  */
+
+  if (!withEffect) {
+    dailyPeelCover
+      .style
+      .transition =
+        "none";
+
+    dailyPeelCover
+      .style
+      .transform =
+        "translateX(110%) rotate(1.5deg)";
+
+    dailyPeelCover
+      .style
+      .opacity =
+        "0";
+
+    dailyPeelCover
+      .style
+      .boxShadow =
+        "none";
+
+    return;
+  }
+
+
+  /*
+    ペリッと最後まで抜ける
+  */
+
+  dailyPeelCover
+    .style
+    .transition =
+      "transform .85s cubic-bezier(.16,.84,.24,1), opacity .55s ease, box-shadow .55s ease";
+
 
   requestAnimationFrame(
     () => {
-      dailyPeelCover
-        .classList
-        .add(
-          "is-open"
-        );
+
+      requestAnimationFrame(
+        () => {
+
+          dailyPeelCover
+            .style
+            .transform =
+              "translateX(110%) rotate(2deg)";
+
+          dailyPeelCover
+            .style
+            .opacity =
+              "0";
+
+          dailyPeelCover
+            .style
+            .boxShadow =
+              "-30px 10px 45px rgba(0,0,0,.14)";
+        }
+      );
     }
   );
 
+
   /*
-    開いた瞬間だけ
-    星をいつもより多めに
+    開封時の星
   */
-  if (
-    withEffect &&
-    typeof createStarBurst ===
-      "function"
-  ) {
-    const rect =
-      dailyPhotoImage
-        .getBoundingClientRect();
 
-    const centerX =
-      rect.left +
-      rect.width / 2;
+  const rect =
+    dailyPhotoImage
+      .getBoundingClientRect();
 
-    const centerY =
-      rect.top +
-      rect.height / 2;
+  const centerX =
+    rect.left +
+    rect.width /
+    2;
 
-    createStarBurst(
-      centerX,
-      centerY
-    );
+  const centerY =
+    rect.top +
+    rect.height /
+    2;
 
-    setTimeout(
-      () => {
-        createStarBurst(
-          centerX - 45,
-          centerY + 25
-        );
-      },
-      120
-    );
 
-    setTimeout(
-      () => {
-        createStarBurst(
-          centerX + 55,
-          centerY - 15
-        );
-      },
-      240
-    );
-  }
+  createStarBurst(
+    centerX,
+    centerY
+  );
+
+
+  setTimeout(
+    () =>
+      createStarBurst(
+        centerX - 50,
+        centerY + 28
+      ),
+    120
+  );
+
+
+  setTimeout(
+    () =>
+      createStarBurst(
+        centerX + 60,
+        centerY - 18
+      ),
+    240
+  );
 }
 
 
-/* ---------------------------------
+/* ==============================
    GO
---------------------------------- */
+============================== */
 
 loadSite();
