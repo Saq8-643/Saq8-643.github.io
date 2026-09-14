@@ -753,6 +753,106 @@
         "ARCHITECTURE"
       ],
       "prefectureCode": 23
-    }
+    },
+    {
+  "file": "landscape12.jpg",
+  "title": "Under the Echizen Sky",
+  "date": "2026-09-12",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["LANDSCAPE", "TRAVEL"],
+  "alt": "大きなECHIZENの文字の向こうに、雲がいっぱいに広がっていた。旅の終わり際まで、空はまだ見飽きる暇をくれない。"
+},
+{
+  "file": "nunu20.jpg",
+  "title": "Breakfast by the Sea",
+  "date": "2026-09-12",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["NUIKATSU", "TRAVEL"],
+  "alt": "海を目の前にして、ふたりの朝の時間。小さな椅子とテーブルまで並べれば、ここもちゃんとふたりのキャンプサイトになる。"
+},
+{
+  "file": "landscape13.jpg",
+  "title": "A Break in the Clouds",
+  "date": "2026-09-11",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["LANDSCAPE", "TRAVEL"],
+  "alt": "厚い雲の切れ間から、夕日が海へ光を落としていた。隠れていた太陽が最後に見せてくれた、ほんの短い時間。"
+},
+{
+  "file": "landscape14.jpg",
+  "title": "Sailing into Dusk",
+  "date": "2026-09-11",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["LANDSCAPE", "TRAVEL"],
+  "alt": "夕焼けの細い光の上を、一隻の船がゆっくり進んでいた。遠くへ向かう姿だけが、暮れていく海に残っていた。"
+},
+{
+  "file": "night4.jpg",
+  "title": "Stars over Echizen",
+  "date": "2026-09-11",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["NIGHT", "LANDSCAPE", "TRAVEL"],
+  "alt": "山の輪郭が闇に沈むと、その上には数えきれない星が残った。海辺の夜は暗いほど、空の広さを教えてくれる。"
+},
+{
+  "file": "night5.jpg",
+  "title": "A River of Stars",
+  "date": "2026-09-11",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["NIGHT", "LANDSCAPE", "TRAVEL"],
+  "alt": "暗い空の真ん中を、淡い星の帯が縦に流れていた。目では追いきれなかった夜の光が、写真の中でゆっくり姿を現した。"
+},
+{
+  "file": "landscape15.jpg",
+  "title": "Morning by the Sea",
+  "date": "2026-09-12",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["LANDSCAPE", "TRAVEL"],
+  "alt": "夜が明けた海に、淡い水色と橙色がゆっくり混ざっていく。昨日と同じ海なのに、朝にはまるで別の顔をしていた。"
+},
+{
+  "file": "landscape16.jpg",
+  "title": "Between Two Sails",
+  "date": "2026-09-12",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["LANDSCAPE", "TRAVEL"],
+  "alt": "広い海の両端に、小さな帆がふたつ。離れて進む船のあいだには、静かな水平線だけが続いていた。"
+},
+{
+  "file": "landscape17.jpg",
+  "title": "Quiet Morning Tide",
+  "date": "2026-09-12",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["LANDSCAPE", "TRAVEL"],
+  "alt": "岩のあいだを穏やかな朝の海が満たしていた。昨夜の暗さが嘘みたいに、静かで青い時間だった。"
+},
+{
+  "file": "nunu21.jpg",
+  "title": "Two by the Blue Sea",
+  "date": "2026-09-12",
+  "prefecture": "福井県",
+  "prefectureCode": 18,
+  "place": "越前渚オートキャンプ場",
+  "tags": ["NUIKATSU", "TRAVEL"],
+  "alt": "青い海を背中に、ふたり並んで記念写真。旅先の景色がどれだけ広くても、ふたりでいるとちゃんといつもの顔になる。"
+}
   ]
 }
