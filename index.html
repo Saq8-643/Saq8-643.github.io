@@ -1067,11 +1067,41 @@
        SUPABASE
     ========================================== */
 
-    const saq8Db =
-      window.supabase.createClient(
-        window.SAQ8_SUPABASE_URL,
-        window.SAQ8_SUPABASE_PUBLISHABLE_KEY
-      );
+    function saq8GetDb() {
+
+  if (window.__SAQ8_DB_CLIENT) {
+    return window.__SAQ8_DB_CLIENT;
+  }
+
+  if (
+    !window.supabase ||
+    typeof window.supabase.createClient !== "function"
+  ) {
+    throw new Error(
+      "Supabaseライブラリを読み込めませんでした"
+    );
+  }
+
+  if (!window.SAQ8_SUPABASE_URL) {
+    throw new Error(
+      "Supabase URLを読み込めませんでした"
+    );
+  }
+
+  if (!window.SAQ8_SUPABASE_PUBLISHABLE_KEY) {
+    throw new Error(
+      "Supabase Publishable Keyを読み込めませんでした"
+    );
+  }
+
+  window.__SAQ8_DB_CLIENT =
+    window.supabase.createClient(
+      window.SAQ8_SUPABASE_URL,
+      window.SAQ8_SUPABASE_PUBLISHABLE_KEY
+    );
+
+  return window.__SAQ8_DB_CLIENT;
+}
 
 
 
@@ -1297,7 +1327,7 @@
           data,
           error
         } =
-          await saq8Db.rpc(
+          await saq8GetDb().rpc(
             "get_photo_like_count",
             {
               p_photo_id:
@@ -1413,10 +1443,10 @@
         const {
           error
         } =
-          await saq8Db
-            .from(
-              "photo_likes"
-            )
+          await saq8GetDb()
+  .from(
+    "photo_likes"
+  )
             .insert({
               photo_id:
                 photoId,
@@ -1668,10 +1698,10 @@
           data,
           error
         } =
-          await saq8Db
-            .from(
-              "photo_comments"
-            )
+          await saq8GetDb()
+  .from(
+    "photo_comments"
+  )
             .select(
               "id, display_name, body, created_at"
             )
@@ -1949,10 +1979,10 @@
         const {
           error
         } =
-          await saq8Db
-            .from(
-              "photo_comments"
-            )
+          await saq8GetDb()
+  .from(
+    "photo_comments"
+  )
             .insert({
               photo_id:
                 photoId,
