@@ -1,3 +1,4 @@
+alert("SOCIAL JS START");
 /* =========================================
    Saq8 PHOTO
    LIKE + COMMENTS
