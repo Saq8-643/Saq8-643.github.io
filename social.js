@@ -1,222 +1,171 @@
 (() => {
-  const start = () => {
+  if (window.__SAQ8_SOCIAL__) return;
+  window.__SAQ8_SOCIAL__ = true;
 
-    const url = window.SAQ8_SUPABASE_URL;
-    const key = window.SAQ8_SUPABASE_PUBLISHABLE_KEY;
+  const url = window.SAQ8_SUPABASE_URL;
+  const key = window.SAQ8_SUPABASE_PUBLISHABLE_KEY;
 
-    const lightbox = document.getElementById("lightbox");
-    const image = document.getElementById("lightboxImage");
+  if (!url || !key || !window.supabase) {
+    console.error("Saq8 Social: Supabase connection error");
+    return;
+  }
 
-    const likeButton = document.getElementById("photoLikeButton");
-    const likeHeart = document.getElementById("photoLikeHeart");
-    const likeCount = document.getElementById("photoLikeCount");
-
-    const commentCount = document.getElementById("commentCount");
-    const commentsList = document.getElementById("commentsList");
-    const commentForm = document.getElementById("commentForm");
-    const commentName = document.getElementById("commentName");
-    const commentBody = document.getElementById("commentBody");
-    const commentSend = document.getElementById("commentSend");
-    const message = document.getElementById("socialMessage");
+  const db = window.supabase.createClient(url, key);
 
 
-    if (
-      !lightbox ||
-      !image ||
-      !likeButton ||
-      !likeHeart ||
-      !likeCount ||
-      !commentCount ||
-      !commentsList ||
-      !commentForm ||
-      !commentName ||
-      !commentBody ||
-      !commentSend ||
-      !message
-    ) {
-      console.error("Saq8 Social: HTML element missing");
-      return;
+  function el(id) {
+    return document.getElementById(id);
+  }
+
+
+  function message(text) {
+    const target = el("socialMessage");
+
+    if (target) {
+      target.textContent = text;
+    }
+  }
+
+
+  function getPhotoId() {
+    const image = el("lightboxImage");
+
+    if (!image) return "";
+
+    const src = image.getAttribute("src");
+
+    if (!src) return "";
+
+    return decodeURIComponent(
+      src.split("?")[0].split("/").pop() || ""
+    );
+  }
+
+
+  function getVisitorId() {
+    const storageKey = "saq8VisitorId";
+
+    let id = localStorage.getItem(storageKey);
+
+    if (!id) {
+      id =
+        window.crypto?.randomUUID?.() ||
+        `${Date.now()}-${Math.random()}`;
+
+      localStorage.setItem(storageKey, id);
     }
 
-
-    if (!url || !key || !window.supabase) {
-      message.textContent = "DATABASE CONNECTION ERROR";
-      return;
-    }
+    return id;
+  }
 
 
-    const db = window.supabase.createClient(url, key);
+  async function makeVisitorHash(photoId) {
+    const text =
+      `${getVisitorId()}:${photoId}`;
 
+    const bytes =
+      new TextEncoder().encode(text);
 
-    function getPhotoId() {
-      const src = image.getAttribute("src");
-
-      if (!src) return "";
-
-      return decodeURIComponent(
-        src.split("?")[0].split("/").pop() || ""
-      );
-    }
-
-
-    function getVisitorId() {
-      const storageKey = "saq8VisitorId";
-
-      let id = localStorage.getItem(storageKey);
-
-      if (!id) {
-        id = crypto.randomUUID();
-        localStorage.setItem(storageKey, id);
-      }
-
-      return id;
-    }
-
-
-    async function makeVisitorHash(photoId) {
-      const text = `${getVisitorId()}:${photoId}`;
-
-      const bytes = new TextEncoder().encode(text);
-
-      const digest = await crypto.subtle.digest(
+    const digest =
+      await crypto.subtle.digest(
         "SHA-256",
         bytes
       );
 
-      return Array.from(new Uint8Array(digest))
-        .map(value =>
-          value.toString(16).padStart(2, "0")
-        )
-        .join("");
-    }
+    return Array.from(
+      new Uint8Array(digest)
+    )
+      .map(v =>
+        v.toString(16).padStart(2, "0")
+      )
+      .join("");
+  }
 
 
-    function likeStorageKey(photoId) {
-      return `saq8Liked:${photoId}`;
-    }
+  function likeKey(photoId) {
+    return `saq8Liked:${photoId}`;
+  }
 
 
-    function updateHeart(photoId) {
-      const liked =
-        localStorage.getItem(
-          likeStorageKey(photoId)
-        ) === "1";
+  function showHeart(photoId) {
+    const heart = el("photoLikeHeart");
 
-      likeHeart.textContent = liked ? "♥" : "♡";
+    if (!heart) return;
 
-      likeButton.classList.toggle(
-        "is-liked",
-        liked
-      );
-    }
+    const liked =
+      localStorage.getItem(
+        likeKey(photoId)
+      ) === "1";
+
+    heart.textContent =
+      liked ? "♥" : "♡";
+  }
 
 
-    async function loadLikes(photoId) {
-      if (!photoId) return;
+  async function loadLikes(photoId) {
+    const count = el("photoLikeCount");
 
-      likeCount.textContent = "…";
+    if (!count || !photoId) return;
 
-      const { data, error } = await db.rpc(
+    count.textContent = "…";
+
+    const { data, error } =
+      await db.rpc(
         "get_photo_like_count",
         {
           p_photo_id: photoId
         }
       );
 
-      if (error) {
-        console.error(error);
-        likeCount.textContent = "—";
-        message.textContent =
-          `LIKE ERROR: ${error.message}`;
-        return;
-      }
+    if (error) {
+      console.error(error);
 
-      likeCount.textContent =
-        String(Number(data || 0));
+      count.textContent = "—";
 
-      updateHeart(photoId);
+      message(
+        `LIKE ERROR: ${error.message}`
+      );
+
+      return;
     }
 
+    count.textContent =
+      String(Number(data || 0));
 
-    likeButton.addEventListener(
-      "click",
-      async event => {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        const photoId = getPhotoId();
-
-        if (!photoId) {
-          message.textContent =
-            "写真を認識できませんでした。";
-          return;
-        }
+    showHeart(photoId);
+  }
 
 
-        if (
-          localStorage.getItem(
-            likeStorageKey(photoId)
-          ) === "1"
-        ) {
-          message.textContent =
-            "この写真にはいいね済みです。";
-          return;
-        }
+  function makeCommentElement(comment) {
+    const item =
+      document.createElement("article");
+
+    item.className = "comment-item";
 
 
-        likeButton.disabled = true;
-        message.textContent = "送信中…";
+    const header =
+      document.createElement("div");
+
+    header.className = "comment-header";
 
 
-        try {
-          const visitorHash =
-            await makeVisitorHash(photoId);
+    const name =
+      document.createElement("span");
 
-          const { error } = await db
-            .from("photo_likes")
-            .insert({
-              photo_id: photoId,
-              visitor_hash: visitorHash
-            });
+    name.className = "comment-name";
+
+    name.textContent =
+      comment.display_name ||
+      "Anonymous";
 
 
-          if (
-            error &&
-            error.code !== "23505"
-          ) {
-            throw error;
-          }
+    const date =
+      document.createElement("time");
 
+    date.className = "comment-date";
 
-          localStorage.setItem(
-            likeStorageKey(photoId),
-            "1"
-          );
-
-          message.textContent =
-            "いいねしました。";
-
-          await loadLikes(photoId);
-
-        } catch (error) {
-          console.error(error);
-
-          message.textContent =
-            `LIKE ERROR: ${
-              error.message ||
-              "送信できませんでした"
-            }`;
-
-        } finally {
-          likeButton.disabled = false;
-        }
-      }
-    );
-
-
-    function formatDate(value) {
-      return new Intl.DateTimeFormat(
+    date.textContent =
+      new Intl.DateTimeFormat(
         "ja-JP",
         {
           timeZone: "Asia/Tokyo",
@@ -224,28 +173,39 @@
           month: "2-digit",
           day: "2-digit"
         }
-      ).format(new Date(value));
+      ).format(
+        new Date(comment.created_at)
+      );
+
+
+    const body =
+      document.createElement("p");
+
+    body.className = "comment-body";
+
+    body.textContent = comment.body;
+
+
+    header.append(name, date);
+    item.append(header, body);
+
+    return item;
+  }
+
+
+  async function loadComments(photoId) {
+    const list = el("commentsList");
+    const count = el("commentCount");
+
+    if (!list || !count || !photoId) {
+      return;
     }
 
-
-    async function loadComments(photoId) {
-      if (!photoId) return;
-
-      commentsList.innerHTML = "";
-
-      const loading =
-        document.createElement("p");
-
-      loading.className =
-        "comments-empty";
-
-      loading.textContent =
-        "読み込み中…";
-
-      commentsList.appendChild(loading);
+    list.textContent = "読み込み中…";
 
 
-      const { data, error } = await db
+    const { data, error } =
+      await db
         .from("photo_comments")
         .select(
           "id, display_name, body, created_at"
@@ -259,178 +219,247 @@
         .limit(50);
 
 
-      if (error) {
-        console.error(error);
+    if (error) {
+      console.error(error);
 
-        commentsList.innerHTML = "";
+      list.textContent =
+        "コメントを読み込めませんでした。";
 
-        const errorText =
-          document.createElement("p");
+      message(
+        `COMMENT ERROR: ${error.message}`
+      );
 
-        errorText.className =
-          "comments-empty";
-
-        errorText.textContent =
-          "コメントを読み込めませんでした。";
-
-        commentsList.appendChild(
-          errorText
-        );
-
-        message.textContent =
-          `COMMENT ERROR: ${error.message}`;
-
-        return;
-      }
-
-
-      const comments = data || [];
-
-      commentCount.textContent =
-        String(comments.length);
-
-      commentsList.innerHTML = "";
-
-
-      if (!comments.length) {
-        const empty =
-          document.createElement("p");
-
-        empty.className =
-          "comments-empty";
-
-        empty.textContent =
-          "まだコメントはありません。";
-
-        commentsList.appendChild(empty);
-
-        return;
-      }
-
-
-      comments.forEach(comment => {
-
-        const item =
-          document.createElement("article");
-
-        item.className =
-          "comment-item";
-
-
-        const header =
-          document.createElement("div");
-
-        header.className =
-          "comment-header";
-
-
-        const name =
-          document.createElement("span");
-
-        name.className =
-          "comment-name";
-
-        name.textContent =
-          comment.display_name ||
-          "Anonymous";
-
-
-        const date =
-          document.createElement("time");
-
-        date.className =
-          "comment-date";
-
-        date.textContent =
-          formatDate(comment.created_at);
-
-
-        const body =
-          document.createElement("p");
-
-        body.className =
-          "comment-body";
-
-        body.textContent =
-          comment.body;
-
-
-        header.append(name, date);
-        item.append(header, body);
-
-        commentsList.appendChild(item);
-      });
+      return;
     }
 
 
-    commentForm.addEventListener(
-      "submit",
-      async event => {
+    const comments = data || [];
 
-        event.preventDefault();
-        event.stopPropagation();
+    count.textContent =
+      String(comments.length);
 
-        const photoId = getPhotoId();
-
-        if (!photoId) {
-          message.textContent =
-            "写真を認識できませんでした。";
-          return;
-        }
+    list.innerHTML = "";
 
 
-        const name =
-          commentName.value
-            .trim()
-            .slice(0, 30);
+    if (!comments.length) {
+      const empty =
+        document.createElement("p");
 
-        const body =
-          commentBody.value
-            .trim()
-            .slice(0, 300);
+      empty.className =
+        "comments-empty";
+
+      empty.textContent =
+        "まだコメントはありません。";
+
+      list.appendChild(empty);
+
+      return;
+    }
 
 
-        if (!body) {
-          message.textContent =
-            "コメントを書いてください。";
-          return;
-        }
+    comments.forEach(comment => {
+      list.appendChild(
+        makeCommentElement(comment)
+      );
+    });
+  }
+
+
+  async function loadCurrentPhoto() {
+    const photoId = getPhotoId();
+
+    if (!photoId) return;
+
+    message("");
+
+    showHeart(photoId);
+
+    await Promise.all([
+      loadLikes(photoId),
+      loadComments(photoId)
+    ]);
+  }
+
+
+  /* ==============================
+     LIKE
+     要素が後から出ても反応する
+  ============================== */
+
+  document.addEventListener(
+    "click",
+    async event => {
+
+      const button =
+        event.target.closest(
+          "#photoLikeButton"
+        );
+
+      if (!button) return;
+
+
+      event.preventDefault();
+      event.stopPropagation();
+
+
+      const photoId = getPhotoId();
+
+      if (!photoId) {
+        message(
+          "写真を認識できませんでした。"
+        );
+        return;
+      }
+
+
+      if (
+        localStorage.getItem(
+          likeKey(photoId)
+        ) === "1"
+      ) {
+        message(
+          "この写真にはいいね済みです。"
+        );
+        return;
+      }
+
+
+      button.disabled = true;
+
+      message("送信中…");
+
+
+      try {
+        const visitorHash =
+          await makeVisitorHash(photoId);
+
+
+        const { error } =
+          await db
+            .from("photo_likes")
+            .insert({
+              photo_id: photoId,
+              visitor_hash: visitorHash
+            });
 
 
         if (
-          /https?:\/\/|www\./i.test(body)
+          error &&
+          error.code !== "23505"
         ) {
-          message.textContent =
-            "URLを含むコメントは送信できません。";
-          return;
+          throw error;
         }
 
 
-        const now = Date.now();
+        localStorage.setItem(
+          likeKey(photoId),
+          "1"
+        );
 
-        const lastComment =
-          Number(
-            localStorage.getItem(
-              "saq8LastCommentAt"
-            ) || 0
-          );
+        message("いいねしました。");
 
-
-        if (
-          now - lastComment < 20000
-        ) {
-          message.textContent =
-            "少し待ってから送信してください。";
-          return;
-        }
+        await loadLikes(photoId);
 
 
-        commentSend.disabled = true;
-        message.textContent = "送信中…";
+      } catch (error) {
+        console.error(error);
+
+        message(
+          `LIKE ERROR: ${
+            error.message ||
+            "送信できませんでした"
+          }`
+        );
+
+      } finally {
+        button.disabled = false;
+      }
+    }
+  );
 
 
-        try {
-          const { error } = await db
+  /* ==============================
+     COMMENT
+  ============================== */
+
+  document.addEventListener(
+    "submit",
+    async event => {
+
+      if (
+        event.target.id !==
+        "commentForm"
+      ) {
+        return;
+      }
+
+
+      event.preventDefault();
+      event.stopPropagation();
+
+
+      const photoId = getPhotoId();
+
+      const nameInput =
+        el("commentName");
+
+      const bodyInput =
+        el("commentBody");
+
+      const sendButton =
+        el("commentSend");
+
+
+      if (
+        !photoId ||
+        !bodyInput
+      ) {
+        message(
+          "写真を認識できませんでした。"
+        );
+        return;
+      }
+
+
+      const name =
+        (nameInput?.value || "")
+          .trim()
+          .slice(0, 30);
+
+      const body =
+        bodyInput.value
+          .trim()
+          .slice(0, 300);
+
+
+      if (!body) {
+        message(
+          "コメントを書いてください。"
+        );
+        return;
+      }
+
+
+      if (
+        /https?:\/\/|www\./i.test(body)
+      ) {
+        message(
+          "URLを含むコメントは送信できません。"
+        );
+        return;
+      }
+
+
+      if (sendButton) {
+        sendButton.disabled = true;
+      }
+
+      message("送信中…");
+
+
+      try {
+        const { error } =
+          await db
             .from("photo_comments")
             .insert({
               photo_id: photoId,
@@ -440,80 +469,53 @@
             });
 
 
-          if (error) {
-            throw error;
-          }
+        if (error) {
+          throw error;
+        }
 
 
-          localStorage.setItem(
-            "saq8LastCommentAt",
-            String(now)
-          );
+        bodyInput.value = "";
+
+        message(
+          "コメントを送信しました。"
+        );
 
 
-          if (name) {
-            localStorage.setItem(
-              "saq8CommentName",
-              name
-            );
-          }
+        await loadComments(photoId);
 
 
-          commentBody.value = "";
+      } catch (error) {
+        console.error(error);
 
-          message.textContent =
-            "コメントを送信しました。";
+        message(
+          `COMMENT ERROR: ${
+            error.message ||
+            "送信できませんでした"
+          }`
+        );
 
-          await loadComments(photoId);
-
-        } catch (error) {
-          console.error(error);
-
-          message.textContent =
-            `COMMENT ERROR: ${
-              error.message ||
-              "送信できませんでした"
-            }`;
-
-        } finally {
-          commentSend.disabled = false;
+      } finally {
+        if (sendButton) {
+          sendButton.disabled = false;
         }
       }
-    );
-
-
-    async function loadCurrentPhoto() {
-      const photoId = getPhotoId();
-
-      if (!photoId) return;
-
-      message.textContent = "";
-
-      updateHeart(photoId);
-
-      await Promise.all([
-        loadLikes(photoId),
-        loadComments(photoId)
-      ]);
     }
+  );
 
 
-    const savedName =
-      localStorage.getItem(
-        "saq8CommentName"
-      );
+  /* ==============================
+     写真が変わったら読み直す
+  ============================== */
 
-    if (savedName) {
-      commentName.value = savedName;
-    }
+  function setupWatcher() {
+    const image = el("lightboxImage");
+
+    if (!image) return;
 
 
-    const imageObserver =
-      new MutationObserver(() => {
-        loadCurrentPhoto();
-      });
-
-    imageObserver.observe(
+    new MutationObserver(() => {
+      loadCurrentPhoto();
+    }).observe(
       image,
       {
         attributes: true,
@@ -522,28 +524,10 @@
     );
 
 
-    const dialogObserver =
-      new MutationObserver(() => {
-        if (
-          lightbox.hasAttribute("open")
-        ) {
-          loadCurrentPhoto();
-        }
-      });
-
-    dialogObserver.observe(
-      lightbox,
-      {
-        attributes: true,
-        attributeFilter: ["open"]
-      }
-    );
-
-
     if (image.getAttribute("src")) {
       loadCurrentPhoto();
     }
-  };
+  }
 
 
   if (
@@ -551,10 +535,10 @@
   ) {
     document.addEventListener(
       "DOMContentLoaded",
-      start
+      setupWatcher
     );
   } else {
-    start();
+    setupWatcher();
   }
 
 })();
