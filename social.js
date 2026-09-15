@@ -1,3 +1,9 @@
+alert(
+  "URL: " + Boolean(window.SAQ8_SUPABASE_URL) +
+  "\nKEY: " + Boolean(window.SAQ8_SUPABASE_PUBLISHABLE_KEY) +
+  "\nSUPABASE: " + Boolean(window.supabase)
+);
+
 /* =========================================
    Saq8 PHOTO
    LIKE + COMMENTS
