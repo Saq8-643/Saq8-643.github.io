@@ -963,1171 +963,769 @@
     src="script.js?v=18"
   ></script>
 
+<script>
+(() => {
+
+  const BASE_URL =
+    (window.SAQ8_SUPABASE_URL || "").replace(/\/$/, "");
+
+  const API_KEY =
+    window.SAQ8_SUPABASE_PUBLISHABLE_KEY || "";
 
 
-  <!-- =====================================
-       SOCIAL
-       SupabaseをMODULEとして独立読み込み
-  ====================================== -->
-
-  <script type="module">
-
-    import {
-      createClient
-    } from
-      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+  const headers = {
+    "apikey": API_KEY,
+    "Content-Type": "application/json"
+  };
 
 
-    /* =====================================
-       CONFIG
-    ====================================== */
-
-    const SUPABASE_URL =
-      window.SAQ8_SUPABASE_URL;
-
-    const SUPABASE_KEY =
-      window.SAQ8_SUPABASE_PUBLISHABLE_KEY;
+  function el(id) {
+    return document.getElementById(id);
+  }
 
 
-    const messageElement =
-      document.getElementById(
-        "socialMessage"
-      );
+  function message(text) {
+    const target = el("socialMessage");
 
-
-    function showMessage(text) {
-
-      if (messageElement) {
-
-        messageElement.textContent =
-          text || "";
-      }
+    if (target) {
+      target.textContent = text || "";
     }
+  }
 
 
-    if (
-      !SUPABASE_URL ||
-      !SUPABASE_KEY
-    ) {
+  function photoId() {
+    const image = el("lightboxImage");
 
-      showMessage(
-        "SUPABASE CONFIG ERROR"
-      );
+    if (!image) return "";
 
-      throw new Error(
-        "Supabase URL または Publishable Key がありません"
-      );
-    }
+    const src = image.getAttribute("src");
 
+    if (!src) return "";
 
-    /*
-      このdbはMODULE内だけに存在。
-      japan-map-jsやscript.jsと
-      グローバル変数を共有しない。
-    */
-
-    const db =
-      createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
+    return decodeURIComponent(
+      src.split("?")[0].split("/").pop() || ""
+    );
+  }
 
 
+  /* =========================
+     VISITOR
+  ========================= */
 
-    /* =====================================
-       PHOTO ID
-    ====================================== */
+  function visitorId() {
+    let id =
+      localStorage.getItem("saq8VisitorId");
 
-    function getPhotoId() {
+    if (!id) {
+      id =
+        window.crypto?.randomUUID?.() ||
+        `${Date.now()}-${Math.random()}`;
 
-      const image =
-        document.getElementById(
-          "lightboxImage"
-        );
-
-
-      if (!image) {
-        return "";
-      }
-
-
-      const src =
-        image.getAttribute(
-          "src"
-        );
-
-
-      if (!src) {
-        return "";
-      }
-
-
-      return decodeURIComponent(
-        src
-          .split("?")[0]
-          .split("/")
-          .pop() || ""
+      localStorage.setItem(
+        "saq8VisitorId",
+        id
       );
     }
 
+    return id;
+  }
 
 
-    /* =====================================
-       VISITOR ID
-    ====================================== */
+  async function visitorHash(id) {
+    const data =
+      new TextEncoder().encode(
+        `${visitorId()}:${id}`
+      );
 
-    function getVisitorId() {
+    const digest =
+      await crypto.subtle.digest(
+        "SHA-256",
+        data
+      );
 
-      const key =
-        "saq8VisitorId";
+    return Array
+      .from(new Uint8Array(digest))
+      .map(
+        value =>
+          value
+            .toString(16)
+            .padStart(2, "0")
+      )
+      .join("");
+  }
 
 
-      let id =
-        localStorage.getItem(
-          key
+  /* =========================
+     LIKE DISPLAY
+  ========================= */
+
+  function showHeart(id) {
+    const heart =
+      el("photoLikeHeart");
+
+    const button =
+      el("photoLikeButton");
+
+    if (!heart || !button) return;
+
+
+    const liked =
+      localStorage.getItem(
+        `saq8Liked:${id}`
+      ) === "1";
+
+
+    heart.textContent =
+      liked ? "♥" : "♡";
+
+
+    button.classList.toggle(
+      "is-liked",
+      liked
+    );
+  }
+
+
+  /* =========================
+     LIKE COUNT
+  ========================= */
+
+  async function loadLikes() {
+    const id = photoId();
+
+    const count =
+      el("photoLikeCount");
+
+    if (!id || !count) return;
+
+
+    count.textContent = "…";
+
+
+    try {
+      const response =
+        await fetch(
+          `${BASE_URL}/rest/v1/rpc/get_photo_like_count`,
+          {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              p_photo_id: id
+            })
+          }
         );
+
+
+      if (!response.ok) {
+        const text =
+          await response.text();
+
+        throw new Error(
+          `${response.status}: ${text}`
+        );
+      }
+
+
+      const data =
+        await response.json();
+
+
+      count.textContent =
+        String(Number(data || 0));
+
+
+      showHeart(id);
+
+
+    } catch (error) {
+      console.error(error);
+
+      count.textContent = "—";
+
+      message(
+        `LIKE ERROR: ${error.message}`
+      );
+    }
+  }
+
+
+  /* =========================
+     LIKE CLICK
+  ========================= */
+
+  window.saq8Like =
+    async function(event) {
+
+      event?.preventDefault();
+      event?.stopPropagation();
+
+
+      const id = photoId();
+
+      const button =
+        el("photoLikeButton");
 
 
       if (!id) {
+        message(
+          "写真を認識できませんでした。"
+        );
+
+        return;
+      }
+
+
+      const localKey =
+        `saq8Liked:${id}`;
+
+
+      if (
+        localStorage.getItem(
+          localKey
+        ) === "1"
+      ) {
+        message(
+          "この写真にはいいね済みです。"
+        );
+
+        return;
+      }
+
+
+      if (button) {
+        button.disabled = true;
+      }
+
+
+      message("送信中…");
+
+
+      try {
+        const hash =
+          await visitorHash(id);
+
+
+        const response =
+          await fetch(
+            `${BASE_URL}/rest/v1/photo_likes`,
+            {
+              method: "POST",
+
+              headers: {
+                ...headers,
+                "Prefer": "return=minimal"
+              },
+
+              body: JSON.stringify({
+                photo_id: id,
+                visitor_hash: hash
+              })
+            }
+          );
+
+
+        /*
+          409は同じ写真への
+          重複LIKEの場合がある
+        */
 
         if (
-          crypto &&
-          typeof crypto.randomUUID ===
-            "function"
+          !response.ok &&
+          response.status !== 409
         ) {
+          const text =
+            await response.text();
 
-          id =
-            crypto.randomUUID();
-
-        } else {
-
-          id =
-            `${Date.now()}-${Math.random()}`;
+          throw new Error(
+            `${response.status}: ${text}`
+          );
         }
 
 
         localStorage.setItem(
-          key,
-          id
+          localKey,
+          "1"
         );
+
+
+        showHeart(id);
+
+        message(
+          "いいねしました。"
+        );
+
+
+        await loadLikes();
+
+
+      } catch (error) {
+        console.error(error);
+
+        message(
+          `LIKE ERROR: ${error.message}`
+        );
+
+      } finally {
+        if (button) {
+          button.disabled = false;
+        }
       }
+    };
 
 
-      return id;
-    }
+  /* =========================
+     COMMENT DISPLAY
+  ========================= */
 
-
-
-    async function createVisitorHash(
-      photoId
-    ) {
-
-      const value =
-        `${getVisitorId()}:${photoId}`;
-
-
-      const bytes =
-        new TextEncoder()
-          .encode(value);
-
-
-      const digest =
-        await crypto.subtle.digest(
-          "SHA-256",
-          bytes
-        );
-
-
-      return Array
-        .from(
-          new Uint8Array(
-            digest
-          )
-        )
-        .map(
-          value =>
-            value
-              .toString(16)
-              .padStart(2, "0")
-        )
-        .join("");
-    }
-
-
-
-    /* =====================================
-       LIKE APPEARANCE
-    ====================================== */
-
-    function updateLikeAppearance(
-      photoId
-    ) {
-
-      const heart =
-        document.getElementById(
-          "photoLikeHeart"
-        );
-
-
-      const button =
-        document.getElementById(
-          "photoLikeButton"
-        );
-
-
-      if (
-        !heart ||
-        !button ||
-        !photoId
-      ) {
-        return;
-      }
-
-
-      const liked =
-        localStorage.getItem(
-          `saq8Liked:${photoId}`
-        ) === "1";
-
-
-      heart.textContent =
-        liked
-          ? "♥"
-          : "♡";
-
-
-      button.classList.toggle(
-        "is-liked",
-        liked
+  function makeComment(comment) {
+    const item =
+      document.createElement(
+        "article"
       );
+
+    item.className =
+      "comment-item";
+
+
+    const header =
+      document.createElement(
+        "div"
+      );
+
+    header.className =
+      "comment-header";
+
+
+    const name =
+      document.createElement(
+        "span"
+      );
+
+    name.className =
+      "comment-name";
+
+    name.textContent =
+      comment.display_name ||
+      "Anonymous";
+
+
+    const date =
+      document.createElement(
+        "time"
+      );
+
+    date.className =
+      "comment-date";
+
+
+    try {
+      date.textContent =
+        new Intl.DateTimeFormat(
+          "ja-JP",
+          {
+            timeZone:
+              "Asia/Tokyo",
+
+            year:
+              "numeric",
+
+            month:
+              "2-digit",
+
+            day:
+              "2-digit"
+          }
+        ).format(
+          new Date(
+            comment.created_at
+          )
+        );
+    } catch {
+      date.textContent = "";
     }
 
 
+    const body =
+      document.createElement(
+        "p"
+      );
 
-    /* =====================================
-       LIKE COUNT
-    ====================================== */
+    body.className =
+      "comment-body";
 
-    async function loadLikes(
-      photoId = getPhotoId()
+    body.textContent =
+      comment.body;
+
+
+    header.append(
+      name,
+      date
+    );
+
+    item.append(
+      header,
+      body
+    );
+
+
+    return item;
+  }
+
+
+  /* =========================
+     LOAD COMMENTS
+  ========================= */
+
+  async function loadComments() {
+    const id = photoId();
+
+    const list =
+      el("commentsList");
+
+    const count =
+      el("commentCount");
+
+
+    if (
+      !id ||
+      !list ||
+      !count
     ) {
-
-      if (!photoId) {
-        return;
-      }
+      return;
+    }
 
 
-      const count =
-        document.getElementById(
-          "photoLikeCount"
+    list.textContent =
+      "読み込み中…";
+
+
+    try {
+      const query =
+        new URLSearchParams({
+          select:
+            "id,display_name,body,created_at",
+
+          photo_id:
+            `eq.${id}`,
+
+          is_visible:
+            "eq.true",
+
+          order:
+            "created_at.asc",
+
+          limit:
+            "50"
+        });
+
+
+      const response =
+        await fetch(
+          `${BASE_URL}/rest/v1/photo_comments?${query}`,
+          {
+            method: "GET",
+            headers
+          }
         );
 
 
-      if (!count) {
-        return;
+      if (!response.ok) {
+        const text =
+          await response.text();
+
+        throw new Error(
+          `${response.status}: ${text}`
+        );
       }
+
+
+      const comments =
+        await response.json();
 
 
       count.textContent =
-        "…";
+        String(comments.length);
 
 
-      try {
+      list.innerHTML = "";
 
-        const {
-          data,
-          error
-        } =
-          await db.rpc(
-            "get_photo_like_count",
-            {
-              p_photo_id:
-                photoId
-            }
-          );
 
-
-        if (error) {
-          throw error;
-        }
-
-
-        count.textContent =
-          String(
-            Number(
-              data || 0
-            )
-          );
-
-
-        updateLikeAppearance(
-          photoId
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "LIKE COUNT ERROR",
-          error
-        );
-
-
-        count.textContent =
-          "—";
-
-
-        showMessage(
-          `LIKE ERROR: ${
-            error?.message ||
-            "いいね数を取得できませんでした"
-          }`
-        );
-      }
-    }
-
-
-
-    /* =====================================
-       LIKE CLICK
-    ====================================== */
-
-    window.saq8Like =
-      async function(event) {
-
-        if (event) {
-
-          event.preventDefault();
-          event.stopPropagation();
-        }
-
-
-        const photoId =
-          getPhotoId();
-
-
-        const button =
-          document.getElementById(
-            "photoLikeButton"
-          );
-
-
-        if (!photoId) {
-
-          showMessage(
-            "写真を認識できませんでした。"
-          );
-
-          return;
-        }
-
-
-        const storageKey =
-          `saq8Liked:${photoId}`;
-
-
-        if (
-          localStorage.getItem(
-            storageKey
-          ) === "1"
-        ) {
-
-          showMessage(
-            "この写真にはいいね済みです。"
-          );
-
-          return;
-        }
-
-
-        if (button) {
-
-          button.disabled =
-            true;
-        }
-
-
-        showMessage(
-          "送信中…"
-        );
-
-
-        try {
-
-          const visitorHash =
-            await createVisitorHash(
-              photoId
-            );
-
-
-          const {
-            error
-          } =
-            await db
-              .from(
-                "photo_likes"
-              )
-              .insert({
-                photo_id:
-                  photoId,
-
-                visitor_hash:
-                  visitorHash
-              });
-
-
-          if (
-            error &&
-            error.code !==
-              "23505"
-          ) {
-
-            throw error;
-          }
-
-
-          localStorage.setItem(
-            storageKey,
-            "1"
-          );
-
-
-          updateLikeAppearance(
-            photoId
-          );
-
-
-          showMessage(
-            "いいねしました。"
-          );
-
-
-          await loadLikes(
-            photoId
-          );
-
-
-        } catch (error) {
-
-          console.error(
-            "LIKE ERROR",
-            error
-          );
-
-
-          showMessage(
-            `LIKE ERROR: ${
-              error?.message ||
-              "送信できませんでした"
-            }`
-          );
-
-
-        } finally {
-
-          if (button) {
-
-            button.disabled =
-              false;
-          }
-        }
-      };
-
-
-
-    /* =====================================
-       COMMENT ELEMENT
-    ====================================== */
-
-    function makeCommentElement(
-      comment
-    ) {
-
-      const article =
-        document.createElement(
-          "article"
-        );
-
-
-      article.className =
-        "comment-item";
-
-
-      const header =
-        document.createElement(
-          "div"
-        );
-
-
-      header.className =
-        "comment-header";
-
-
-      const name =
-        document.createElement(
-          "span"
-        );
-
-
-      name.className =
-        "comment-name";
-
-
-      name.textContent =
-        comment.display_name ||
-        "Anonymous";
-
-
-      const date =
-        document.createElement(
-          "time"
-        );
-
-
-      date.className =
-        "comment-date";
-
-
-      try {
-
-        date.textContent =
-          new Intl.DateTimeFormat(
-            "ja-JP",
-            {
-              timeZone:
-                "Asia/Tokyo",
-
-              year:
-                "numeric",
-
-              month:
-                "2-digit",
-
-              day:
-                "2-digit"
-            }
-          )
-            .format(
-              new Date(
-                comment.created_at
-              )
-            );
-
-      } catch {
-
-        date.textContent =
-          "";
-      }
-
-
-      const body =
-        document.createElement(
-          "p"
-        );
-
-
-      body.className =
-        "comment-body";
-
-
-      /*
-        textContentなので、
-        コメント内HTMLを実行しない
-      */
-
-      body.textContent =
-        comment.body;
-
-
-      header.append(
-        name,
-        date
-      );
-
-
-      article.append(
-        header,
-        body
-      );
-
-
-      return article;
-    }
-
-
-
-    /* =====================================
-       LOAD COMMENTS
-    ====================================== */
-
-    async function loadComments(
-      photoId = getPhotoId()
-    ) {
-
-      if (!photoId) {
-        return;
-      }
-
-
-      const list =
-        document.getElementById(
-          "commentsList"
-        );
-
-
-      const count =
-        document.getElementById(
-          "commentCount"
-        );
-
-
-      if (
-        !list ||
-        !count
-      ) {
-        return;
-      }
-
-
-      list.innerHTML =
-        "";
-
-
-      const loading =
-        document.createElement(
-          "p"
-        );
-
-
-      loading.className =
-        "comments-empty";
-
-
-      loading.textContent =
-        "読み込み中…";
-
-
-      list.appendChild(
-        loading
-      );
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await db
-            .from(
-              "photo_comments"
-            )
-            .select(
-              "id, display_name, body, created_at"
-            )
-            .eq(
-              "photo_id",
-              photoId
-            )
-            .eq(
-              "is_visible",
-              true
-            )
-            .order(
-              "created_at",
-              {
-                ascending:
-                  true
-              }
-            )
-            .limit(50);
-
-
-        if (error) {
-          throw error;
-        }
-
-
-        const comments =
-          data || [];
-
-
-        count.textContent =
-          String(
-            comments.length
-          );
-
-
-        list.innerHTML =
-          "";
-
-
-        if (
-          comments.length === 0
-        ) {
-
-          const empty =
-            document.createElement(
-              "p"
-            );
-
-
-          empty.className =
-            "comments-empty";
-
-
-          empty.textContent =
-            "まだコメントはありません。";
-
-
-          list.appendChild(
-            empty
-          );
-
-
-          return;
-        }
-
-
-        comments.forEach(
-          comment => {
-
-            list.appendChild(
-              makeCommentElement(
-                comment
-              )
-            );
-          }
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "COMMENT LOAD ERROR",
-          error
-        );
-
-
-        list.innerHTML =
-          "";
-
-
-        const errorText =
+      if (!comments.length) {
+        const empty =
           document.createElement(
             "p"
           );
 
-
-        errorText.className =
+        empty.className =
           "comments-empty";
 
+        empty.textContent =
+          "まだコメントはありません。";
 
-        errorText.textContent =
-          "コメントを読み込めませんでした。";
+        list.appendChild(empty);
 
-
-        list.appendChild(
-          errorText
-        );
-
-
-        showMessage(
-          `COMMENT ERROR: ${
-            error?.message ||
-            "取得できませんでした"
-          }`
-        );
-      }
-    }
-
-
-
-    /* =====================================
-       SEND COMMENT
-    ====================================== */
-
-    window.saq8Comment =
-      async function(event) {
-
-        if (event) {
-
-          event.preventDefault();
-          event.stopPropagation();
-        }
-
-
-        const photoId =
-          getPhotoId();
-
-
-        const nameInput =
-          document.getElementById(
-            "commentName"
-          );
-
-
-        const bodyInput =
-          document.getElementById(
-            "commentBody"
-          );
-
-
-        const sendButton =
-          document.getElementById(
-            "commentSend"
-          );
-
-
-        if (
-          !photoId ||
-          !bodyInput
-        ) {
-
-          showMessage(
-            "写真を認識できませんでした。"
-          );
-
-          return false;
-        }
-
-
-        const name =
-          (
-            nameInput?.value ||
-            ""
-          )
-            .trim()
-            .slice(
-              0,
-              30
-            );
-
-
-        const body =
-          bodyInput.value
-            .trim()
-            .slice(
-              0,
-              300
-            );
-
-
-        if (!body) {
-
-          showMessage(
-            "コメントを書いてください。"
-          );
-
-          return false;
-        }
-
-
-        if (
-          /https?:\/\/|www\./i
-            .test(body)
-        ) {
-
-          showMessage(
-            "URLを含むコメントは送信できません。"
-          );
-
-          return false;
-        }
-
-
-        const now =
-          Date.now();
-
-
-        const lastComment =
-          Number(
-            localStorage.getItem(
-              "saq8LastCommentAt"
-            ) || 0
-          );
-
-
-        if (
-          now -
-          lastComment <
-          20000
-        ) {
-
-          const remaining =
-            Math.ceil(
-              (
-                20000 -
-                (
-                  now -
-                  lastComment
-                )
-              ) /
-              1000
-            );
-
-
-          showMessage(
-            `あと${remaining}秒ほど待ってください。`
-          );
-
-
-          return false;
-        }
-
-
-        if (sendButton) {
-
-          sendButton.disabled =
-            true;
-        }
-
-
-        showMessage(
-          "送信中…"
-        );
-
-
-        try {
-
-          const {
-            error
-          } =
-            await db
-              .from(
-                "photo_comments"
-              )
-              .insert({
-                photo_id:
-                  photoId,
-
-                display_name:
-                  name ||
-                  "Anonymous",
-
-                body:
-                  body
-              });
-
-
-          if (error) {
-            throw error;
-          }
-
-
-          localStorage.setItem(
-            "saq8LastCommentAt",
-            String(
-              Date.now()
-            )
-          );
-
-
-          if (name) {
-
-            localStorage.setItem(
-              "saq8CommentName",
-              name
-            );
-          }
-
-
-          bodyInput.value =
-            "";
-
-
-          showMessage(
-            "コメントを送信しました。"
-          );
-
-
-          await loadComments(
-            photoId
-          );
-
-
-        } catch (error) {
-
-          console.error(
-            "COMMENT SEND ERROR",
-            error
-          );
-
-
-          showMessage(
-            `COMMENT ERROR: ${
-              error?.message ||
-              "送信できませんでした"
-            }`
-          );
-
-
-        } finally {
-
-          if (sendButton) {
-
-            sendButton.disabled =
-              false;
-          }
-        }
-
-
-        return false;
-      };
-
-
-
-    /* =====================================
-       LOAD SOCIAL
-    ====================================== */
-
-    async function loadSocial() {
-
-      const photoId =
-        getPhotoId();
-
-
-      if (!photoId) {
         return;
       }
 
 
-      showMessage(
-        ""
-      );
-
-
-      updateLikeAppearance(
-        photoId
-      );
-
-
-      await Promise.all([
-        loadLikes(
-          photoId
-        ),
-
-        loadComments(
-          photoId
-        )
-      ]);
-    }
-
-
-
-    /* =====================================
-       RESTORE NAME
-    ====================================== */
-
-    const savedName =
-      localStorage.getItem(
-        "saq8CommentName"
-      );
-
-
-    const nameInput =
-      document.getElementById(
-        "commentName"
-      );
-
-
-    if (
-      savedName &&
-      nameInput
-    ) {
-
-      nameInput.value =
-        savedName;
-    }
-
-
-
-    /* =====================================
-       WATCH PHOTO SRC
-    ====================================== */
-
-    const lightboxImage =
-      document.getElementById(
-        "lightboxImage"
-      );
-
-
-    if (lightboxImage) {
-
-      new MutationObserver(
-        () => {
-
-          setTimeout(
-            loadSocial,
-            0
+      comments.forEach(
+        comment => {
+          list.appendChild(
+            makeComment(comment)
           );
         }
-      )
-        .observe(
-          lightboxImage,
-          {
-            attributes:
-              true,
-
-            attributeFilter:
-              ["src"]
-          }
-        );
-    }
-
-
-
-    /* =====================================
-       WATCH DIALOG
-    ====================================== */
-
-    const lightbox =
-      document.getElementById(
-        "lightbox"
       );
 
 
-    if (lightbox) {
+    } catch (error) {
+      console.error(error);
 
-      new MutationObserver(
-        () => {
+      list.textContent =
+        "コメントを読み込めませんでした。";
 
-          if (
-            lightbox.hasAttribute(
-              "open"
-            )
-          ) {
-
-            setTimeout(
-              loadSocial,
-              0
-            );
-          }
-        }
-      )
-        .observe(
-          lightbox,
-          {
-            attributes:
-              true,
-
-            attributeFilter:
-              ["open"]
-          }
-        );
+      message(
+        `COMMENT ERROR: ${error.message}`
+      );
     }
+  }
 
 
-    /*
-      moduleの読み込み成功確認。
-      画面には出さない。
-    */
+  /* =========================
+     SEND COMMENT
+  ========================= */
 
-    console.log(
-      "Saq8 Social module READY"
+  window.saq8Comment =
+    async function(event) {
+
+      event?.preventDefault();
+      event?.stopPropagation();
+
+
+      const id =
+        photoId();
+
+      const nameInput =
+        el("commentName");
+
+      const bodyInput =
+        el("commentBody");
+
+      const send =
+        el("commentSend");
+
+
+      if (
+        !id ||
+        !bodyInput
+      ) {
+        message(
+          "写真を認識できませんでした。"
+        );
+
+        return false;
+      }
+
+
+      const name =
+        (nameInput?.value || "")
+          .trim()
+          .slice(0, 30);
+
+
+      const body =
+        bodyInput.value
+          .trim()
+          .slice(0, 300);
+
+
+      if (!body) {
+        message(
+          "コメントを書いてください。"
+        );
+
+        return false;
+      }
+
+
+      if (
+        /https?:\/\/|www\./i.test(body)
+      ) {
+        message(
+          "URLを含むコメントは送信できません。"
+        );
+
+        return false;
+      }
+
+
+      if (send) {
+        send.disabled = true;
+      }
+
+
+      message("送信中…");
+
+
+      try {
+        const response =
+          await fetch(
+            `${BASE_URL}/rest/v1/photo_comments`,
+            {
+              method: "POST",
+
+              headers: {
+                ...headers,
+                "Prefer": "return=minimal"
+              },
+
+              body: JSON.stringify({
+                photo_id: id,
+
+                display_name:
+                  name || "Anonymous",
+
+                body
+              })
+            }
+          );
+
+
+        if (!response.ok) {
+          const text =
+            await response.text();
+
+          throw new Error(
+            `${response.status}: ${text}`
+          );
+        }
+
+
+        bodyInput.value = "";
+
+
+        if (name) {
+          localStorage.setItem(
+            "saq8CommentName",
+            name
+          );
+        }
+
+
+        message(
+          "コメントを送信しました。"
+        );
+
+
+        await loadComments();
+
+
+      } catch (error) {
+        console.error(error);
+
+        message(
+          `COMMENT ERROR: ${error.message}`
+        );
+
+      } finally {
+        if (send) {
+          send.disabled = false;
+        }
+      }
+
+
+      return false;
+    };
+
+
+  /* =========================
+     LOAD SOCIAL
+  ========================= */
+
+  function loadSocial() {
+    const id =
+      photoId();
+
+    if (!id) return;
+
+
+    message("");
+
+    showHeart(id);
+
+    loadLikes();
+
+    loadComments();
+  }
+
+
+  /* 名前を復元 */
+
+  const savedName =
+    localStorage.getItem(
+      "saq8CommentName"
     );
 
-  </script>
+  if (
+    savedName &&
+    el("commentName")
+  ) {
+    el("commentName").value =
+      savedName;
+  }
+
+
+  /* 写真変更監視 */
+
+  const image =
+    el("lightboxImage");
+
+  if (image) {
+    new MutationObserver(
+      loadSocial
+    ).observe(
+      image,
+      {
+        attributes: true,
+        attributeFilter: ["src"]
+      }
+    );
+  }
+
+
+  /* ライトボックスOPEN監視 */
+
+  const lightbox =
+    el("lightbox");
+
+  if (lightbox) {
+    new MutationObserver(
+      () => {
+        if (
+          lightbox.hasAttribute(
+            "open"
+          )
+        ) {
+          loadSocial();
+        }
+      }
+    ).observe(
+      lightbox,
+      {
+        attributes: true,
+        attributeFilter: ["open"]
+      }
+    );
+  }
+
+
+  console.log(
+    "Saq8 Social REST READY"
+  );
+
+})();
+</script>
+
+  
 
 
 </body>
