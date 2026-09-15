@@ -3,23 +3,363 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <title>Saq8 PHOTO</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- ====================
+       FONT
+  ===================== -->
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&display=swap"
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="styles.css?v=18">
+
+  <!-- ====================
+       MAIN CSS
+  ===================== -->
+
+  <link
+    rel="stylesheet"
+    href="styles.css?v=18"
+  >
+
+
+  <!-- ====================
+       LIKE / COMMENT CSS
+  ===================== -->
+
+  <style>
+
+    .lightbox {
+      overflow-y: auto !important;
+    }
+
+
+    .photo-social {
+      width: 100%;
+      margin-top: 20px;
+      padding-top: 20px;
+
+      border-top:
+        1px solid
+        rgba(255, 255, 255, .13);
+
+      pointer-events: auto !important;
+    }
+
+
+    .photo-social * {
+      pointer-events: auto !important;
+    }
+
+
+    /* LIKE */
+
+    .photo-like-row {
+      display: flex;
+      align-items: center;
+
+      margin-bottom: 28px;
+    }
+
+
+    .photo-like-button {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 8px 15px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, .28);
+
+      border-radius: 999px;
+
+      background: transparent;
+      color: #fff;
+
+      font: inherit;
+      font-size: 11px;
+
+      cursor: pointer;
+
+      touch-action: manipulation;
+
+      transition: .2s ease;
+    }
+
+
+    .photo-like-button:hover {
+      border-color:
+        rgba(255, 255, 255, .7);
+    }
+
+
+    .photo-like-button.is-liked {
+      background:
+        rgba(255, 255, 255, .1);
+
+      border-color:
+        rgba(255, 255, 255, .55);
+    }
+
+
+    #photoLikeHeart {
+      font-size: 17px;
+      line-height: 1;
+    }
+
+
+    /* COMMENTS */
+
+    .comments-heading {
+      margin: 0 0 18px;
+
+      color:
+        rgba(255, 255, 255, .55);
+
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .18em;
+    }
+
+
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+
+      gap: 14px;
+
+      margin-bottom: 22px;
+    }
+
+
+    .comments-empty {
+      margin: 0;
+
+      color:
+        rgba(255, 255, 255, .42);
+
+      font-size: 10px;
+    }
+
+
+    .comment-item {
+      padding-bottom: 14px;
+
+      border-bottom:
+        1px solid
+        rgba(255, 255, 255, .08);
+    }
+
+
+    .comment-header {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 16px;
+
+      margin-bottom: 7px;
+    }
+
+
+    .comment-name {
+      color:
+        rgba(255, 255, 255, .9);
+
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+
+    .comment-date {
+      color:
+        rgba(255, 255, 255, .35);
+
+      font-size: 8px;
+    }
+
+
+    .comment-body {
+      margin: 0;
+
+      color:
+        rgba(255, 255, 255, .78);
+
+      font-size: 11px;
+      line-height: 1.8;
+
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+
+    /* COMMENT FORM */
+
+    .comment-form {
+      display: grid;
+
+      grid-template-columns:
+        150px 1fr auto;
+
+      gap: 8px;
+
+      align-items: end;
+    }
+
+
+    .comment-field {
+      display: flex;
+      flex-direction: column;
+
+      gap: 6px;
+    }
+
+
+    .comment-field label {
+      color:
+        rgba(255, 255, 255, .45);
+
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: .14em;
+    }
+
+
+    .comment-field input,
+    .comment-field textarea {
+      box-sizing: border-box;
+
+      width: 100%;
+
+      padding: 10px 11px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, .18);
+
+      background:
+        rgba(255, 255, 255, .04);
+
+      color: #fff;
+
+      font: inherit;
+      font-size: 11px;
+
+      outline: none;
+    }
+
+
+    .comment-field input:focus,
+    .comment-field textarea:focus {
+      border-color:
+        rgba(255, 255, 255, .55);
+    }
+
+
+    .comment-field textarea {
+      min-height: 64px;
+      max-height: 160px;
+
+      resize: vertical;
+    }
+
+
+    .comment-send {
+      height: 38px;
+
+      padding:
+        0 18px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, .5);
+
+      background: transparent;
+      color: #fff;
+
+      font: inherit;
+      font-size: 9px;
+      font-weight: 600;
+
+      letter-spacing: .14em;
+
+      cursor: pointer;
+
+      touch-action: manipulation;
+    }
+
+
+    .comment-send:hover {
+      background: #fff;
+      color: #111;
+    }
+
+
+    .comment-send:disabled,
+    .photo-like-button:disabled {
+      opacity: .45;
+
+      cursor: default;
+    }
+
+
+    .social-message {
+      min-height: 16px;
+
+      margin: 10px 0 0;
+
+      color:
+        rgba(255, 255, 255, .55);
+
+      font-size: 9px;
+      line-height: 1.6;
+    }
+
+
+    @media (max-width: 700px) {
+
+      .comment-form {
+        grid-template-columns: 1fr;
+      }
+
+
+      .comment-send {
+        justify-self: start;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 
 <body>
+
 
   <!-- ====================
        HEADER
@@ -27,20 +367,36 @@
 
   <header class="site-header">
 
-    <a class="logo" href="#">
+    <a
+      class="logo"
+      href="#"
+    >
       Saq8 PHOTO
     </a>
 
+
     <nav class="nav">
-      <a href="#map">MAP</a>
-      <a href="#gallery">GALLERY</a>
-      <a href="#about">ABOUT</a>
+
+      <a href="#map">
+        MAP
+      </a>
+
+      <a href="#gallery">
+        GALLERY
+      </a>
+
+      <a href="#about">
+        ABOUT
+      </a>
+
     </nav>
 
   </header>
 
 
+
   <main>
+
 
     <!-- ====================
          HERO
@@ -53,16 +409,19 @@
         class="hero-photo"
       ></div>
 
+
       <div class="hero-copy">
 
         <p class="eyebrow">
           PHOTOGRAPHS / JAPAN
         </p>
 
+
         <h1>
           日々の途中で、<br>
           立ち止まった景色。
         </h1>
+
 
         <p class="hero-text">
           街、夜、空、鳥、花、ときどき猫。<br>
@@ -74,6 +433,7 @@
     </section>
 
 
+
     <!-- ====================
          TODAY'S PHOTO
     ===================== -->
@@ -83,6 +443,7 @@
       class="daily-section"
     >
 
+
       <div class="daily-heading">
 
         <div>
@@ -91,11 +452,13 @@
             TODAY'S PHOTO
           </p>
 
+
           <h2>
             今日の1枚
           </h2>
 
         </div>
+
 
 
         <!-- K'S NOTE -->
@@ -105,6 +468,7 @@
           <p class="daily-note-label">
             K'S NOTE
           </p>
+
 
           <p
             id="dailyPhotoNote"
@@ -116,16 +480,12 @@
       </div>
 
 
-      <!--
-        写真とペリペリカバーを
-        同じ場所に重ねるラッパー
-      -->
 
       <div class="daily-photo-wrap">
 
 
         <!-- ====================
-             ペリペリカバー
+             PEEL COVER
         ===================== -->
 
         <div
@@ -140,9 +500,11 @@
               OPEN TODAY
             </span>
 
+
             <strong>
               今日の景色を、ひらく。
             </strong>
+
 
             <span class="daily-peel-hint">
               PULL →
@@ -156,8 +518,9 @@
         </div>
 
 
+
         <!-- ====================
-             今日の写真
+             DAILY PHOTO
         ===================== -->
 
         <button
@@ -174,6 +537,7 @@
 
 
           <span class="daily-photo-info">
+
 
             <span class="daily-photo-main">
 
@@ -200,6 +564,7 @@
 
             </span>
 
+
           </span>
 
         </button>
@@ -207,6 +572,7 @@
       </div>
 
     </section>
+
 
 
     <!-- ====================
@@ -218,6 +584,7 @@
       class="map-section"
     >
 
+
       <div class="map-heading">
 
         <div>
@@ -226,9 +593,11 @@
             PHOTO MAP
           </p>
 
+
           <h2>
             Where I’ve Been
           </h2>
+
 
           <p class="map-description">
             色のついた都道府県をクリックすると、
@@ -241,13 +610,24 @@
         <div class="map-legend">
 
           <span>
-            <i class="legend-dot visited"></i>
+
+            <i
+              class="legend-dot visited"
+            ></i>
+
             PHOTOGRAPHED
+
           </span>
 
+
           <span>
-            <i class="legend-dot selected"></i>
+
+            <i
+              class="legend-dot selected"
+            ></i>
+
             SELECTED
+
           </span>
 
         </div>
@@ -255,7 +635,9 @@
       </div>
 
 
+
       <div class="map-layout">
+
 
         <div
           id="japanMap"
@@ -264,17 +646,24 @@
         ></div>
 
 
+
         <aside class="map-status">
 
           <p class="eyebrow">
             SELECTED AREA
           </p>
 
-          <strong id="selectedPrefecture">
+
+          <strong
+            id="selectedPrefecture"
+          >
             ALL JAPAN
           </strong>
 
-          <span id="selectedCount"></span>
+
+          <span
+            id="selectedCount"
+          ></span>
 
 
           <button
@@ -293,6 +682,7 @@
     </section>
 
 
+
     <!-- ====================
          GALLERY
     ===================== -->
@@ -302,6 +692,7 @@
       class="gallery-section"
     >
 
+
       <div class="section-heading">
 
         <div>
@@ -309,6 +700,7 @@
           <p class="eyebrow">
             GALLERY
           </p>
+
 
           <h2 id="galleryHeading">
             Photographs
@@ -326,10 +718,12 @@
       </div>
 
 
+
       <div
         id="galleryGrid"
         class="gallery-grid"
       ></div>
+
 
 
       <div class="more-wrap">
@@ -339,13 +733,19 @@
           class="more-button"
           type="button"
         >
+
           MORE
-          <span id="moreCount"></span>
+
+          <span
+            id="moreCount"
+          ></span>
+
         </button>
 
       </div>
 
     </section>
+
 
 
     <!-- ====================
@@ -380,7 +780,9 @@
 
     </section>
 
+
   </main>
+
 
 
   <!-- ====================
@@ -393,11 +795,13 @@
       © 2026 Saq8 PHOTO
     </span>
 
+
     <a href="#">
       BACK TO TOP ↑
     </a>
 
   </footer>
+
 
 
   <!-- ====================
@@ -409,6 +813,7 @@
     id="lightbox"
   >
 
+
     <button
       class="close-button"
       id="closeLightbox"
@@ -418,6 +823,7 @@
     </button>
 
 
+
     <img
       class="lightbox-image"
       id="lightboxImage"
@@ -425,10 +831,13 @@
     >
 
 
+
     <div class="lightbox-caption">
 
 
-      <!-- 写真情報 -->
+      <!-- ====================
+           PHOTO INFO
+      ===================== -->
 
       <div class="lightbox-main">
 
@@ -436,9 +845,11 @@
           id="lightboxTitle"
         ></strong>
 
+
         <time
           id="lightboxDate"
         ></time>
+
 
         <span
           id="lightboxPlace"
@@ -447,18 +858,27 @@
       </div>
 
 
-      <!-- タグ -->
 
-      <span id="lightboxMeta"></span>
+      <!-- TAGS -->
+
+      <span
+        id="lightboxMeta"
+      ></span>
 
 
-      <!-- K'S NOTE -->
+
+      <!-- ====================
+           K'S NOTE
+      ===================== -->
 
       <div class="lightbox-note">
 
-        <span class="lightbox-note-label">
+        <span
+          class="lightbox-note-label"
+        >
           K'S NOTE
         </span>
+
 
         <p
           id="lightboxNote"
@@ -466,112 +886,1289 @@
         ></p>
 
       </div>
-<!-- ====================
-     LIKE / COMMENTS
-===================== -->
-
-<div class="photo-social">
-
-  <div class="photo-like-row">
-
-   <button
-  id="photoLikeButton"
-  class="photo-like-button"
-  type="button"
->
-      <span id="photoLikeHeart">♡</span>
-      <span id="photoLikeCount">0</span>
-    </button>
-
-  </div>
 
 
-  <div class="photo-comments">
 
-    <p class="comments-heading">
-      COMMENTS
-      <span id="commentCount">0</span>
-    </p>
+      <!-- ====================
+           LIKE + COMMENTS
+      ===================== -->
 
-
-    <div
-      id="commentsList"
-      class="comments-list"
-    >
-      <p class="comments-empty">
-        まだコメントはありません。
-      </p>
-    </div>
+      <div class="photo-social">
 
 
-    <form
-      id="commentForm"
-      class="comment-form"
-    >
+        <!-- LIKE -->
 
-      <div class="comment-field">
+        <div class="photo-like-row">
 
-        <label for="commentName">
-          NAME / OPTIONAL
-        </label>
+          <button
+            id="photoLikeButton"
+            class="photo-like-button"
+            type="button"
+            onclick="saq8Like()"
+          >
 
-        <input
-          id="commentName"
-          type="text"
-          maxlength="30"
-          autocomplete="nickname"
-        >
+            <span
+              id="photoLikeHeart"
+            >
+              ♡
+            </span>
+
+            <span
+              id="photoLikeCount"
+            >
+              0
+            </span>
+
+          </button>
+
+        </div>
+
+
+
+        <!-- COMMENTS -->
+
+        <div class="photo-comments">
+
+
+          <p class="comments-heading">
+
+            COMMENTS
+
+            <span
+              id="commentCount"
+            >
+              0
+            </span>
+
+          </p>
+
+
+
+          <div
+            id="commentsList"
+            class="comments-list"
+          >
+
+            <p class="comments-empty">
+              まだコメントはありません。
+            </p>
+
+          </div>
+
+
+
+          <form
+            id="commentForm"
+            class="comment-form"
+            onsubmit="return saq8Comment(event)"
+          >
+
+
+            <div class="comment-field">
+
+              <label
+                for="commentName"
+              >
+                NAME / OPTIONAL
+              </label>
+
+
+              <input
+                id="commentName"
+                type="text"
+                maxlength="30"
+                autocomplete="nickname"
+              >
+
+            </div>
+
+
+
+            <div class="comment-field">
+
+              <label
+                for="commentBody"
+              >
+                COMMENT
+              </label>
+
+
+              <textarea
+                id="commentBody"
+                maxlength="300"
+                required
+              ></textarea>
+
+            </div>
+
+
+
+            <button
+              id="commentSend"
+              class="comment-send"
+              type="submit"
+            >
+              SEND
+            </button>
+
+          </form>
+
+
+
+          <p
+            id="socialMessage"
+            class="social-message"
+          ></p>
+
+
+        </div>
 
       </div>
 
-
-      <div class="comment-field">
-
-        <label for="commentBody">
-          COMMENT
-        </label>
-
-        <textarea
-          id="commentBody"
-          maxlength="300"
-          required
-        ></textarea>
-
-      </div>
-
-
-      <button
-        id="commentSend"
-        class="comment-send"
-        type="submit"
-      >
-        SEND
-      </button>
-
-    </form>
-
-
-    <p
-      id="socialMessage"
-      class="social-message"
-    ></p>
-
-  </div>
-
-</div>
     </div>
 
   </dialog>
 
-<script src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="supabase-config.js?v=1"></script>
+  <!-- ====================
+       LIBRARIES
+  ===================== -->
 
-<script src="script.js?v=18"></script>
+  <script
+    src="https://unpkg.com/japan-map-js@1.0.1/dist/jpmap.min.js"
+  ></script>
 
-<script src="social.js?v=15"></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+
+  <script
+    src="supabase-config.js?v=1"
+  ></script>
+
+
+  <script
+    src="script.js?v=18"
+  ></script>
+
+
+
+  <!-- =========================================
+       LIKE + COMMENTS
+       social.js は使わない
+  ========================================== -->
+
+  <script>
+
+    /* =========================================
+       SUPABASE
+    ========================================== */
+
+    const saq8Db =
+      window.supabase.createClient(
+        window.SAQ8_SUPABASE_URL,
+        window.SAQ8_SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+
+    /* =========================================
+       BASIC HELPERS
+    ========================================== */
+
+    function saq8PhotoId() {
+
+      const image =
+        document.getElementById(
+          "lightboxImage"
+        );
+
+
+      if (
+        !image ||
+        !image.getAttribute("src")
+      ) {
+        return "";
+      }
+
+
+      const src =
+        image.getAttribute("src");
+
+
+      return decodeURIComponent(
+        src
+          .split("?")[0]
+          .split("/")
+          .pop() || ""
+      );
+    }
+
+
+
+    function saq8Message(text) {
+
+      const element =
+        document.getElementById(
+          "socialMessage"
+        );
+
+
+      if (element) {
+        element.textContent =
+          text || "";
+      }
+    }
+
+
+
+    /* =========================================
+       VISITOR
+    ========================================== */
+
+    function saq8VisitorId() {
+
+      const storageKey =
+        "saq8VisitorId";
+
+
+      let id =
+        localStorage.getItem(
+          storageKey
+        );
+
+
+      if (!id) {
+
+        if (
+          window.crypto &&
+          typeof crypto.randomUUID ===
+            "function"
+        ) {
+
+          id =
+            crypto.randomUUID();
+
+        } else {
+
+          id =
+            `${Date.now()}-${Math.random()}`;
+
+        }
+
+
+        localStorage.setItem(
+          storageKey,
+          id
+        );
+      }
+
+
+      return id;
+    }
+
+
+
+    async function saq8VisitorHash(
+      photoId
+    ) {
+
+      const text =
+        `${saq8VisitorId()}:${photoId}`;
+
+
+      const bytes =
+        new TextEncoder()
+          .encode(text);
+
+
+      const digest =
+        await crypto.subtle.digest(
+          "SHA-256",
+          bytes
+        );
+
+
+      return Array
+        .from(
+          new Uint8Array(
+            digest
+          )
+        )
+        .map(
+          value =>
+            value
+              .toString(16)
+              .padStart(2, "0")
+        )
+        .join("");
+    }
+
+
+
+    /* =========================================
+       LIKE APPEARANCE
+    ========================================== */
+
+    function saq8ShowHeart() {
+
+      const photoId =
+        saq8PhotoId();
+
+
+      if (!photoId) {
+        return;
+      }
+
+
+      const heart =
+        document.getElementById(
+          "photoLikeHeart"
+        );
+
+
+      const button =
+        document.getElementById(
+          "photoLikeButton"
+        );
+
+
+      const liked =
+        localStorage.getItem(
+          "saq8Liked:" +
+          photoId
+        ) === "1";
+
+
+      if (heart) {
+
+        heart.textContent =
+          liked
+            ? "♥"
+            : "♡";
+      }
+
+
+      if (button) {
+
+        button.classList.toggle(
+          "is-liked",
+          liked
+        );
+      }
+    }
+
+
+
+    /* =========================================
+       LOAD LIKE COUNT
+    ========================================== */
+
+    async function saq8LoadLikes() {
+
+      const photoId =
+        saq8PhotoId();
+
+
+      const count =
+        document.getElementById(
+          "photoLikeCount"
+        );
+
+
+      if (
+        !photoId ||
+        !count
+      ) {
+        return;
+      }
+
+
+      count.textContent =
+        "…";
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await saq8Db.rpc(
+            "get_photo_like_count",
+            {
+              p_photo_id:
+                photoId
+            }
+          );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        count.textContent =
+          String(
+            Number(
+              data || 0
+            )
+          );
+
+
+        saq8ShowHeart();
+
+
+      } catch (error) {
+
+        console.error(
+          "LIKE COUNT ERROR",
+          error
+        );
+
+
+        count.textContent =
+          "—";
+
+
+        saq8Message(
+          "LIKE ERROR: " +
+          (
+            error.message ||
+            "いいね数を取得できませんでした"
+          )
+        );
+      }
+    }
+
+
+
+    /* =========================================
+       LIKE
+    ========================================== */
+
+    async function saq8Like() {
+
+      const photoId =
+        saq8PhotoId();
+
+
+      const button =
+        document.getElementById(
+          "photoLikeButton"
+        );
+
+
+      if (!photoId) {
+
+        saq8Message(
+          "写真を認識できませんでした。"
+        );
+
+        return;
+      }
+
+
+      const storageKey =
+        "saq8Liked:" +
+        photoId;
+
+
+      if (
+        localStorage.getItem(
+          storageKey
+        ) === "1"
+      ) {
+
+        saq8Message(
+          "この写真にはいいね済みです。"
+        );
+
+        return;
+      }
+
+
+      if (button) {
+        button.disabled =
+          true;
+      }
+
+
+      saq8Message(
+        "送信中…"
+      );
+
+
+      try {
+
+        const visitorHash =
+          await saq8VisitorHash(
+            photoId
+          );
+
+
+        const {
+          error
+        } =
+          await saq8Db
+            .from(
+              "photo_likes"
+            )
+            .insert({
+              photo_id:
+                photoId,
+
+              visitor_hash:
+                visitorHash
+            });
+
+
+        /*
+          23505 は
+          すでに同じブラウザから
+          LIKE済み
+        */
+
+        if (
+          error &&
+          error.code !==
+            "23505"
+        ) {
+
+          throw error;
+        }
+
+
+        localStorage.setItem(
+          storageKey,
+          "1"
+        );
+
+
+        saq8ShowHeart();
+
+
+        saq8Message(
+          "いいねしました。"
+        );
+
+
+        await saq8LoadLikes();
+
+
+      } catch (error) {
+
+        console.error(
+          "LIKE ERROR",
+          error
+        );
+
+
+        saq8Message(
+          "LIKE ERROR: " +
+          (
+            error.message ||
+            "送信できませんでした"
+          )
+        );
+
+
+      } finally {
+
+        if (button) {
+          button.disabled =
+            false;
+        }
+      }
+    }
+
+
+
+    /* =========================================
+       COMMENT ELEMENT
+    ========================================== */
+
+    function saq8CommentElement(
+      comment
+    ) {
+
+      const item =
+        document.createElement(
+          "article"
+        );
+
+
+      item.className =
+        "comment-item";
+
+
+
+      const header =
+        document.createElement(
+          "div"
+        );
+
+
+      header.className =
+        "comment-header";
+
+
+
+      const name =
+        document.createElement(
+          "span"
+        );
+
+
+      name.className =
+        "comment-name";
+
+
+      name.textContent =
+        comment.display_name ||
+        "Anonymous";
+
+
+
+      const date =
+        document.createElement(
+          "time"
+        );
+
+
+      date.className =
+        "comment-date";
+
+
+      try {
+
+        date.textContent =
+          new Intl.DateTimeFormat(
+            "ja-JP",
+            {
+              timeZone:
+                "Asia/Tokyo",
+
+              year:
+                "numeric",
+
+              month:
+                "2-digit",
+
+              day:
+                "2-digit"
+            }
+          )
+            .format(
+              new Date(
+                comment.created_at
+              )
+            );
+
+      } catch {
+
+        date.textContent =
+          "";
+      }
+
+
+
+      const body =
+        document.createElement(
+          "p"
+        );
+
+
+      body.className =
+        "comment-body";
+
+
+      body.textContent =
+        comment.body;
+
+
+
+      header.append(
+        name,
+        date
+      );
+
+
+      item.append(
+        header,
+        body
+      );
+
+
+      return item;
+    }
+
+
+
+    /* =========================================
+       LOAD COMMENTS
+    ========================================== */
+
+    async function saq8LoadComments() {
+
+      const photoId =
+        saq8PhotoId();
+
+
+      const list =
+        document.getElementById(
+          "commentsList"
+        );
+
+
+      const count =
+        document.getElementById(
+          "commentCount"
+        );
+
+
+      if (
+        !photoId ||
+        !list ||
+        !count
+      ) {
+        return;
+      }
+
+
+      list.innerHTML =
+        "";
+
+
+      const loading =
+        document.createElement(
+          "p"
+        );
+
+
+      loading.className =
+        "comments-empty";
+
+
+      loading.textContent =
+        "読み込み中…";
+
+
+      list.appendChild(
+        loading
+      );
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await saq8Db
+            .from(
+              "photo_comments"
+            )
+            .select(
+              "id, display_name, body, created_at"
+            )
+            .eq(
+              "photo_id",
+              photoId
+            )
+            .eq(
+              "is_visible",
+              true
+            )
+            .order(
+              "created_at",
+              {
+                ascending:
+                  true
+              }
+            )
+            .limit(50);
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        const comments =
+          data || [];
+
+
+        count.textContent =
+          String(
+            comments.length
+          );
+
+
+        list.innerHTML =
+          "";
+
+
+        if (
+          comments.length ===
+          0
+        ) {
+
+          const empty =
+            document.createElement(
+              "p"
+            );
+
+
+          empty.className =
+            "comments-empty";
+
+
+          empty.textContent =
+            "まだコメントはありません。";
+
+
+          list.appendChild(
+            empty
+          );
+
+
+          return;
+        }
+
+
+        comments.forEach(
+          comment => {
+
+            list.appendChild(
+              saq8CommentElement(
+                comment
+              )
+            );
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "COMMENT LOAD ERROR",
+          error
+        );
+
+
+        list.innerHTML =
+          "";
+
+
+        const errorElement =
+          document.createElement(
+            "p"
+          );
+
+
+        errorElement.className =
+          "comments-empty";
+
+
+        errorElement.textContent =
+          "コメントを読み込めませんでした。";
+
+
+        list.appendChild(
+          errorElement
+        );
+
+
+        saq8Message(
+          "COMMENT ERROR: " +
+          (
+            error.message ||
+            "取得できませんでした"
+          )
+        );
+      }
+    }
+
+
+
+    /* =========================================
+       SEND COMMENT
+    ========================================== */
+
+    async function saq8Comment(
+      event
+    ) {
+
+      event.preventDefault();
+
+
+      const photoId =
+        saq8PhotoId();
+
+
+      const nameInput =
+        document.getElementById(
+          "commentName"
+        );
+
+
+      const bodyInput =
+        document.getElementById(
+          "commentBody"
+        );
+
+
+      const sendButton =
+        document.getElementById(
+          "commentSend"
+        );
+
+
+      if (
+        !photoId ||
+        !bodyInput
+      ) {
+
+        saq8Message(
+          "写真を認識できませんでした。"
+        );
+
+        return false;
+      }
+
+
+      const name =
+        (
+          nameInput?.value ||
+          ""
+        )
+          .trim()
+          .slice(
+            0,
+            30
+          );
+
+
+      const body =
+        bodyInput.value
+          .trim()
+          .slice(
+            0,
+            300
+          );
+
+
+      if (!body) {
+
+        saq8Message(
+          "コメントを書いてください。"
+        );
+
+        return false;
+      }
+
+
+      /*
+        URL禁止
+      */
+
+      if (
+        /https?:\/\/|www\./i
+          .test(body)
+      ) {
+
+        saq8Message(
+          "URLを含むコメントは送信できません。"
+        );
+
+        return false;
+      }
+
+
+      /*
+        20秒クールダウン
+      */
+
+      const now =
+        Date.now();
+
+
+      const lastComment =
+        Number(
+          localStorage.getItem(
+            "saq8LastCommentAt"
+          ) || 0
+        );
+
+
+      if (
+        now -
+        lastComment <
+        20000
+      ) {
+
+        const remaining =
+          Math.ceil(
+            (
+              20000 -
+              (
+                now -
+                lastComment
+              )
+            ) /
+            1000
+          );
+
+
+        saq8Message(
+          `あと${remaining}秒ほど待ってください。`
+        );
+
+
+        return false;
+      }
+
+
+      if (sendButton) {
+        sendButton.disabled =
+          true;
+      }
+
+
+      saq8Message(
+        "送信中…"
+      );
+
+
+      try {
+
+        const {
+          error
+        } =
+          await saq8Db
+            .from(
+              "photo_comments"
+            )
+            .insert({
+              photo_id:
+                photoId,
+
+              display_name:
+                name ||
+                "Anonymous",
+
+              body:
+                body
+            });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        localStorage.setItem(
+          "saq8LastCommentAt",
+          String(
+            Date.now()
+          )
+        );
+
+
+        if (name) {
+
+          localStorage.setItem(
+            "saq8CommentName",
+            name
+          );
+        }
+
+
+        bodyInput.value =
+          "";
+
+
+        saq8Message(
+          "コメントを送信しました。"
+        );
+
+
+        await saq8LoadComments();
+
+
+      } catch (error) {
+
+        console.error(
+          "COMMENT SEND ERROR",
+          error
+        );
+
+
+        saq8Message(
+          "COMMENT ERROR: " +
+          (
+            error.message ||
+            "送信できませんでした"
+          )
+        );
+
+
+      } finally {
+
+        if (sendButton) {
+          sendButton.disabled =
+            false;
+        }
+      }
+
+
+      return false;
+    }
+
+
+
+    /* =========================================
+       LOAD CURRENT PHOTO SOCIAL
+    ========================================== */
+
+    function saq8LoadSocial() {
+
+      const photoId =
+        saq8PhotoId();
+
+
+      if (!photoId) {
+        return;
+      }
+
+
+      saq8Message(
+        ""
+      );
+
+
+      saq8ShowHeart();
+
+
+      saq8LoadLikes();
+
+
+      saq8LoadComments();
+    }
+
+
+
+    /* =========================================
+       SAVED NAME
+    ========================================== */
+
+    const saq8SavedName =
+      localStorage.getItem(
+        "saq8CommentName"
+      );
+
+
+    const saq8NameInput =
+      document.getElementById(
+        "commentName"
+      );
+
+
+    if (
+      saq8SavedName &&
+      saq8NameInput
+    ) {
+
+      saq8NameInput.value =
+        saq8SavedName;
+    }
+
+
+
+    /* =========================================
+       WATCH PHOTO
+    ========================================== */
+
+    const saq8Image =
+      document.getElementById(
+        "lightboxImage"
+      );
+
+
+    if (saq8Image) {
+
+      new MutationObserver(
+        () => {
+
+          setTimeout(
+            saq8LoadSocial,
+            0
+          );
+
+        }
+      )
+        .observe(
+          saq8Image,
+          {
+            attributes:
+              true,
+
+            attributeFilter:
+              ["src"]
+          }
+        );
+    }
+
+
+
+    /* =========================================
+       WATCH LIGHTBOX OPEN
+    ========================================== */
+
+    const saq8Lightbox =
+      document.getElementById(
+        "lightbox"
+      );
+
+
+    if (saq8Lightbox) {
+
+      new MutationObserver(
+        () => {
+
+          if (
+            saq8Lightbox.hasAttribute(
+              "open"
+            )
+          ) {
+
+            setTimeout(
+              saq8LoadSocial,
+              0
+            );
+          }
+
+        }
+      )
+        .observe(
+          saq8Lightbox,
+          {
+            attributes:
+              true,
+
+            attributeFilter:
+              ["open"]
+          }
+        );
+    }
+
+  </script>
+
 
 </body>
+
 </html>
