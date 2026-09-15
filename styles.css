@@ -1161,3 +1161,30 @@ footer{
     aspect-ratio:4/5;
   }
 }
+/* ==============================
+   LIKE / COMMENTS
+   タップできるようにする
+============================== */
+
+.lightbox-caption {
+  pointer-events: auto !important;
+}
+
+.photo-social {
+  position: relative;
+  z-index: 50;
+  pointer-events: auto !important;
+}
+
+.photo-social * {
+  pointer-events: auto !important;
+}
+
+.photo-like-button,
+.comment-form,
+.comment-form input,
+.comment-form textarea,
+.comment-send {
+  pointer-events: auto !important;
+  touch-action: manipulation;
+}
