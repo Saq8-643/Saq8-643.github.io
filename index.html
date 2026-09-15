@@ -466,7 +466,99 @@
         ></p>
 
       </div>
+<!-- ====================
+     LIKE / COMMENTS
+===================== -->
 
+<div class="photo-social">
+
+  <div class="photo-like-row">
+
+    <button
+      id="photoLikeButton"
+      class="photo-like-button"
+      type="button"
+    >
+      <span id="photoLikeHeart">♡</span>
+      <span id="photoLikeCount">0</span>
+    </button>
+
+  </div>
+
+
+  <div class="photo-comments">
+
+    <p class="comments-heading">
+      COMMENTS
+      <span id="commentCount">0</span>
+    </p>
+
+
+    <div
+      id="commentsList"
+      class="comments-list"
+    >
+      <p class="comments-empty">
+        まだコメントはありません。
+      </p>
+    </div>
+
+
+    <form
+      id="commentForm"
+      class="comment-form"
+    >
+
+      <div class="comment-field">
+
+        <label for="commentName">
+          NAME / OPTIONAL
+        </label>
+
+        <input
+          id="commentName"
+          type="text"
+          maxlength="30"
+          autocomplete="nickname"
+        >
+
+      </div>
+
+
+      <div class="comment-field">
+
+        <label for="commentBody">
+          COMMENT
+        </label>
+
+        <textarea
+          id="commentBody"
+          maxlength="300"
+          required
+        ></textarea>
+
+      </div>
+
+
+      <button
+        id="commentSend"
+        class="comment-send"
+        type="submit"
+      >
+        SEND
+      </button>
+
+    </form>
+
+
+    <p
+      id="socialMessage"
+      class="social-message"
+    ></p>
+
+  </div>
+
+</div>
     </div>
 
   </dialog>
