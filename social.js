@@ -1,544 +1,1127 @@
+/* =========================================
+   Saq8 PHOTO
+   LIKE + COMMENTS
+========================================= */
+
 (() => {
-  if (window.__SAQ8_SOCIAL__) return;
-  window.__SAQ8_SOCIAL__ = true;
 
-  const url = window.SAQ8_SUPABASE_URL;
-  const key = window.SAQ8_SUPABASE_PUBLISHABLE_KEY;
+  function startSocial() {
 
-  if (!url || !key || !window.supabase) {
-    console.error("Saq8 Social: Supabase connection error");
-    return;
-  }
+    /* -----------------------------------------
+       SUPABASE
+    ----------------------------------------- */
 
-  const db = window.supabase.createClient(url, key);
+    const SUPABASE_URL =
+      window.SAQ8_SUPABASE_URL;
 
-
-  function el(id) {
-    return document.getElementById(id);
-  }
+    const SUPABASE_KEY =
+      window.SAQ8_SUPABASE_PUBLISHABLE_KEY;
 
 
-  function message(text) {
-    const target = el("socialMessage");
-
-    if (target) {
-      target.textContent = text;
-    }
-  }
-
-
-  function getPhotoId() {
-    const image = el("lightboxImage");
-
-    if (!image) return "";
-
-    const src = image.getAttribute("src");
-
-    if (!src) return "";
-
-    return decodeURIComponent(
-      src.split("?")[0].split("/").pop() || ""
-    );
-  }
-
-
-  function getVisitorId() {
-    const storageKey = "saq8VisitorId";
-
-    let id = localStorage.getItem(storageKey);
-
-    if (!id) {
-      id =
-        window.crypto?.randomUUID?.() ||
-        `${Date.now()}-${Math.random()}`;
-
-      localStorage.setItem(storageKey, id);
-    }
-
-    return id;
-  }
-
-
-  async function makeVisitorHash(photoId) {
-    const text =
-      `${getVisitorId()}:${photoId}`;
-
-    const bytes =
-      new TextEncoder().encode(text);
-
-    const digest =
-      await crypto.subtle.digest(
-        "SHA-256",
-        bytes
+    if (
+      !SUPABASE_URL ||
+      !SUPABASE_KEY ||
+      !window.supabase
+    ) {
+      console.error(
+        "Saq8 Social: Supabase connection error"
       );
-
-    return Array.from(
-      new Uint8Array(digest)
-    )
-      .map(v =>
-        v.toString(16).padStart(2, "0")
-      )
-      .join("");
-  }
-
-
-  function likeKey(photoId) {
-    return `saq8Liked:${photoId}`;
-  }
-
-
-  function showHeart(photoId) {
-    const heart = el("photoLikeHeart");
-
-    if (!heart) return;
-
-    const liked =
-      localStorage.getItem(
-        likeKey(photoId)
-      ) === "1";
-
-    heart.textContent =
-      liked ? "♥" : "♡";
-  }
-
-
-  async function loadLikes(photoId) {
-    const count = el("photoLikeCount");
-
-    if (!count || !photoId) return;
-
-    count.textContent = "…";
-
-    const { data, error } =
-      await db.rpc(
-        "get_photo_like_count",
-        {
-          p_photo_id: photoId
-        }
-      );
-
-    if (error) {
-      console.error(error);
-
-      count.textContent = "—";
-
-      message(
-        `LIKE ERROR: ${error.message}`
-      );
-
-      return;
-    }
-
-    count.textContent =
-      String(Number(data || 0));
-
-    showHeart(photoId);
-  }
-
-
-  function makeCommentElement(comment) {
-    const item =
-      document.createElement("article");
-
-    item.className = "comment-item";
-
-
-    const header =
-      document.createElement("div");
-
-    header.className = "comment-header";
-
-
-    const name =
-      document.createElement("span");
-
-    name.className = "comment-name";
-
-    name.textContent =
-      comment.display_name ||
-      "Anonymous";
-
-
-    const date =
-      document.createElement("time");
-
-    date.className = "comment-date";
-
-    date.textContent =
-      new Intl.DateTimeFormat(
-        "ja-JP",
-        {
-          timeZone: "Asia/Tokyo",
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit"
-        }
-      ).format(
-        new Date(comment.created_at)
-      );
-
-
-    const body =
-      document.createElement("p");
-
-    body.className = "comment-body";
-
-    body.textContent = comment.body;
-
-
-    header.append(name, date);
-    item.append(header, body);
-
-    return item;
-  }
-
-
-  async function loadComments(photoId) {
-    const list = el("commentsList");
-    const count = el("commentCount");
-
-    if (!list || !count || !photoId) {
-      return;
-    }
-
-    list.textContent = "読み込み中…";
-
-
-    const { data, error } =
-      await db
-        .from("photo_comments")
-        .select(
-          "id, display_name, body, created_at"
-        )
-        .eq("photo_id", photoId)
-        .eq("is_visible", true)
-        .order(
-          "created_at",
-          { ascending: true }
-        )
-        .limit(50);
-
-
-    if (error) {
-      console.error(error);
-
-      list.textContent =
-        "コメントを読み込めませんでした。";
-
-      message(
-        `COMMENT ERROR: ${error.message}`
-      );
-
       return;
     }
 
 
-    const comments = data || [];
+    const db =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
 
-    count.textContent =
-      String(comments.length);
 
-    list.innerHTML = "";
+    /* -----------------------------------------
+       DOM
+    ----------------------------------------- */
+
+    const lightbox =
+      document.getElementById("lightbox");
+
+    const lightboxImage =
+      document.getElementById("lightboxImage");
+
+    const likeButton =
+      document.getElementById("photoLikeButton");
+
+    const likeHeart =
+      document.getElementById("photoLikeHeart");
+
+    const likeCount =
+      document.getElementById("photoLikeCount");
+
+    const commentCount =
+      document.getElementById("commentCount");
+
+    const commentsList =
+      document.getElementById("commentsList");
+
+    const commentForm =
+      document.getElementById("commentForm");
+
+    const commentName =
+      document.getElementById("commentName");
+
+    const commentBody =
+      document.getElementById("commentBody");
+
+    const commentSend =
+      document.getElementById("commentSend");
+
+    const socialMessage =
+      document.getElementById("socialMessage");
 
 
-    if (!comments.length) {
-      const empty =
-        document.createElement("p");
-
-      empty.className =
-        "comments-empty";
-
-      empty.textContent =
-        "まだコメントはありません。";
-
-      list.appendChild(empty);
-
+    if (
+      !lightbox ||
+      !lightboxImage ||
+      !likeButton ||
+      !likeHeart ||
+      !likeCount ||
+      !commentCount ||
+      !commentsList ||
+      !commentForm ||
+      !commentName ||
+      !commentBody ||
+      !commentSend ||
+      !socialMessage
+    ) {
+      console.error(
+        "Saq8 Social: 必要なHTML要素が見つかりません"
+      );
       return;
     }
 
 
-    comments.forEach(comment => {
-      list.appendChild(
-        makeCommentElement(comment)
-      );
-    });
-  }
+    /* -----------------------------------------
+       MESSAGE
+    ----------------------------------------- */
+
+    function showMessage(text) {
+      socialMessage.textContent =
+        text || "";
+    }
 
 
-  async function loadCurrentPhoto() {
-    const photoId = getPhotoId();
+    /* -----------------------------------------
+       PHOTO ID
+    ----------------------------------------- */
 
-    if (!photoId) return;
+    function getPhotoId() {
 
-    message("");
+      const src =
+        lightboxImage.getAttribute("src");
 
-    showHeart(photoId);
-
-    await Promise.all([
-      loadLikes(photoId),
-      loadComments(photoId)
-    ]);
-  }
-
-
-  /* ==============================
-     LIKE
-     要素が後から出ても反応する
-  ============================== */
-
-  document.addEventListener(
-    "click",
-    async event => {
-
-      const button =
-        event.target.closest(
-          "#photoLikeButton"
-        );
-
-      if (!button) return;
-
-
-      event.preventDefault();
-      event.stopPropagation();
-
-
-      const photoId = getPhotoId();
-
-      if (!photoId) {
-        message(
-          "写真を認識できませんでした。"
-        );
-        return;
+      if (!src) {
+        return "";
       }
 
 
-      if (
+      const cleanSrc =
+        src.split("?")[0];
+
+
+      const fileName =
+        cleanSrc
+          .split("/")
+          .pop();
+
+
+      return decodeURIComponent(
+        fileName || ""
+      );
+    }
+
+
+    /* -----------------------------------------
+       VISITOR ID
+    ----------------------------------------- */
+
+    function getVisitorId() {
+
+      const storageKey =
+        "saq8VisitorId";
+
+
+      let visitorId =
         localStorage.getItem(
-          likeKey(photoId)
-        ) === "1"
-      ) {
-        message(
-          "この写真にはいいね済みです。"
+          storageKey
         );
-        return;
-      }
 
 
-      button.disabled = true;
-
-      message("送信中…");
-
-
-      try {
-        const visitorHash =
-          await makeVisitorHash(photoId);
-
-
-        const { error } =
-          await db
-            .from("photo_likes")
-            .insert({
-              photo_id: photoId,
-              visitor_hash: visitorHash
-            });
-
+      if (!visitorId) {
 
         if (
-          error &&
-          error.code !== "23505"
+          window.crypto &&
+          typeof crypto.randomUUID ===
+            "function"
         ) {
-          throw error;
+
+          visitorId =
+            crypto.randomUUID();
+
+        } else {
+
+          visitorId =
+            `${Date.now()}-${Math.random()}`;
+
         }
 
 
         localStorage.setItem(
-          likeKey(photoId),
-          "1"
+          storageKey,
+          visitorId
+        );
+      }
+
+
+      return visitorId;
+    }
+
+
+    async function makeVisitorHash(
+      photoId
+    ) {
+
+      const source =
+        `${getVisitorId()}:${photoId}`;
+
+
+      const bytes =
+        new TextEncoder()
+          .encode(source);
+
+
+      const digest =
+        await crypto.subtle.digest(
+          "SHA-256",
+          bytes
         );
 
-        message("いいねしました。");
 
-        await loadLikes(photoId);
+      return Array
+        .from(
+          new Uint8Array(digest)
+        )
+        .map(
+          value =>
+            value
+              .toString(16)
+              .padStart(2, "0")
+        )
+        .join("");
+    }
 
 
-      } catch (error) {
-        console.error(error);
+    /* =========================================
+       LIKE
+    ========================================= */
 
-        message(
-          `LIKE ERROR: ${
-            error.message ||
-            "送信できませんでした"
-          }`
+    function getLikeStorageKey(
+      photoId
+    ) {
+
+      return (
+        `saq8Liked:${photoId}`
+      );
+    }
+
+
+    function updateHeart(
+      photoId
+    ) {
+
+      if (!photoId) {
+        likeHeart.textContent = "♡";
+        return;
+      }
+
+
+      const liked =
+        localStorage.getItem(
+          getLikeStorageKey(
+            photoId
+          )
+        ) === "1";
+
+
+      likeHeart.textContent =
+        liked
+          ? "♥"
+          : "♡";
+
+
+      likeButton.classList.toggle(
+        "is-liked",
+        liked
+      );
+    }
+
+
+    async function loadLikeCount(
+      photoId
+    ) {
+
+      if (!photoId) {
+        return;
+      }
+
+
+      likeCount.textContent =
+        "…";
+
+
+      const {
+        data,
+        error
+      } =
+        await db.rpc(
+          "get_photo_like_count",
+          {
+            p_photo_id:
+              photoId
+          }
         );
 
-      } finally {
-        button.disabled = false;
+
+      if (error) {
+
+        console.error(
+          "LIKE COUNT ERROR",
+          error
+        );
+
+
+        likeCount.textContent =
+          "—";
+
+
+        showMessage(
+          `LIKE ERROR: ${error.message}`
+        );
+
+        return;
+      }
+
+
+      likeCount.textContent =
+        String(
+          Number(data || 0)
+        );
+
+
+      updateHeart(
+        photoId
+      );
+    }
+
+
+    /* -----------------------------------------
+       LIKE CLICK
+       ボタンへ直接イベント登録
+    ----------------------------------------- */
+
+    likeButton.addEventListener(
+      "click",
+      async event => {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+
+        const photoId =
+          getPhotoId();
+
+
+        if (!photoId) {
+
+          showMessage(
+            "写真を認識できませんでした。"
+          );
+
+          return;
+        }
+
+
+        const likeStorageKey =
+          getLikeStorageKey(
+            photoId
+          );
+
+
+        if (
+          localStorage.getItem(
+            likeStorageKey
+          ) === "1"
+        ) {
+
+          showMessage(
+            "この写真にはいいね済みです。"
+          );
+
+          return;
+        }
+
+
+        likeButton.disabled =
+          true;
+
+
+        showMessage(
+          "送信中…"
+        );
+
+
+        try {
+
+          const visitorHash =
+            await makeVisitorHash(
+              photoId
+            );
+
+
+          const {
+            error
+          } =
+            await db
+              .from(
+                "photo_likes"
+              )
+              .insert({
+                photo_id:
+                  photoId,
+
+                visitor_hash:
+                  visitorHash
+              });
+
+
+          /*
+            23505 =
+            DB上ではすでに
+            このブラウザから
+            いいね済み
+          */
+
+          if (
+            error &&
+            error.code !==
+              "23505"
+          ) {
+
+            throw error;
+          }
+
+
+          localStorage.setItem(
+            likeStorageKey,
+            "1"
+          );
+
+
+          updateHeart(
+            photoId
+          );
+
+
+          showMessage(
+            "いいねしました。"
+          );
+
+
+          await loadLikeCount(
+            photoId
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "LIKE ERROR",
+            error
+          );
+
+
+          showMessage(
+            `LIKE ERROR: ${
+              error?.message ||
+              "送信できませんでした"
+            }`
+          );
+
+
+        } finally {
+
+          likeButton.disabled =
+            false;
+        }
+      }
+    );
+
+
+    /* =========================================
+       COMMENTS
+    ========================================= */
+
+    function formatCommentDate(
+      value
+    ) {
+
+      try {
+
+        return new Intl.DateTimeFormat(
+          "ja-JP",
+          {
+            timeZone:
+              "Asia/Tokyo",
+
+            year:
+              "numeric",
+
+            month:
+              "2-digit",
+
+            day:
+              "2-digit"
+          }
+        )
+          .format(
+            new Date(value)
+          );
+
+      } catch {
+
+        return "";
       }
     }
-  );
 
 
-  /* ==============================
-     COMMENT
-  ============================== */
+    function createCommentElement(
+      comment
+    ) {
 
-  document.addEventListener(
-    "submit",
-    async event => {
-
-      if (
-        event.target.id !==
-        "commentForm"
-      ) {
-        return;
-      }
-
-
-      event.preventDefault();
-      event.stopPropagation();
-
-
-      const photoId = getPhotoId();
-
-      const nameInput =
-        el("commentName");
-
-      const bodyInput =
-        el("commentBody");
-
-      const sendButton =
-        el("commentSend");
-
-
-      if (
-        !photoId ||
-        !bodyInput
-      ) {
-        message(
-          "写真を認識できませんでした。"
+      const item =
+        document.createElement(
+          "article"
         );
-        return;
-      }
+
+
+      item.className =
+        "comment-item";
+
+
+      const header =
+        document.createElement(
+          "div"
+        );
+
+
+      header.className =
+        "comment-header";
 
 
       const name =
-        (nameInput?.value || "")
-          .trim()
-          .slice(0, 30);
+        document.createElement(
+          "span"
+        );
+
+
+      name.className =
+        "comment-name";
+
+
+      name.textContent =
+        comment.display_name ||
+        "Anonymous";
+
+
+      const date =
+        document.createElement(
+          "time"
+        );
+
+
+      date.className =
+        "comment-date";
+
+
+      date.textContent =
+        formatCommentDate(
+          comment.created_at
+        );
+
 
       const body =
-        bodyInput.value
-          .trim()
-          .slice(0, 300);
-
-
-      if (!body) {
-        message(
-          "コメントを書いてください。"
+        document.createElement(
+          "p"
         );
+
+
+      body.className =
+        "comment-body";
+
+
+      /*
+        textContentなので
+        HTMLを実行しない
+      */
+
+      body.textContent =
+        comment.body;
+
+
+      header.append(
+        name,
+        date
+      );
+
+
+      item.append(
+        header,
+        body
+      );
+
+
+      return item;
+    }
+
+
+    async function loadComments(
+      photoId
+    ) {
+
+      if (!photoId) {
         return;
       }
+
+
+      commentsList.innerHTML =
+        "";
+
+
+      const loading =
+        document.createElement(
+          "p"
+        );
+
+
+      loading.className =
+        "comments-empty";
+
+
+      loading.textContent =
+        "読み込み中…";
+
+
+      commentsList.appendChild(
+        loading
+      );
+
+
+      const {
+        data,
+        error
+      } =
+        await db
+          .from(
+            "photo_comments"
+          )
+          .select(
+            "id, display_name, body, created_at"
+          )
+          .eq(
+            "photo_id",
+            photoId
+          )
+          .eq(
+            "is_visible",
+            true
+          )
+          .order(
+            "created_at",
+            {
+              ascending:
+                true
+            }
+          )
+          .limit(50);
+
+
+      if (error) {
+
+        console.error(
+          "COMMENT LOAD ERROR",
+          error
+        );
+
+
+        commentsList.innerHTML =
+          "";
+
+
+        const errorText =
+          document.createElement(
+            "p"
+          );
+
+
+        errorText.className =
+          "comments-empty";
+
+
+        errorText.textContent =
+          "コメントを読み込めませんでした。";
+
+
+        commentsList.appendChild(
+          errorText
+        );
+
+
+        showMessage(
+          `COMMENT ERROR: ${error.message}`
+        );
+
+        return;
+      }
+
+
+      const comments =
+        data || [];
+
+
+      commentCount.textContent =
+        String(
+          comments.length
+        );
+
+
+      commentsList.innerHTML =
+        "";
 
 
       if (
-        /https?:\/\/|www\./i.test(body)
+        comments.length === 0
       ) {
-        message(
-          "URLを含むコメントは送信できません。"
+
+        const empty =
+          document.createElement(
+            "p"
+          );
+
+
+        empty.className =
+          "comments-empty";
+
+
+        empty.textContent =
+          "まだコメントはありません。";
+
+
+        commentsList.appendChild(
+          empty
         );
+
         return;
       }
 
 
-      if (sendButton) {
-        sendButton.disabled = true;
-      }
+      comments.forEach(
+        comment => {
 
-      message("送信中…");
-
-
-      try {
-        const { error } =
-          await db
-            .from("photo_comments")
-            .insert({
-              photo_id: photoId,
-              display_name:
-                name || "Anonymous",
-              body
-            });
-
-
-        if (error) {
-          throw error;
+          commentsList.appendChild(
+            createCommentElement(
+              comment
+            )
+          );
         }
-
-
-        bodyInput.value = "";
-
-        message(
-          "コメントを送信しました。"
-        );
-
-
-        await loadComments(photoId);
-
-
-      } catch (error) {
-        console.error(error);
-
-        message(
-          `COMMENT ERROR: ${
-            error.message ||
-            "送信できませんでした"
-          }`
-        );
-
-      } finally {
-        if (sendButton) {
-          sendButton.disabled = false;
-        }
-      }
+      );
     }
-  );
 
 
-  /* ==============================
-     写真が変わったら読み直す
-  ============================== */
+    /* -----------------------------------------
+       COMMENT SEND
+       formへ直接イベント登録
+    ----------------------------------------- */
 
-  function setupWatcher() {
-    const image = el("lightboxImage");
+    commentForm.addEventListener(
+      "submit",
+      async event => {
 
-    if (!image) return;
+        event.preventDefault();
+        event.stopPropagation();
 
 
-    new MutationObserver(() => {
-      loadCurrentPhoto();
-    }).observe(
-      image,
-      {
-        attributes: true,
-        attributeFilter: ["src"]
+        const photoId =
+          getPhotoId();
+
+
+        if (!photoId) {
+
+          showMessage(
+            "写真を認識できませんでした。"
+          );
+
+          return;
+        }
+
+
+        const name =
+          commentName.value
+            .trim()
+            .slice(
+              0,
+              30
+            );
+
+
+        const body =
+          commentBody.value
+            .trim()
+            .slice(
+              0,
+              300
+            );
+
+
+        if (!body) {
+
+          showMessage(
+            "コメントを書いてください。"
+          );
+
+          return;
+        }
+
+
+        /*
+          URL禁止
+        */
+
+        if (
+          /https?:\/\/|www\./i
+            .test(body)
+        ) {
+
+          showMessage(
+            "URLを含むコメントは送信できません。"
+          );
+
+          return;
+        }
+
+
+        /*
+          20秒クールダウン
+        */
+
+        const now =
+          Date.now();
+
+
+        const lastCommentAt =
+          Number(
+            localStorage.getItem(
+              "saq8LastCommentAt"
+            ) || 0
+          );
+
+
+        if (
+          now - lastCommentAt <
+          20000
+        ) {
+
+          const remaining =
+            Math.ceil(
+              (
+                20000 -
+                (
+                  now -
+                  lastCommentAt
+                )
+              ) /
+              1000
+            );
+
+
+          showMessage(
+            `あと${remaining}秒ほど待ってください。`
+          );
+
+          return;
+        }
+
+
+        commentSend.disabled =
+          true;
+
+
+        showMessage(
+          "送信中…"
+        );
+
+
+        try {
+
+          const {
+            error
+          } =
+            await db
+              .from(
+                "photo_comments"
+              )
+              .insert({
+                photo_id:
+                  photoId,
+
+                display_name:
+                  name ||
+                  "Anonymous",
+
+                body:
+                  body
+              });
+
+
+          if (error) {
+            throw error;
+          }
+
+
+          /*
+            成功した時だけ
+            クールダウン開始
+          */
+
+          localStorage.setItem(
+            "saq8LastCommentAt",
+            String(
+              Date.now()
+            )
+          );
+
+
+          /*
+            名前を記憶
+          */
+
+          if (name) {
+
+            localStorage.setItem(
+              "saq8CommentName",
+              name
+            );
+          }
+
+
+          commentBody.value =
+            "";
+
+
+          showMessage(
+            "コメントを送信しました。"
+          );
+
+
+          await loadComments(
+            photoId
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "COMMENT SEND ERROR",
+            error
+          );
+
+
+          showMessage(
+            `COMMENT ERROR: ${
+              error?.message ||
+              "送信できませんでした"
+            }`
+          );
+
+
+        } finally {
+
+          commentSend.disabled =
+            false;
+        }
       }
     );
 
 
-    if (image.getAttribute("src")) {
+    /* =========================================
+       PHOTO CHANGE
+    ========================================= */
+
+    async function loadCurrentPhoto() {
+
+      const photoId =
+        getPhotoId();
+
+
+      if (!photoId) {
+        return;
+      }
+
+
+      showMessage("");
+
+
+      updateHeart(
+        photoId
+      );
+
+
+      /*
+        LIKEとCOMMENTSを
+        同時に読み込む
+      */
+
+      await Promise.all([
+        loadLikeCount(
+          photoId
+        ),
+
+        loadComments(
+          photoId
+        )
+      ]);
+    }
+
+
+    /* -----------------------------------------
+       名前を復元
+    ----------------------------------------- */
+
+    const savedName =
+      localStorage.getItem(
+        "saq8CommentName"
+      );
+
+
+    if (savedName) {
+
+      commentName.value =
+        savedName;
+    }
+
+
+    /* -----------------------------------------
+       写真src監視
+    ----------------------------------------- */
+
+    const imageObserver =
+      new MutationObserver(
+        () => {
+
+          setTimeout(
+            loadCurrentPhoto,
+            0
+          );
+        }
+      );
+
+
+    imageObserver.observe(
+      lightboxImage,
+      {
+        attributes:
+          true,
+
+        attributeFilter:
+          ["src"]
+      }
+    );
+
+
+    /* -----------------------------------------
+       dialog open監視
+       同じ写真を再度開いた時にも更新
+    ----------------------------------------- */
+
+    const dialogObserver =
+      new MutationObserver(
+        () => {
+
+          if (
+            lightbox.hasAttribute(
+              "open"
+            )
+          ) {
+
+            setTimeout(
+              loadCurrentPhoto,
+              0
+            );
+          }
+        }
+      );
+
+
+    dialogObserver.observe(
+      lightbox,
+      {
+        attributes:
+          true,
+
+        attributeFilter:
+          ["open"]
+      }
+    );
+
+
+    /* -----------------------------------------
+       すでに写真があれば初期ロード
+    ----------------------------------------- */
+
+    if (
+      lightboxImage.getAttribute(
+        "src"
+      )
+    ) {
+
       loadCurrentPhoto();
     }
+
+
+    console.log(
+      "Saq8 Social READY"
+    );
   }
 
 
+  /* =========================================
+     START
+  ========================================= */
+
   if (
-    document.readyState === "loading"
+    document.readyState ===
+    "loading"
   ) {
+
     document.addEventListener(
       "DOMContentLoaded",
-      setupWatcher
+      startSocial,
+      {
+        once:
+          true
+      }
     );
+
   } else {
-    setupWatcher();
+
+    startSocial();
   }
 
 })();
