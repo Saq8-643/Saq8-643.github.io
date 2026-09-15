@@ -1,40 +1,16 @@
-alert("SOCIAL JS START");
-/* =========================================
-   Saq8 PHOTO
-   LIKE + COMMENTS
-========================================= */
+alert("SOCIAL JS OK");
 
-(() => {
+const likeButton = document.getElementById("photoLikeButton");
+const commentForm = document.getElementById("commentForm");
 
-  function startSocial() {
+likeButton.addEventListener("click", () => {
+  alert("LIKE JS OK");
+});
 
-    const SUPABASE_URL =
-      window.SAQ8_SUPABASE_URL;
-
-    const SUPABASE_KEY =
-      window.SAQ8_SUPABASE_PUBLISHABLE_KEY;
-
-
-    const lightbox =
-      document.getElementById("lightbox");
-
-    const lightboxImage =
-      document.getElementById("lightboxImage");
-
-    const likeButton =
-      document.getElementById("photoLikeButton");
-
-    const likeHeart =
-      document.getElementById("photoLikeHeart");
-
-    const likeCount =
-      document.getElementById("photoLikeCount");
-
-    const commentCount =
-      document.getElementById("commentCount");
-
-    const commentsList =
-      document.getElementById("commentsList");
+commentForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  alert("COMMENT JS OK");
+});      document.getElementById("commentsList");
 
     const commentForm =
       document.getElementById("commentForm");
