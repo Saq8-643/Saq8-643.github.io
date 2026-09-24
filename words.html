@@ -41,8 +41,7 @@
       --text: #171717;
       --muted: #7c7a73;
       --line: rgba(23, 23, 23, .12);
-
-      --purple: #938aaa;
+      --fossil: rgba(59, 54, 48, .095);
     }
 
 
@@ -95,7 +94,7 @@
 
     .site-header {
       position: relative;
-      z-index: 10;
+      z-index: 20;
 
       display: flex;
       justify-content: space-between;
@@ -146,12 +145,28 @@
     ============================== */
 
     .hero {
+      position: relative;
+
       width: min(
         1180px,
         calc(100% - 48px)
       );
 
-      margin: 80px auto 140px;
+      min-height: 650px;
+
+      margin:
+        80px auto 140px;
+
+      overflow: hidden;
+    }
+
+
+    .hero-content {
+      position: relative;
+      z-index: 5;
+
+      width: 46%;
+      min-width: 420px;
     }
 
 
@@ -237,6 +252,208 @@
     .dig-button:hover {
       background: var(--text);
       color: var(--paper);
+    }
+
+
+    /* ==============================
+       HERO FOSSIL
+    ============================== */
+
+    .hero-fossil-art {
+      position: absolute;
+
+      z-index: 1;
+
+      top: 10px;
+      right: -50px;
+
+      width: 62%;
+      height: 590px;
+
+      pointer-events: none;
+
+      opacity: 1;
+    }
+
+
+    .hero-dino-svg {
+      position: absolute;
+
+      top: 15px;
+      right: -25px;
+
+      width: 100%;
+      height: auto;
+
+      color: var(--fossil);
+
+      transform:
+        rotate(-2deg);
+
+      transform-origin:
+        center;
+
+      overflow: visible;
+    }
+
+
+    .hero-dino-svg * {
+      vector-effect:
+        non-scaling-stroke;
+    }
+
+
+    .fossil-line {
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 9;
+
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+
+    .fossil-thin {
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 5;
+
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+
+    .fossil-fill {
+      fill: currentColor;
+      stroke: none;
+    }
+
+
+    .fossil-crack {
+      fill: none;
+
+      stroke:
+        rgba(
+          59,
+          54,
+          48,
+          .055
+        );
+
+      stroke-width: 2;
+
+      stroke-linecap: round;
+    }
+
+
+    .track-group {
+      position: absolute;
+
+      left: 20%;
+      bottom: 25px;
+
+      display: flex;
+
+      gap: 54px;
+
+      transform:
+        rotate(-18deg);
+
+      opacity: .65;
+    }
+
+
+    .track {
+      position: relative;
+
+      width: 46px;
+      height: 58px;
+
+      transform:
+        rotate(10deg);
+    }
+
+
+    .track::before,
+    .track::after,
+    .track span {
+      content: "";
+
+      position: absolute;
+
+      background:
+        var(--fossil);
+
+      border-radius:
+        80% 20% 75% 25%;
+    }
+
+
+    .track::before {
+      width: 13px;
+      height: 34px;
+
+      top: 2px;
+      left: 16px;
+
+      transform:
+        rotate(-4deg);
+    }
+
+
+    .track::after {
+      width: 12px;
+      height: 30px;
+
+      top: 11px;
+      left: 3px;
+
+      transform:
+        rotate(-42deg);
+    }
+
+
+    .track span:first-child {
+      width: 12px;
+      height: 30px;
+
+      top: 11px;
+      right: 3px;
+
+      transform:
+        rotate(42deg);
+    }
+
+
+    .track span:last-child {
+      width: 15px;
+      height: 18px;
+
+      bottom: 2px;
+      left: 15px;
+
+      border-radius:
+        50%;
+    }
+
+
+    .track:nth-child(2) {
+      transform:
+        translateY(26px)
+        rotate(18deg)
+        scale(.88);
+    }
+
+
+    .track:nth-child(3) {
+      transform:
+        translateY(-10px)
+        rotate(8deg)
+        scale(.75);
     }
 
 
@@ -383,7 +600,12 @@
       bottom: 48px;
 
       color:
-        rgba(23, 23, 23, .055);
+        rgba(
+          23,
+          23,
+          23,
+          .055
+        );
 
       font-size: 80px;
       font-weight: 500;
@@ -444,7 +666,12 @@
       padding: 24px;
 
       background:
-        rgba(12, 12, 13, .97);
+        rgba(
+          12,
+          12,
+          13,
+          .97
+        );
 
       color: #f4f2ec;
 
@@ -490,7 +717,12 @@
       margin-bottom: 28px;
 
       color:
-        rgba(255, 255, 255, .38);
+        rgba(
+          255,
+          255,
+          255,
+          .38
+        );
 
       font-size: 11px;
 
@@ -502,7 +734,12 @@
       margin: 0;
 
       color:
-        rgba(255, 255, 255, .62);
+        rgba(
+          255,
+          255,
+          255,
+          .62
+        );
 
       font-size: 10px;
       letter-spacing: .14em;
@@ -534,7 +771,12 @@
       margin-bottom: 34px;
 
       color:
-        rgba(255, 255, 255, .38);
+        rgba(
+          255,
+          255,
+          255,
+          .38
+        );
 
       font-size: 9px;
       font-weight: 600;
@@ -570,7 +812,12 @@
 
     .found-date {
       color:
-        rgba(255, 255, 255, .42);
+        rgba(
+          255,
+          255,
+          255,
+          .42
+        );
 
       font-size: 9px;
 
@@ -595,7 +842,12 @@
 
       border:
         1px solid
-        rgba(255, 255, 255, .28);
+        rgba(
+          255,
+          255,
+          255,
+          .28
+        );
 
       background:
         transparent;
@@ -616,10 +868,20 @@
 
     .excavation-actions button:hover {
       border-color:
-        rgba(255, 255, 255, .8);
+        rgba(
+          255,
+          255,
+          255,
+          .8
+        );
 
       background:
-        rgba(255, 255, 255, .06);
+        rgba(
+          255,
+          255,
+          255,
+          .06
+        );
     }
 
 
@@ -638,7 +900,12 @@
         transparent;
 
       color:
-        rgba(255, 255, 255, .6);
+        rgba(
+          255,
+          255,
+          255,
+          .6
+        );
 
       font-size: 24px;
       font-weight: 300;
@@ -658,7 +925,12 @@
       border-radius: 50%;
 
       background:
-        rgba(255, 255, 255, .45);
+        rgba(
+          255,
+          255,
+          255,
+          .45
+        );
 
       pointer-events: none;
 
@@ -729,7 +1001,7 @@
     ============================== */
 
     @media (
-      max-width: 700px
+      max-width: 800px
     ) {
 
       .site-header {
@@ -744,8 +1016,45 @@
         width:
           calc(100% - 32px);
 
+        min-height: 700px;
+
         margin:
           60px auto 100px;
+      }
+
+
+      .hero-content {
+        width: 100%;
+        min-width: 0;
+      }
+
+
+      .hero-fossil-art {
+        top: 340px;
+        right: -145px;
+
+        width: 125%;
+        height: 380px;
+      }
+
+
+      .hero-dino-svg {
+        opacity: .7;
+      }
+
+
+      .track-group {
+        left: 18%;
+        bottom: 15px;
+
+        gap: 32px;
+
+        transform:
+          rotate(-13deg)
+          scale(.75);
+
+        transform-origin:
+          left center;
       }
 
 
@@ -841,50 +1150,459 @@
 
     <section class="hero">
 
-      <p class="eyebrow">
-        WORDS / FOSSIL ARCHIVE
-      </p>
+
+      <div class="hero-content">
+
+        <p class="eyebrow">
+          WORDS / FOSSIL ARCHIVE
+        </p>
 
 
-      <h1>
-        言葉の<br>
-        化石置き場
-      </h1>
+        <h1>
+          言葉の<br>
+          化石置き場
+        </h1>
 
 
-      <p class="hero-copy">
-        意味になる前の言葉を、<br>
-        忘れないうちに埋めておく。<br><br>
-        ときどき掘り返す。
-      </p>
+        <p class="hero-copy">
+          意味になる前の言葉を、<br>
+          忘れないうちに埋めておく。<br><br>
+          ときどき掘り返す。
+        </p>
 
 
-      <button
-        id="digButton"
-        class="dig-button"
-        type="button"
+        <button
+          id="digButton"
+          class="dig-button"
+          type="button"
+        >
+          発掘する
+        </button>
+
+      </div>
+
+
+
+      <!-- ==============================
+           DINOSAUR FOSSIL
+      =============================== -->
+
+      <div
+        class="hero-fossil-art"
+        aria-hidden="true"
       >
-        発掘する
-      </button>
+
+        <svg
+          class="hero-dino-svg"
+          viewBox="0 0 900 560"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+
+          <!-- skull -->
+
+          <path
+            class="fossil-line"
+            d="
+              M120 205
+              C92 170 100 124 144 99
+              C190 73 248 78 278 112
+              C298 134 298 162 280 181
+              C259 203 230 212 196 215
+              C164 218 139 216 120 205
+            "
+          />
+
+          <path
+            class="fossil-line"
+            d="
+              M118 207
+              C143 231 180 241 221 237
+              C252 234 274 222 293 203
+            "
+          />
+
+          <path
+            class="fossil-thin"
+            d="
+              M147 118
+              C173 104 206 105 230 119
+              C241 126 244 139 237 150
+              C225 168 191 173 165 164
+              C143 157 135 137 147 118
+            "
+          />
+
+          <ellipse
+            class="fossil-fill"
+            cx="191"
+            cy="135"
+            rx="11"
+            ry="9"
+          />
+
+          <ellipse
+            class="fossil-fill"
+            cx="257"
+            cy="147"
+            rx="7"
+            ry="5"
+          />
+
+          <!-- teeth -->
+
+          <path
+            class="fossil-thin"
+            d="
+              M139 205
+              L146 222
+
+              M156 209
+              L161 228
+
+              M174 211
+              L178 231
+
+              M192 212
+              L195 231
+
+              M211 210
+              L212 228
+
+              M229 207
+              L227 224
+
+              M246 202
+              L242 219
+            "
+          />
+
+          <!-- neck -->
+
+          <path
+            class="fossil-line"
+            d="
+              M288 170
+              C325 165 352 171 382 189
+              C410 206 431 224 451 246
+            "
+          />
+
+          <path
+            class="fossil-thin"
+            d="
+              M301 162
+              L295 188
+
+              M320 165
+              L313 194
+
+              M340 170
+              L332 200
+
+              M359 178
+              L349 208
+
+              M378 188
+              L367 218
+
+              M396 199
+              L384 229
+
+              M414 212
+              L401 241
+
+              M431 227
+              L417 255
+            "
+          />
+
+          <!-- spine -->
+
+          <path
+            class="fossil-line"
+            d="
+              M441 242
+              C492 221 548 216 603 228
+              C662 241 714 266 767 293
+            "
+          />
+
+          <!-- vertebra -->
+
+          <circle
+            class="fossil-fill"
+            cx="460"
+            cy="238"
+            r="8"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="486"
+            cy="231"
+            r="8"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="512"
+            cy="227"
+            r="8"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="539"
+            cy="226"
+            r="8"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="566"
+            cy="229"
+            r="8"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="594"
+            cy="235"
+            r="8"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="622"
+            cy="243"
+            r="8"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="650"
+            cy="253"
+            r="8"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="678"
+            cy="265"
+            r="7"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="705"
+            cy="278"
+            r="7"
+          />
+
+          <circle
+            class="fossil-fill"
+            cx="731"
+            cy="291"
+            r="6"
+          />
+
+          <!-- ribs -->
+
+          <path
+            class="fossil-thin"
+            d="
+              M470 244
+              C460 278 463 310 480 337
+
+              M493 238
+              C482 279 488 316 508 346
+
+              M518 235
+              C507 281 516 322 540 350
+
+              M544 235
+              C534 281 545 323 569 348
+
+              M570 239
+              C564 282 576 319 599 342
+
+              M596 244
+              C593 282 605 313 628 333
+
+              M621 251
+              C621 284 634 308 655 324
+            "
+          />
+
+          <!-- pelvis -->
+
+          <path
+            class="fossil-line"
+            d="
+              M654 270
+              C676 251 715 249 743 266
+              C766 279 775 303 767 326
+              C758 352 726 365 695 356
+              C663 347 644 318 650 293
+              C652 283 655 276 654 270
+            "
+          />
+
+          <!-- arm -->
+
+          <path
+            class="fossil-line"
+            d="
+              M424 245
+              L395 291
+              L369 330
+            "
+          />
+
+          <path
+            class="fossil-thin"
+            d="
+              M369 330
+              L352 349
+
+              M370 330
+              L368 354
+
+              M370 330
+              L385 348
+            "
+          />
+
+          <!-- rear leg -->
+
+          <path
+            class="fossil-line"
+            d="
+              M719 336
+              L697 400
+              L665 457
+            "
+          />
+
+          <path
+            class="fossil-line"
+            d="
+              M665 457
+              L619 501
+            "
+          />
+
+          <path
+            class="fossil-thin"
+            d="
+              M620 500
+              L590 510
+
+              M620 500
+              L603 521
+
+              M620 500
+              L622 524
+            "
+          />
+
+          <!-- second leg -->
+
+          <path
+            class="fossil-line"
+            d="
+              M756 329
+              L781 383
+              L792 446
+            "
+          />
+
+          <path
+            class="fossil-line"
+            d="
+              M792 446
+              L816 495
+            "
+          />
+
+          <path
+            class="fossil-thin"
+            d="
+              M816 495
+              L842 502
+
+              M816 495
+              L837 515
+
+              M816 495
+              L814 521
+            "
+          />
+
+          <!-- tail -->
+
+          <path
+            class="fossil-line"
+            d="
+              M750 293
+              C798 303 835 306 885 297
+            "
+          />
+
+          <!-- ground cracks -->
+
+          <path
+            class="fossil-crack"
+            d="
+              M385 500
+              L414 477
+              L440 488
+              L463 466
+              L492 478
+            "
+          />
+
+          <path
+            class="fossil-crack"
+            d="
+              M496 512
+              L521 488
+              L546 499
+              L568 481
+              L595 493
+            "
+          />
+
+        </svg>
+
+
+
+        <!-- FOOTPRINTS -->
+
+        <div class="track-group">
+
+          <div class="track">
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="track">
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="track">
+            <span></span>
+            <span></span>
+          </div>
+
+        </div>
+
+      </div>
 
     </section>
 
-<div
-  class="hero-fossil-art"
-  aria-hidden="true"
->
-  <img
-    class="hero-dino-fossil"
-    src="dino-fossil.png"
-    alt=""
-  >
 
-  <div class="dino-tracks">
-    <span>𓆩</span>
-    <span>𓆩</span>
-    <span>𓆩</span>
-  </div>
-</div>
 
     <!-- ==============================
          ARCHIVE
@@ -960,6 +1678,7 @@
           · · ·
         </div>
 
+
         <p
           id="digMessage"
           class="dig-message"
@@ -1002,6 +1721,7 @@
           >
             もう一度掘る
           </button>
+
 
           <button
             id="backToArchive"
@@ -1215,7 +1935,7 @@
 
 
     /* ==============================
-       ARCHIVE RENDER
+       ARCHIVE
     =============================== */
 
     function renderArchive() {
