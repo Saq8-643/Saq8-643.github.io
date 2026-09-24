@@ -853,6 +853,105 @@
   "place": "越前渚オートキャンプ場",
   "tags": ["NUIKATSU", "TRAVEL"],
   "alt": "青い海を背中に、ふたり並んで記念写真。旅先の景色がどれだけ広くても、ふたりでいるとちゃんといつもの顔になる。"
+},
+    {
+  "file": "DSC_8978.jpg",
+  "title": "LIFEBOATS",
+  "date": "2026-09-22",
+  "prefecture": "神奈川県",
+  "prefectureCode": 14,
+  "place": "横浜港",
+  "tags": ["TRAVEL", "CITY"],
+  "meta": "",
+  "alt": "船体に並ぶオレンジ色の救命艇。大きな船の横顔を、少し見上げるように。"
+},
+{
+  "file": "DSC_8970.jpg",
+  "title": "DIAMOND PRINCESS",
+  "date": "2026-09-22",
+  "prefecture": "神奈川県",
+  "prefectureCode": 14,
+  "place": "横浜港",
+  "tags": ["TRAVEL", "CITY"],
+  "meta": "",
+  "alt": "港に停まるダイヤモンド・プリンセス。近くで見ると、ひとつの建物みたいに大きかった。"
+},
+{
+  "file": "DSC_8950.jpg",
+  "title": "YOKOHAMA HARBOR",
+  "date": "2026-09-22",
+  "prefecture": "神奈川県",
+  "prefectureCode": 14,
+  "place": "横浜港",
+  "tags": ["CITY", "LANDSCAPE"],
+  "meta": "",
+  "alt": "海の向こうに並ぶみなとみらい。雲の切れ間から青空がのぞく、横浜らしい景色。"
+},
+{
+  "file": "DSC_8911.jpg",
+  "title": "MINATOMIRAI",
+  "date": "2026-09-22",
+  "prefecture": "神奈川県",
+  "prefectureCode": 14,
+  "place": "みなとみらい",
+  "tags": ["CITY", "LANDSCAPE"],
+  "meta": "",
+  "alt": "青い空と水辺に並ぶ、みなとみらいの建物たち。観覧車まで全部くっきり見えた日。"
+},
+{
+  "file": "DSC_8903.jpg",
+  "title": "LANDMARK",
+  "date": "2026-09-22",
+  "prefecture": "神奈川県",
+  "prefectureCode": 14,
+  "place": "みなとみらい",
+  "tags": ["CITY", "ARCHITECTURE"],
+  "meta": "",
+  "alt": "広い青空の下に伸びる横浜ランドマークタワー。空の余白ごと残したかった一枚。"
+},
+{
+  "file": "DSC_8879.jpg",
+  "title": "RED BRICK",
+  "date": "2026-09-22",
+  "prefecture": "神奈川県",
+  "prefectureCode": 14,
+  "place": "横浜赤レンガ倉庫",
+  "tags": ["CITY", "ARCHITECTURE"],
+  "meta": "",
+  "alt": "真っ青な空と赤レンガ。色の対比があまりにもきれいで、そのまま立ち止まった。"
+},
+{
+  "file": "DSC_8857.jpg",
+  "title": "AKAI KUTSU",
+  "date": "2026-09-22",
+  "prefecture": "神奈川県",
+  "prefectureCode": 14,
+  "place": "横浜",
+  "tags": ["CITY", "TRAVEL"],
+  "meta": "",
+  "alt": "高架下を走る赤いバス、あかいくつ。横浜の街角で見つけた、少しレトロな色。"
+},
+{
+  "file": "DSC_8770.jpg",
+  "title": "THREE TRAILS",
+  "date": "2026-09-19",
+  "prefecture": "愛知県",
+  "prefectureCode": 23,
+  "place": "久屋大通公園",
+  "tags": ["OBJECTS", "SKY"],
+  "meta": "",
+  "alt": "空へまっすぐ伸びる三本の白い航跡。その先をブルーインパルスが駆け上がっていく。"
+},
+{
+  "file": "DSC_8735.jpg",
+  "title": "FORMATION",
+  "date": "2026-09-19",
+  "prefecture": "愛知県",
+  "prefectureCode": 23,
+  "place": "久屋大通公園",
+  "tags": ["OBJECTS", "SKY"],
+  "meta": "",
+  "alt": "雲の間を抜けていくブルーインパルス。五機が空いっぱいに広がった瞬間。"
 }
   ]
 }
